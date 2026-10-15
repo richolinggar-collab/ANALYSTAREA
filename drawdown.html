@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drawdown Calculator - AcademyFX</title>
+    <title>Drawdown Calculator - Analyst Area</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -59,17 +59,23 @@
 </head>
 <body class="antialiased font-sans flex flex-col min-h-screen text-gray-900 bg-white overflow-x-hidden">
 
-    <!-- NAVIGATION (GELAP) - Diubah px-8 jadi px-5 md:px-8 untuk mobile -->
+    <!-- NAVIGATION (GELAP) -->
     <nav class="fixed top-0 w-full z-50 px-5 md:px-8 py-4 bg-[#060b13]/90 backdrop-blur-md border-b border-gray-800 transition-all">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
-                <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-darkbg shadow-[0_0_10px_rgba(0,229,255,0.5)] group-hover:scale-110 group-hover:rotate-180 transition-all duration-500">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 17l6-6 4 4 8-8"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 7h4v4"></path>
+                <!-- LOGO ANALYST AREA -->
+                <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.5)] group-hover:drop-shadow-[0_0_12px_rgba(0,229,255,0.9)] group-hover:scale-110 transition-all duration-500 ease-out">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full">
+                        <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
+                        <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.3"></polygon>
+                        <path d="M5.5 17.5 L9 8.5 L12 13.5 L15 8.5 L18.5 17.5" stroke-width="1.5" stroke-linejoin="round"></path>
+                        <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </div>
-                <span class="font-bold text-xl tracking-tight text-white group-hover:text-brand transition duration-300">AcademyFX</span>
+                <!-- TEKS NAMA WEB -->
+                <span class="font-extrabold text-2xl tracking-tight uppercase text-white transition-colors duration-300">
+                    ANALYST <span class="text-brand group-hover:text-[#00c2d6] group-hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.6)] transition-all duration-300">AREA</span>
+                </span>
             </a>
             
             <div class="hidden md:flex space-x-8 text-sm font-medium">
@@ -86,7 +92,7 @@
                 <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="hidden md:inline-block bg-brand hover:bg-[#00c2d6] hover:-translate-y-1 transform text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg hover:shadow-brand/50">
                     Join Discord
                 </a>
-                <!-- TAMBAHAN: Hamburger Menu Button khusus mobile -->
+                <!-- Hamburger Menu Button khusus mobile -->
                 <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
@@ -94,7 +100,7 @@
         </div>
     </nav>
 
-    <!-- TAMBAHAN: Mobile Menu Panel -->
+    <!-- Mobile Menu Panel -->
     <div id="mobile-menu" class="fixed top-[64px] left-0 w-full bg-[#060b13]/95 backdrop-blur-xl border-b border-gray-800 z-40 transform -translate-y-full transition-transform duration-300 ease-in-out flex flex-col text-center shadow-2xl md:hidden">
         <a href="index.html#home" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Home</a>
         <a href="index.html#academy" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Academy</a>
@@ -134,7 +140,6 @@
         <div class="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
         <div class="absolute top-0 right-1/4 w-96 h-96 bg-brand/5 rounded-full blur-[100px] pointer-events-none"></div>
 
-        <!-- ITEMS-STRETCH dan LG:H-[580PX] untuk memastikan kotak kiri dan kanan sama besar -->
         <div class="max-w-6xl mx-auto relative z-10 flex flex-col lg:flex-row gap-8 items-stretch lg:h-[580px]">
             
             <!-- PANEL INPUT (KIRI) -->
@@ -171,7 +176,6 @@
                     </div>
                 </div>
 
-                <!-- Tombol didorong ke bawah (mt-auto) agar menempel seimbang dengan akhir tabel kotak kanan -->
                 <button onclick="calculateDrawdown()" class="w-full bg-brand hover:bg-[#00c2d6] text-darkbg font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(0,229,255,0.3)] hover:shadow-[0_0_25px_rgba(0,229,255,0.5)] mt-6 lg:mt-auto shrink-0">
                     Hitung Drawdown <i class="fa-solid fa-arrow-rotate-right ml-2"></i>
                 </button>
@@ -190,10 +194,8 @@
                     </div>
                 </div>
 
-                <!-- FLEX-1 dan MIN-H-0 agar bisa discroll tanpa menjebol batas kotak -->
                 <div class="flex-1 min-h-0 overflow-y-auto overflow-x-auto table-scrollbar border border-gray-800 rounded-xl bg-[#0f172a] relative">
                     <table class="w-full text-left border-collapse min-w-[500px]">
-                        <!-- Z-10 dan sticky top-0 agar header nempel saat isinya discroll ke bawah -->
                         <thead class="bg-[#1e293b] sticky top-0 z-10 shadow-md border-b border-gray-700">
                             <tr>
                                 <th class="py-4 px-4 md:px-6 text-[10px] md:text-xs font-bold text-gray-300 uppercase tracking-wider w-1/4"># Loss Ke-</th>
@@ -304,7 +306,7 @@
                 </div>
                 <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">Jangan Hadapi <br><span class="text-branddark">Drawdown</span> Sendirian.</h2>
                 <p class="text-gray-500 text-base md:text-lg leading-relaxed mb-10 max-w-xl mx-auto lg:mx-0">
-                    Masa-masa kerugian (losing streak) sangat menguji mental psikologis Anda. Bergabunglah bersama ratusan trader rasional lainnya di Discord AcademyFX untuk saling mengevaluasi jurnal dan memulihkan mental trading Anda.
+                    Masa-masa kerugian (losing streak) sangat menguji mental psikologis Anda. Bergabunglah bersama ratusan trader rasional lainnya di Discord Analyst Area untuk saling mengevaluasi jurnal dan memulihkan mental trading Anda.
                 </p>
                 
                 <!-- Tombol Tosca -->
@@ -347,12 +349,16 @@
 
                         <!-- Message 2 (Admin) -->
                         <div class="flex gap-4 group/msg hover:bg-[#2e3035] -mx-4 px-4 py-1 transition-colors">
-                            <div class="relative w-10 h-10 rounded-full shadow-[0_0_10px_rgba(0,229,255,0.4)] bg-brand flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition">
-                                <svg class="w-5 h-5 text-darkbg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 17l6-6 4 4 8-8"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 7h4v4"></path>
+                            <!-- Icon Admin sebagai Avatar (Logo Analyst Area) -->
+                            <div class="relative w-10 h-10 rounded-full shadow-[0_0_12px_rgba(0,229,255,0.5)] bg-brand flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-110 transition-transform duration-300">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6 text-darkbg">
+                                    <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
+                                    <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon>
+                                    <path d="M5.5 17.5 L9 8.5 L12 13.5 L15 8.5 L18.5 17.5" stroke-width="1.5" stroke-linejoin="round"></path>
+                                    <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
-                                <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#313338] rounded-full"></div>
+                                <!-- Online Badge Hijau -->
+                                <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-[2px] border-[#313338] rounded-full"></div>
                             </div>
 
                             <div>
@@ -393,14 +399,14 @@
     <footer class="bg-darkbg text-gray-500 py-10 px-5 md:px-16 lg:px-24 text-xs font-sans relative z-10">
         <div class="max-w-6xl mx-auto border-b border-gray-800 pb-6 mb-6 text-center md:text-left">
             <p class="leading-relaxed text-gray-400">
-                <strong class="text-gray-300">Disclaimer.</strong> AcademyFX adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. AcademyFX tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. 
+                <strong class="text-gray-300">Disclaimer.</strong> Analyst Area adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. Analyst Area tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. 
                 <br class="block md:hidden mt-2">
                 <a href="#" class="text-brand hover:underline inline-block mt-2 md:mt-0 md:ml-1">Disclaimer</a> <span class="hidden md:inline">·</span> 
                 <a href="#" class="text-brand hover:underline inline-block mt-2 md:mt-0 md:ml-1">Terms & Conditions</a>
             </p>
         </div>
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">
-            <p class="font-medium text-gray-500 text-center md:text-left w-full md:w-auto">Copyright &copy; 2026 AcademyFX. Semua hak dilindungi.</p>
+            <p class="font-medium text-gray-500 text-center md:text-left w-full md:w-auto">Copyright &copy; 2026 Analyst Area. Semua hak dilindungi.</p>
             <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 w-full md:w-auto">
                 <a href="https://www.instagram.com/richolinggar_?igsh=b28zZmxsdjV6ejM5" target="_blank" class="text-[#E1306C] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
                     <i class="fa-brands fa-instagram text-lg md:text-xl"></i> <span class="hidden md:inline">Instagram</span>
