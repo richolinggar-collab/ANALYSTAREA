@@ -74,28 +74,30 @@
         }
     </style>
 </head>
-<!-- TAMBAHAN: overflow-x-hidden agar layar HP tidak goyang/geser -->
 <body class="antialiased font-sans flex flex-col min-h-screen text-white bg-darkbg overflow-x-hidden">
 
     <!-- NAVIGATION (GELAP) -->
     <nav class="fixed top-0 w-full z-50 px-5 md:px-8 py-4 bg-[#060b13]/90 backdrop-blur-md border-b border-gray-800 transition-all">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
             <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
                 <!-- LOGO ANALYST AREA -->
-                <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.7)] group-hover:scale-110 transition-transform duration-500">
+                <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.5)] group-hover:drop-shadow-[0_0_12px_rgba(0,229,255,0.9)] group-hover:scale-110 transition-all duration-500 ease-out">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full">
                         <!-- Lingkaran Luar -->
                         <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
                         <!-- Heksagon Dalam -->
-                        <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon>
-                        <!-- Bentuk AA / M -->
+                        <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.3"></polygon>
+                        <!-- Bentuk Grafik / AA -->
                         <path d="M5.5 17.5 L9 8.5 L12 13.5 L15 8.5 L18.5 17.5" stroke-width="1.5" stroke-linejoin="round"></path>
                         <!-- Panah Trendline -->
                         <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </div>
-                <!-- TEKS LOGO -->
-                <span class="font-extrabold text-2xl tracking-tight uppercase text-white group-hover:text-brand transition duration-300">ANALYST <span class="text-brand">AREA</span></span>
+                <!-- TEKS NAMA WEB -->
+                <span class="font-extrabold text-2xl tracking-tight uppercase text-white transition-colors duration-300">
+                    ANALYST <span class="text-brand group-hover:text-[#00c2d6] group-hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.6)] transition-all duration-300">AREA</span>
+                </span>
             </a>
             
             <div class="hidden md:flex space-x-8 text-sm font-medium">
@@ -333,7 +335,7 @@
                         <!-- Message 2 (Admin/Richo dengan Icon Official) -->
                         <div class="flex gap-4 group/msg hover:bg-[#2e3035] -mx-4 px-4 py-1 transition-colors">
                             <!-- Icon Admin sebagai Avatar (Logo Analyst Area) -->
-                            <div class="relative w-10 h-10 rounded-full shadow-[0_0_10px_rgba(0,229,255,0.4)] bg-brand flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition">
+                            <div class="relative w-10 h-10 rounded-full shadow-[0_0_12px_rgba(0,229,255,0.5)] bg-brand flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-110 transition-transform duration-300">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6 text-darkbg">
                                     <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
                                     <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon>
@@ -341,7 +343,7 @@
                                     <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
                                 <!-- Online Badge Hijau -->
-                                <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#313338] rounded-full"></div>
+                                <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-[2px] border-[#313338] rounded-full"></div>
                             </div>
 
                             <div>
