@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Founder - AcademyFX</title>
+    <title>About Founder - Analyst Area</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -45,7 +45,7 @@
         .nav-link:hover::after,
         .nav-link.active-nav::after { 
             width: 100%;
-            }
+        }
 
         /* Custom Scrollbar for mockups */
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
@@ -61,6 +61,17 @@
             background-repeat: no-repeat;
             background-blend-mode: luminosity; 
         }
+
+        /* ANIMASI SLIDE ON SCROLL */
+        .slide-up-element {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .slide-up-element.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <!-- TAMBAHAN: overflow-x-hidden agar layar HP tidak goyang/geser -->
@@ -70,13 +81,21 @@
     <nav class="fixed top-0 w-full z-50 px-5 md:px-8 py-4 bg-[#060b13]/90 backdrop-blur-md border-b border-gray-800 transition-all">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
-                <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-darkbg shadow-[0_0_10px_rgba(0,229,255,0.5)] group-hover:scale-110 group-hover:rotate-180 transition-all duration-500">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 17l6-6 4 4 8-8"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 7h4v4"></path>
+                <!-- LOGO ANALYST AREA -->
+                <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.7)] group-hover:scale-110 transition-transform duration-500">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full">
+                        <!-- Lingkaran Luar -->
+                        <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
+                        <!-- Heksagon Dalam -->
+                        <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon>
+                        <!-- Bentuk AA / M -->
+                        <path d="M5.5 17.5 L9 8.5 L12 13.5 L15 8.5 L18.5 17.5" stroke-width="1.5" stroke-linejoin="round"></path>
+                        <!-- Panah Trendline -->
+                        <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </div>
-                <span class="font-bold text-xl tracking-tight text-white group-hover:text-brand transition duration-300">AcademyFX</span>
+                <!-- TEKS LOGO -->
+                <span class="font-extrabold text-2xl tracking-tight uppercase text-white group-hover:text-brand transition duration-300">ANALYST <span class="text-brand">AREA</span></span>
             </a>
             
             <div class="hidden md:flex space-x-8 text-sm font-medium">
@@ -94,7 +113,7 @@
                 <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="hidden md:inline-block bg-brand hover:bg-[#00c2d6] hover:-translate-y-1 transform text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg hover:shadow-brand/50">
                     Join Discord
                 </a>
-                <!-- TAMBAHAN: Hamburger Menu Button khusus mobile -->
+                <!-- Hamburger Menu Button khusus mobile -->
                 <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
@@ -102,7 +121,7 @@
         </div>
     </nav>
 
-    <!-- TAMBAHAN: Mobile Menu Panel -->
+    <!-- Mobile Menu Panel -->
     <div id="mobile-menu" class="fixed top-[64px] left-0 w-full bg-[#060b13]/95 backdrop-blur-xl border-b border-gray-800 z-40 transform -translate-y-full transition-transform duration-300 ease-in-out flex flex-col text-center shadow-2xl md:hidden">
         <a href="index.html#home" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Home</a>
         <a href="index.html#academy" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Academy</a>
@@ -114,16 +133,16 @@
         <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="py-4 bg-brand text-darkbg font-bold mobile-nav-link">Join Discord</a>
     </div>
 
-    <!-- SLIDE 1: HERO FOUNDER (Efek Monokrom Gelap) DIKEMBALIKAN KE MAX-W-7XL -->
+    <!-- SLIDE 1: HERO FOUNDER -->
     <section class="bg-hero-founder min-h-[90vh] flex items-center relative overflow-hidden border-b border-gray-800 pt-10">
-        <div class="max-w-7xl mx-auto px-8 md:px-16 lg:px-24 flex items-center relative z-10 w-full">
+        <div class="max-w-7xl mx-auto px-8 md:px-16 lg:px-24 flex items-center relative z-10 w-full slide-up-element">
             <!-- Area Teks di sebelah kiri -->
             <div class="w-full md:w-7/12 mt-10 lg:mt-0">
                 <div class="inline-block bg-brand/10 border border-brand/20 px-4 py-1.5 rounded-full mb-6 hover:bg-brand/20 hover:scale-105 transition-all cursor-default">
                     <span class="text-brand font-bold text-[10px] tracking-widest uppercase"><i class="fa-solid fa-user-tie mr-2"></i>The Founder</span>
                 </div>
                 
-                <!-- Judul Visi Utama (Mindset, Psychology, Method) -->
+                <!-- Judul Visi Utama -->
                 <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-4 text-white">
                     The Ultimate Edge: <br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-white">Mindset, Psychology & Method.</span>
@@ -138,7 +157,7 @@
                 </div>
                 
                 <p class="text-gray-400 text-lg mb-8 leading-relaxed border-l-2 border-brand/40 pl-5">
-                    "Saya menginisiasi AcademyFX dengan satu tujuan yang jelas: membentuk lingkungan yang menolak spekulasi buta. Di sini, kita menjadikan <strong>manajemen risiko, probabilitas objektif, dan kedisiplinan</strong> sebagai fondasi utama untuk bertahan dan bertumbuh."
+                    "Saya menginisiasi Analyst Area dengan satu tujuan yang jelas: membentuk lingkungan yang menolak spekulasi buta. Di sini, kita menjadikan <strong>manajemen risiko, probabilitas objektif, dan kedisiplinan</strong> sebagai fondasi utama untuk bertahan dan bertumbuh."
                 </p>
                 
                 <div class="flex flex-wrap gap-4">
@@ -151,9 +170,9 @@
         </div>
     </section>
 
-    <!-- SLIDE 2: PERJALANAN (TEMA TERANG, TANPA FOTO) -->
+    <!-- SLIDE 2: PERJALANAN -->
     <section id="cerita" class="bg-white py-24 px-8 md:px-16 lg:px-24 border-b border-gray-200">
-        <div class="max-w-4xl mx-auto text-center relative">
+        <div class="max-w-4xl mx-auto text-center relative slide-up-element">
             <i class="fa-solid fa-quote-left absolute -top-8 -left-8 text-6xl text-branddark opacity-10"></i>
             
             <p class="text-branddark font-bold text-xs tracking-widest uppercase mb-4">AWAL PERJALANAN</p>
@@ -172,13 +191,13 @@
         </div>
     </section>
 
-    <!-- SLIDE 3: KENAPA ACADEMYFX LAHIR (TEMA GELAP INTERAKTIF) -->
+    <!-- SLIDE 3: KENAPA ANALYST AREA LAHIR -->
     <section class="bg-darkpanel py-24 px-8 md:px-16 lg:px-24 border-b border-gray-800 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-64 h-64 bg-brand/10 rounded-full blur-[80px]"></div>
         
-        <div class="max-w-6xl mx-auto relative z-10 text-center">
+        <div class="max-w-6xl mx-auto relative z-10 text-center slide-up-element">
             <p class="text-brand font-bold text-xs tracking-widest uppercase mb-4">THE MISSION</p>
-            <h2 class="text-3xl md:text-5xl font-bold mb-16 text-white">Mengapa <span class="text-brand">AcademyFX</span> Dibuat?</h2>
+            <h2 class="text-3xl md:text-5xl font-bold mb-16 text-white">Mengapa <span class="text-brand">Analyst Area</span> Dibuat?</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Card 1 -->
@@ -209,14 +228,14 @@
         </div>
     </section>
 
-    <!-- SLIDE 4: CORE TRADING PHILOSOPHY (TEMA TERANG BORDER TEGAS) -->
+    <!-- SLIDE 4: CORE TRADING PHILOSOPHY -->
     <section class="bg-[#f8f9fa] py-24 px-8 md:px-16 lg:px-24 border-b border-gray-200">
-        <div class="max-w-6xl mx-auto">
+        <div class="max-w-6xl mx-auto slide-up-element">
             <div class="text-center mb-16">
                 <p class="text-branddark font-bold text-xs tracking-widest uppercase mb-4">ATURAN EMAS</p>
                 <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gray-900">Prinsip Personal <span class="text-branddark relative inline-block">Trader<span class="absolute bottom-1 left-0 w-full h-3 bg-brand/30 -z-10 -rotate-1"></span></span></h2>
                 <p class="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                    Setiap trader profesional memiliki "aturan emas" yang tidak boleh dilanggar. Ini adalah prinsip yang saya terapkan pada akun pribadi saya, dan saya turunkan ke dalam materi AcademyFX.
+                    Setiap trader profesional memiliki "aturan emas" yang tidak boleh dilanggar. Ini adalah prinsip yang saya terapkan pada akun pribadi saya, dan saya turunkan ke dalam materi Analyst Area.
                 </p>
             </div>
             
@@ -251,12 +270,12 @@
         </div>
     </section>
 
-    <!-- SLIDE 5: CTA AKHIR DENGAN MOCKUP DISCORD (GELAP GRADASI) -->
+    <!-- SLIDE 5: CTA AKHIR DENGAN MOCKUP DISCORD -->
     <section class="py-24 px-8 md:px-16 lg:px-24 relative overflow-hidden bg-gradient-to-b from-darkbg to-[#081220] border-t border-gray-800">
         <!-- Efek cahaya atas -->
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-16 bg-brand/10 blur-[60px] pointer-events-none"></div>
         
-        <div class="max-w-6xl mx-auto relative z-10 mt-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div class="max-w-6xl mx-auto relative z-10 mt-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center slide-up-element">
             
             <!-- Teks Ajakan -->
             <div>
@@ -313,11 +332,13 @@
                         
                         <!-- Message 2 (Admin/Richo dengan Icon Official) -->
                         <div class="flex gap-4 group/msg hover:bg-[#2e3035] -mx-4 px-4 py-1 transition-colors">
-                            <!-- Icon Admin sebagai Avatar (Logo AcademyFX) -->
+                            <!-- Icon Admin sebagai Avatar (Logo Analyst Area) -->
                             <div class="relative w-10 h-10 rounded-full shadow-[0_0_10px_rgba(0,229,255,0.4)] bg-brand flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition">
-                                <svg class="w-5 h-5 text-darkbg" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 17l6-6 4 4 8-8"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 7h4v4"></path>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6 text-darkbg">
+                                    <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
+                                    <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon>
+                                    <path d="M5.5 17.5 L9 8.5 L12 13.5 L15 8.5 L18.5 17.5" stroke-width="1.5" stroke-linejoin="round"></path>
+                                    <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
                                 <!-- Online Badge Hijau -->
                                 <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#313338] rounded-full"></div>
@@ -357,18 +378,18 @@
         </div>
     </section>
 
-    <!-- FOOTER (TEMA TERANG, SAMA DENGAN INDEX) -->
+    <!-- FOOTER -->
     <footer class="bg-[#f8f9fa] text-gray-500 py-10 px-8 md:px-16 lg:px-24 text-xs font-sans relative z-10 border-t border-gray-200">
         <div class="max-w-6xl mx-auto border-b border-gray-200 pb-6 mb-6">
             <p class="leading-relaxed">
-                <strong class="text-gray-700">Disclaimer.</strong> AcademyFX adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. AcademyFX tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. Founder AcademyFX Richo G. 
+                <strong class="text-gray-700">Disclaimer.</strong> Analyst Area adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. Analyst Area tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. Founder Analyst Area Richo G. 
                 <a href="#" class="text-blue-500 hover:underline">Disclaimer</a> · 
                 <a href="#" class="text-blue-500 hover:underline">Terms & Conditions</a> · 
                 <a href="#" class="text-blue-500 hover:underline">Risk Disclosure</a>
             </p>
         </div>
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <p>Copyright &copy; 2026 AcademyFX. Semua hak dilindungi.</p>
+            <p>Copyright &copy; 2026 Analyst Area. Semua hak dilindungi.</p>
             <div class="flex items-center gap-6">
                 <a href="https://www.instagram.com/richolinggar_?igsh=b28zZmxsdjV6ejM5" target="_blank" class="text-[#E1306C] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
                     <i class="fa-brands fa-instagram text-xl"></i> Instagram
@@ -385,17 +406,16 @@
         <div class="bg-[#25D366] text-white rounded-full w-10 h-10 flex items-center justify-center text-xl group-hover:bg-[#20b858] transition">
             <i class="fa-brands fa-whatsapp"></i>
         </div>
-        <!-- TAMBAHAN: hidden sm:flex agar teks WhatsApp disembunyikan jika di HP yang sangat kecil untuk menghemat ruang, tapi icon tetap muncul -->
         <div class="hidden sm:flex flex-col pr-2">
             <span class="text-[10px] font-bold text-[#25D366] uppercase tracking-wide leading-none mb-1">Butuh Bantuan?</span>
             <span class="text-sm font-bold leading-none text-gray-800">Chat Admin</span>
         </div>
     </a>
 
-    <!-- TAMBAHAN: SCROLLSPY & MOBILE MENU SCRIPT -->
+    <!-- SCRIPT LOGIC (MOBILE MENU & SCROLL ANIMATION) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // MOBILE MENU TOGGLE
+            // 1. MOBILE MENU TOGGLE
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const icon = mobileBtn.querySelector('i');
@@ -414,10 +434,28 @@
 
             mobileBtn.addEventListener('click', toggleMenu);
 
-            // Tutup menu otomatis saat link mobile diklik
             mobileLinks.forEach(link => {
                 link.addEventListener('click', toggleMenu);
             });
+
+            // 2. ANIMASI SLIDE UP PADA SAAT SCROLL (Intersection Observer)
+            const slideElements = document.querySelectorAll('.slide-up-element');
+            
+            const slideObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Jika elemen masuk ke dalam layar
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        // Optional: Berhenti mengawasi jika sudah animasi 1x
+                        // slideObserver.unobserve(entry.target); 
+                    }
+                });
+            }, { 
+                threshold: 0.15, // Muncul setelah 15% bagian elemen terlihat
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            slideElements.forEach(el => slideObserver.observe(el));
         });
     </script>
 </body>
