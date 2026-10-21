@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal Ekonomi - AcademyFX</title>
+    <title>Terminal Ekonomi - Analyst Area</title>
+    <meta name="description" content="Terminal ekonomi Analyst Area — pantau heatmap forex, kripto, ekuitas, kalender berita high-impact, dan indikator makroekonomi global secara real-time dalam satu layar.">
+    <meta property="og:title" content="Terminal Ekonomi - Analyst Area">
+    <meta property="og:description" content="Satu layar untuk menganalisa fundamental flow global secara real-time. Keputusan akurat dimulai dari sini.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="Foto 2.webp">
+    <meta name="twitter:card" content="summary_large_image">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -17,8 +26,8 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        brand: '#00e5ff', 
-                        branddark: '#00b8cc', 
+                        brand: '#00e5ff',
+                        branddark: '#00b8cc',
                         brandlight: '#e6fcfd',
                         darkbg: '#060b13',
                         darkpanel: '#0a111d',
@@ -43,10 +52,12 @@
             }
         }
     </script>
+
     <style>
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-        body { padding-top: 64px; overflow-x: hidden; }
-        
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+        body { padding-top: 65px; overflow-x: hidden; }
+        @media (min-width: 768px) { body { padding-top: 74px; } }
+
         /* Nav Link Hover Animation */
         .nav-link { position: relative; }
         .nav-link::after {
@@ -55,15 +66,13 @@
             transition: width 0.3s ease;
         }
         .nav-link:hover::after,
-        .nav-link.active-nav::after { 
-            width: 100%;
-        }
+        .nav-link.active-nav::after { width: 100%; }
 
-        /* Custom Scrollbar for tables */
+        /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
-        
+
         /* Grid Patterns */
         .bg-grid-pattern-light {
             background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLCAwLCAwLCAwLjA0KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+');
@@ -77,19 +86,22 @@
 </head>
 <body class="antialiased font-sans flex flex-col min-h-screen text-gray-900 bg-white overflow-x-hidden">
 
-    <!-- 1. NAVIGATION -->
+    <!-- ==================== NAVIGATION ==================== -->
     <nav class="fixed top-0 w-full z-50 px-5 md:px-8 py-4 bg-[#060b13]/90 backdrop-blur-md border-b border-gray-800 transition-all">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
-                <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-darkbg shadow-[0_0_10px_rgba(0,229,255,0.5)] group-hover:scale-110 group-hover:rotate-180 transition-all duration-500">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 17l6-6 4 4 8-8"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 7h4v4"></path>
+            <a href="index.html" class="flex items-center gap-3 group" aria-label="Analyst Area - Beranda">
+                <!-- LOGO ANALYST AREA -->
+                <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.7)] group-hover:scale-110 transition-transform duration-500">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full">
+                        <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
+                        <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon>
+                        <path d="M5.5 17.5 L9 8.5 L12 13.5 L15 8.5 L18.5 17.5" stroke-width="1.5" stroke-linejoin="round"></path>
+                        <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </div>
-                <span class="font-bold text-xl tracking-tight text-white group-hover:text-brand transition duration-300">AcademyFX</span>
+                <span class="font-extrabold text-xl md:text-2xl tracking-tight uppercase text-white">ANALYST <span class="text-brand">AREA</span></span>
             </a>
-            
+
             <div class="hidden md:flex space-x-8 text-sm font-medium">
                 <a href="index.html#home" class="nav-link text-gray-300 hover:text-brand transition duration-300">Home</a>
                 <a href="index.html#academy" class="nav-link text-gray-300 hover:text-brand transition duration-300">Academy</a>
@@ -99,12 +111,12 @@
                 <a href="index.html#roadmap" class="nav-link text-gray-300 hover:text-brand transition duration-300">Roadmap</a>
                 <a href="about.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">About</a>
             </div>
-            
+
             <div class="flex items-center gap-4">
-                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="hidden md:inline-block bg-brand hover:bg-[#00c2d6] hover:-translate-y-1 transform text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg hover:shadow-brand/50">
+                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="hidden md:inline-block bg-brand hover:bg-[#00c2d6] hover:-translate-y-1 text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg hover:shadow-brand/50">
                     Join Discord
                 </a>
-                <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                <button id="mobile-menu-btn" class="md:hidden text-white rounded p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand" aria-expanded="false" aria-controls="mobile-menu" aria-label="Buka menu navigasi">
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
             </div>
@@ -112,7 +124,7 @@
     </nav>
 
     <!-- Mobile Menu Panel -->
-    <div id="mobile-menu" class="fixed top-[64px] left-0 w-full bg-[#060b13]/95 backdrop-blur-xl border-b border-gray-800 z-40 transform -translate-y-full transition-transform duration-300 ease-in-out flex flex-col text-center shadow-2xl md:hidden">
+    <div id="mobile-menu" class="fixed top-[65px] md:top-[74px] left-0 w-full bg-[#060b13]/95 backdrop-blur-xl border-b border-gray-800 z-40 transform -translate-y-full transition-transform duration-300 ease-in-out flex flex-col text-center shadow-2xl md:hidden">
         <a href="index.html#home" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Home</a>
         <a href="index.html#academy" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Academy</a>
         <a href="tools.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Tools</a>
@@ -123,603 +135,578 @@
         <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="py-4 bg-brand text-darkbg font-bold mobile-nav-link">Join Discord</a>
     </div>
 
-    <!-- 2. HERO TERMINAL (DIUPDATE FIX TEXT CENTER & MOBILE RESPONSIVE) -->
-    <section class="pt-8 md:pt-32 pb-10 md:pb-24 px-5 md:px-16 lg:px-24 border-b border-gray-200 relative overflow-hidden bg-white">
-        <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none"></div>
+    <main>
 
-        <div class="max-w-5xl mx-auto w-full flex flex-col items-center text-center relative z-10">
-            <div class="inline-flex items-center gap-3 mb-4 md:mb-8">
-                <span class="text-gray-500 font-bold text-xs md:text-sm">Economic Terminal</span>
-                <div class="border border-branddark/40 bg-branddark/10 px-3 py-1 rounded-full text-[9px] font-bold text-branddark uppercase tracking-widest flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-branddark animate-blink"></span> LIVE · REAL-TIME
-                </div>
-            </div>
-            
-            <!-- FIXED H1 RESPONSIVE TEXT & LINE HEIGHT -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.15] md:leading-tight mb-4 md:mb-6 text-gray-900 tracking-tight">
-                Master the <span class="text-branddark">Market</span>.<br>
-                Kuasai <span class="text-branddark">Data</span>, Eksekusi <span class="text-branddark">Presisi</span>.
-            </h1>
-            
-            <p class="text-gray-600 text-base md:text-2xl max-w-3xl leading-relaxed mb-8 md:mb-16 font-medium">
-                Satu layar untuk menganalisa <span class="text-branddark font-bold">fundamental flow</span> global secara <span class="text-branddark font-bold">real-time</span>. Keputusan akurat dimulai dari sini.
-            </p>
+        <!-- ==================== 1. HERO TERMINAL ==================== -->
+        <section class="pt-8 md:pt-24 pb-10 md:pb-24 px-5 md:px-16 lg:px-24 border-b border-gray-200 relative overflow-hidden bg-white">
+            <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none"></div>
 
-            <div class="flex flex-col sm:flex-row gap-4 md:gap-8 items-center justify-center w-full">
-                <div class="flex items-center gap-4 bg-gray-50 border border-gray-200 px-6 py-4 rounded-2xl shadow-sm hover:border-branddark transition-colors w-full sm:w-auto justify-center sm:justify-start">
-                    <div class="w-10 h-10 rounded-full bg-branddark/10 flex items-center justify-center text-branddark text-lg flex-shrink-0">
-                        <i class="fa-solid fa-clock"></i>
-                    </div>
-                    <div class="text-left">
-                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Terminal Time</p>
-                        <p class="text-xl md:text-2xl font-black text-gray-900 font-mono tracking-wider" id="terminal-time">00.00.00</p>
+            <div class="max-w-5xl mx-auto w-full flex flex-col items-center text-center relative z-10">
+                <div class="inline-flex items-center gap-3 mb-4 md:mb-8" data-aos="fade-down">
+                    <span class="text-gray-500 font-bold text-xs md:text-sm">Economic Terminal</span>
+                    <div class="border border-branddark/40 bg-branddark/10 px-3 py-1 rounded-full text-[9px] font-bold text-branddark uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-branddark animate-blink"></span> LIVE · REAL-TIME
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4 bg-gray-50 border border-gray-200 px-6 py-4 rounded-2xl shadow-sm hover:border-branddark transition-colors w-full sm:w-auto justify-center sm:justify-start">
-                    <div class="w-10 h-10 rounded-full bg-branddark/10 flex items-center justify-center text-branddark text-lg flex-shrink-0">
-                        <i class="fa-solid fa-calendar-day"></i>
-                    </div>
-                    <div class="text-left">
-                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Session Date</p>
-                        <p class="text-xl md:text-2xl font-black text-gray-900 font-mono tracking-wider" id="terminal-date">01 Jan 2026</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.15] md:leading-tight mb-4 md:mb-6 text-gray-900 tracking-tight" data-aos="fade-up" data-aos-delay="100">
+                    Master the <span class="text-branddark">Market</span>.<br>
+                    Kuasai <span class="text-branddark">Data</span>, Eksekusi <span class="text-branddark">Presisi</span>.
+                </h1>
 
-    <!-- 3. PENGGERAK PASAR & HEATMAPS -->
-    <section class="bg-darkbg py-16 md:py-24 px-5 md:px-16 lg:px-24 border-b border-gray-800 relative">
-        <div class="absolute inset-0 bg-grid-pattern-dark opacity-30 pointer-events-none"></div>
-        
-        <div class="max-w-[1400px] mx-auto relative z-10">
-            <div class="text-center mb-12">
-                <p class="text-brand font-bold text-xs tracking-widest uppercase mb-4">Live · Indikator Volatilitas</p>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6"><span class="text-brand">Core</span> Market Index</h2>
-                <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
-                    Pantau likuiditas global secara <span class="text-brand font-bold">real-time</span>. Sentimen makroekonomi tercermin langsung pada Emas, Kripto, Ekuitas, dan <span class="text-brand font-bold">Major Pairs</span>.
+                <p class="text-gray-600 text-base md:text-2xl max-w-3xl leading-relaxed mb-8 md:mb-16 font-medium" data-aos="fade-up" data-aos-delay="200">
+                    Satu layar untuk menganalisa <span class="text-branddark font-bold">fundamental flow</span> global secara <span class="text-branddark font-bold">real-time</span>. Keputusan akurat dimulai dari sini.
                 </p>
-            </div>
 
-            <!-- Ticker Tape Widget -->
-            <div class="mb-8 border border-gray-800 rounded-xl overflow-hidden shadow-xl bg-darkpanel">
-                <div class="tradingview-widget-container">
-                    <div class="tradingview-widget-container__widget"></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-                    {
-                        "symbols": [
-                            { "description": "Gold / USD", "proName": "OANDA:XAUUSD" },
-                            { "description": "Bitcoin / USD", "proName": "BINANCE:BTCUSD" },
-                            { "description": "USD / IDR", "proName": "FX_IDC:USDIDR" },
-                            { "description": "Nasdaq 100", "proName": "CAPITALCOM:US100" },
-                            { "description": "EUR / USD", "proName": "OANDA:EURUSD" }
-                        ],
-                        "showSymbolLogo": true,
-                        "isTransparent": true,
-                        "displayMode": "adaptive",
-                        "colorTheme": "dark",
-                        "locale": "id"
-                    }
-                    </script>
-                </div>
-            </div>
+                <div class="flex flex-col sm:flex-row gap-4 md:gap-8 items-center justify-center w-full" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center gap-4 bg-gray-50 border border-gray-200 px-6 py-4 rounded-2xl shadow-sm hover:border-branddark transition-colors w-full sm:w-auto justify-center sm:justify-start">
+                        <div class="w-10 h-10 rounded-full bg-branddark/10 flex items-center justify-center text-branddark text-lg flex-shrink-0">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Terminal Time (WIB)</p>
+                            <p class="text-xl md:text-2xl font-black text-gray-900 font-mono tracking-wider" id="terminal-time">00.00.00</p>
+                        </div>
+                    </div>
 
-            <!-- ADVANCED INTERACTIVE CHART -->
-            <div class="bg-[#0F0F0F] border border-gray-800 rounded-2xl shadow-xl hover:border-brand transition-colors mb-8 overflow-hidden h-[500px] md:h-[600px] lg:h-[700px] tv-widget-wrapper relative z-20">
-                <div class="tradingview-widget-container" style="height:100%;width:100%">
-                  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-                  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-                  {
-                  "allow_symbol_change": true,
-                  "calendar": false,
-                  "details": false,
-                  "hide_side_toolbar": true,
-                  "hide_top_toolbar": false,
-                  "hide_legend": false,
-                  "hide_volume": false,
-                  "hotlist": false,
-                  "interval": "60",
-                  "locale": "id",
-                  "save_image": true,
-                  "style": "2",
-                  "symbol": "OANDA:XAUUSD",
-                  "theme": "dark",
-                  "timezone": "Asia/Jakarta",
-                  "backgroundColor": "#0F0F0F",
-                  "gridColor": "rgba(242, 242, 242, 0.06)",
-                  "watchlist": [],
-                  "withdateranges": false,
-                  "compareSymbols": [
-                    {
-                      "symbol": "OANDA:BTCUSD",
-                      "position": "SameScale"
-                    }
-                  ],
-                  "studies": [],
-                  "autosize": true
-                }
-                  </script>
+                    <div class="flex items-center gap-4 bg-gray-50 border border-gray-200 px-6 py-4 rounded-2xl shadow-sm hover:border-branddark transition-colors w-full sm:w-auto justify-center sm:justify-start">
+                        <div class="w-10 h-10 rounded-full bg-branddark/10 flex items-center justify-center text-branddark text-lg flex-shrink-0">
+                            <i class="fa-solid fa-calendar-day"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Session Date</p>
+                            <p class="text-xl md:text-2xl font-black text-gray-900 font-mono tracking-wider" id="terminal-date">01 Jan 2026</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <!-- ================= ASSET HEATMAPS & LIVE NEWS ================= -->
-            <div class="mb-8">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-1.5 h-6 bg-brand rounded-full"></div>
-                    <h3 class="text-xl md:text-2xl font-bold text-white tracking-wide">Market Heatmaps & Live News</h3>
+        <!-- ==================== 2. PENGGERAK PASAR & HEATMAPS ==================== -->
+        <section class="bg-darkbg py-16 md:py-24 px-5 md:px-16 lg:px-24 border-b border-gray-800 relative">
+            <div class="absolute inset-0 bg-grid-pattern-dark opacity-30 pointer-events-none"></div>
+
+            <div class="max-w-[1400px] mx-auto relative z-10">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <p class="text-brand font-bold text-xs tracking-widest uppercase mb-4">Live · Indikator Volatilitas</p>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6"><span class="text-brand">Core</span> Market Index</h2>
+                    <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">
+                        Pantau likuiditas global secara <span class="text-brand font-bold">real-time</span>. Sentimen makroekonomi tercermin langsung pada Emas, Kripto, Ekuitas, dan <span class="text-brand font-bold">Major Pairs</span>.
+                    </p>
                 </div>
 
-                <!-- Grid 1: FOREX HEATMAP UTAMA (2 Kolom) & News Timeline (1 Kolom) -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8">
-                    
-                    <!-- FOREX HEATMAP UTAMA (Lebar 2 Kolom) -->
-                    <div class="lg:col-span-2 bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[500px] md:h-[650px] flex flex-col">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-fire text-brand text-lg"></i>
-                                <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">FOREX HEATMAP UTAMA (MAJOR CURRENCIES)</h3>
-                            </div>
-                            <span class="bg-brand/10 border border-brand/30 text-brand text-[9px] md:text-[10px] font-bold px-2 py-0.5 rounded-full">MAIN FEATURE</span>
-                        </div>
-                        <div class="flex-1 tv-widget-wrapper w-full h-full relative">
-                            <!-- TradingView FOREX HEATMAP Widget BEGIN -->
-                            <div class="tradingview-widget-container" style="height:100%;width:100%;">
-                              <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
-                              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-heat-map.js" async>
-                              {
-                                "width": "100%",
-                                "height": "100%",
-                                "currencies": [
-                                  "EUR",
-                                  "USD",
-                                  "JPY",
-                                  "GBP",
-                                  "CHF",
-                                  "AUD",
-                                  "CAD",
-                                  "NZD"
-                                ],
-                                "isTransparent": true,
-                                "colorTheme": "dark",
-                                "locale": "id"
-                              }
-                              </script>
-                            </div>
-                            <!-- TradingView Widget END -->
-                        </div>
-                    </div>
-
-                    <!-- Live Market News (1 Kolom) -->
-                    <div class="lg:col-span-1 bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[500px] md:h-[650px] flex flex-col">
-                        <div class="flex items-center gap-2 mb-4">
-                            <i class="fa-solid fa-newspaper text-brand text-lg"></i>
-                            <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">LIVE MARKET NEWS</h3>
-                        </div>
-                        <div class="flex-1 tv-widget-wrapper w-full h-full relative">
-                            <div class="tradingview-widget-container" style="height:100%;width:100%;">
-                              <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
-                              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-                              {
-                                "displayMode": "regular",
-                                "feedMode": "all_symbols",
-                                "colorTheme": "dark",
-                                "isTransparent": true,
-                                "locale": "en",
-                                "width": "100%",
-                                "height": "100%"
-                              }
-                              </script>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Grid 2: Stock, Crypto, ETF -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    
-                    <!-- Stock Heatmap (S&P 500) -->
-                    <div class="bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[450px] flex flex-col">
-                        <div class="flex items-center gap-2 mb-4">
-                            <i class="fa-solid fa-layer-group text-brand text-lg"></i>
-                            <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">S&P 500 STOCK HEATMAP</h3>
-                        </div>
-                        <div class="flex-1 tv-widget-wrapper w-full h-full">
-                            <div class="tradingview-widget-container" style="height:100%;width:100%;">
-                              <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
-                              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
-                              {
-                                "dataSource": "SPX500",
-                                "blockSize": "market_cap_basic",
-                                "blockColor": "change",
-                                "grouping": "sector",
-                                "locale": "en",
-                                "symbolUrl": "",
-                                "colorTheme": "dark",
-                                "exchanges": [],
-                                "hasTopBar": false,
-                                "isDataSetEnabled": false,
-                                "isZoomEnabled": true,
-                                "hasSymbolTooltip": true,
-                                "isMonoSize": false,
-                                "width": "100%",
-                                "height": "100%"
-                              }
-                              </script>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Crypto Heatmap -->
-                    <div class="bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[450px] flex flex-col">
-                        <div class="flex items-center gap-2 mb-4">
-                            <i class="fa-brands fa-bitcoin text-brand text-lg"></i>
-                            <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">CRYPTO HEATMAP</h3>
-                        </div>
-                        <div class="flex-1 tv-widget-wrapper w-full h-full">
-                            <div class="tradingview-widget-container" style="height:100%;width:100%;">
-                              <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
-                              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-crypto-coins-heatmap.js" async>
-                              {
-                                "dataSource": "Crypto",
-                                "blockSize": "market_cap_calc",
-                                "blockColor": "24h_close_change|5",
-                                "locale": "en",
-                                "symbolUrl": "",
-                                "colorTheme": "dark",
-                                "hasTopBar": false,
-                                "isDataSetEnabled": false,
-                                "isZoomEnabled": true,
-                                "hasSymbolTooltip": true,
-                                "isMonoSize": false,
-                                "width": "100%",
-                                "height": "100%"
-                              }
-                              </script>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ETF Heatmap -->
-                    <div class="bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[450px] flex flex-col sm:col-span-2 lg:col-span-1">
-                        <div class="flex items-center gap-2 mb-4">
-                            <i class="fa-solid fa-chart-pie text-brand text-lg"></i>
-                            <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">ETF HEATMAP</h3>
-                        </div>
-                        <div class="flex-1 tv-widget-wrapper w-full h-full">
-                            <div class="tradingview-widget-container" style="height:100%;width:100%;">
-                              <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
-                              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-etf-heatmap.js" async>
-                              {
-                                "dataSource": "AllUSEtf",
-                                "blockSize": "volume",
-                                "blockColor": "change",
-                                "grouping": "asset_class",
-                                "locale": "en",
-                                "symbolUrl": "",
-                                "colorTheme": "dark",
-                                "hasTopBar": false,
-                                "isDataSetEnabled": false,
-                                "isZoomEnabled": true,
-                                "hasSymbolTooltip": true,
-                                "isMonoSize": false,
-                                "width": "100%",
-                                "height": "100%"
-                              }
-                              </script>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            
-        </div>
-    </section>
-
-    <!-- 4. KALENDER EKONOMI -->
-    <section class="bg-white py-16 md:py-32 px-5 md:px-16 lg:px-24 border-b border-gray-200 relative overflow-hidden">
-        <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none"></div>
-
-        <div class="max-w-[1400px] mx-auto relative z-10">
-            <div class="text-center mb-12 md:mb-16">
-                <p class="text-branddark font-bold text-xs tracking-widest uppercase mb-4">Jadwal & Data Rilis</p>
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4">Economic <span class="text-branddark">Calendar</span></h2>
-                <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">Pantau <span class="text-branddark font-bold">high-impact news</span>. Hindari <span class="text-branddark font-bold">liquidity sweep</span> dan <span class="text-branddark font-bold">fakeout</span> saat rilis berita penting.</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-16 md:mb-32">
-                <!-- 1. TradingView Calendar -->
-                <div class="bg-gray-50 border border-gray-200 rounded-3xl p-4 md:p-6 shadow-sm hover:border-branddark transition-colors h-[500px] md:h-[600px] flex flex-col w-full">
-                    <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
-                        <div class="flex items-center gap-2 text-gray-900 font-bold text-xs md:text-sm">
-                            <i class="fa-solid fa-bolt text-branddark"></i> HIGH IMPACT <span class="hidden sm:inline">(TradingView)</span>
-                        </div>
-                        <span class="bg-red-50 text-red-500 text-[10px] font-bold px-2 py-1 rounded border border-red-200">LIVE</span>
-                    </div>
-                    <div class="flex-1 tv-widget-wrapper bg-white">
-                        <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
-                        { "colorTheme": "light", "isTransparent": false, "width": "100%", "height": "100%", "locale": "id", "importanceFilter": "1", "currencyFilter": "USD,EUR,GBP,JPY,CAD,AUD,NZD,CHF" }
-                        </script></div>
-                    </div>
-                </div>
-
-                <!-- 2. Investing.com Calendar -->
-                <div class="bg-gray-50 border border-gray-200 rounded-3xl p-4 md:p-6 shadow-sm hover:border-branddark transition-colors h-[500px] md:h-[600px] flex flex-col w-full">
-                    <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
-                        <div class="flex items-center gap-2 text-gray-900 font-bold text-xs md:text-sm">
-                            <i class="fa-solid fa-calendar-days text-branddark"></i> INVESTING.COM
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="bg-blue-50 text-blue-500 text-[9px] md:text-[10px] font-bold px-1.5 md:px-2 py-1 rounded border border-blue-200">WIB (GMT+7)</span>
-                            <select id="investing-filter" class="text-[9px] md:text-[10px] border border-gray-200 rounded px-1.5 md:px-2 py-1 bg-white font-bold text-gray-700 outline-none cursor-pointer hover:border-branddark transition-colors">
-                                <option value="all">Semua</option>
-                                <option value="high">🔥 High Saja</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="flex-1 bg-white rounded-xl overflow-hidden relative flex flex-col">
-                        <iframe id="investing-iframe" src="" width="100%" height="100%" frameborder="0" allowtransparency="true" marginwidth="0" marginheight="0" class="flex-1"></iframe>
-                        <div class="poweredBy text-center py-1 bg-gray-50 border-t border-gray-100" style="font-family: Arial, Helvetica, sans-serif;">
-                            <span style="font-size: 10px;color: #333333;text-decoration: none;">Kalender Ekonomi Real Time dipersembahkan oleh <a href="https://id.investing.com" rel="nofollow" target="_blank" style="font-size: 10px;color: #06529D; font-weight: bold;" class="underline_link">Investing.com Indonesia</a>.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. MetaTrader Tradays Calendar -->
-                <div class="bg-gray-50 border border-gray-200 rounded-3xl p-4 md:p-6 shadow-sm hover:border-branddark transition-colors h-[500px] md:h-[600px] flex flex-col w-full">
-                    <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
-                        <div class="flex items-center gap-2 text-gray-900 font-bold text-xs md:text-sm">
-                            <i class="fa-solid fa-clock-rotate-left text-branddark"></i> TRADAYS <span class="hidden sm:inline">CALENDAR</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="bg-green-50 text-green-600 text-[9px] md:text-[10px] font-bold px-1.5 md:px-2 py-1 rounded border border-green-200">REAL-TIME</span>
-                        </div>
-                    </div>
-                    <div class="flex-1 bg-white rounded-xl overflow-hidden relative flex flex-col p-1">
-                        <div id="economicCalendarWidget" class="flex-1 w-full h-full"></div>
-                        <div class="ecw-copyright text-center py-1 mt-1 bg-gray-50">
-                            <a href="https://www.metatrader.com/?utm_source=calendar.widget&utm_medium=link&utm_term=economic.calendar&utm_content=visit.mql5.calendar&utm_campaign=202.calendar.widget" rel="noopener nofollow" target="_blank" class="text-[8px] text-gray-400 hover:text-branddark">MetaTrader World Markets</a>
-                        </div>
-                        <script async type="text/javascript" data-type="calendar-widget" src="https://www.tradays.com/c/js/widgets/calendar/widget.js?v=15">
-                          {"width":"100%","height":"100%","mode":"1","fw":"html"}
+                <!-- Ticker Tape -->
+                <div class="mb-8 border border-gray-800 rounded-xl overflow-hidden shadow-xl bg-darkpanel" data-aos="fade-up" data-aos-delay="100">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                        {
+                            "symbols": [
+                                { "description": "Gold / USD", "proName": "OANDA:XAUUSD" },
+                                { "description": "Bitcoin / USD", "proName": "BINANCE:BTCUSD" },
+                                { "description": "USD / IDR", "proName": "FX_IDC:USDIDR" },
+                                { "description": "Nasdaq 100", "proName": "CAPITALCOM:US100" },
+                                { "description": "EUR / USD", "proName": "OANDA:EURUSD" }
+                            ],
+                            "showSymbolLogo": true,
+                            "isTransparent": true,
+                            "displayMode": "adaptive",
+                            "colorTheme": "dark",
+                            "locale": "id"
+                        }
                         </script>
                     </div>
                 </div>
-            </div>
 
-            <!-- Global Map Section -->
-            <div class="text-center mb-8 md:mb-12">
-                <p class="text-branddark font-bold text-xs tracking-widest uppercase mb-4">Visual Interaktif</p>
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4">Global <span class="text-branddark">Macro</span> Heatmap</h2>
-                <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">Pantau indikator <span class="text-branddark font-bold">makroekonomi global</span> seperti <span class="text-branddark font-bold">PDB, Suku Bunga, dan tingkat Inflasi</span> berbagai negara.</p>
-            </div>
-
-            <div class="bg-white border border-gray-200 rounded-2xl md:rounded-3xl shadow-lg hover:border-branddark transition-colors h-[400px] md:h-[600px] relative overflow-hidden w-full">
-                <a href="https://finance.worldmonitor.app/dashboard?lat=20.0000&lon=0.0000&zoom=1.00&view=global&timeRange=7d&layers=cables%2Cpipelines%2Csanctions%2Cweather%2Ceconomic%2Cwaterways%2Coutages%2Cnatural%2CtradeRoutes" target="_blank" class="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-30 bg-white/90 backdrop-blur border border-gray-300 hover:border-branddark text-branddark hover:bg-branddark hover:text-white px-3 py-2 md:px-5 md:py-3 rounded-xl font-bold text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-2 transition-all duration-300 shadow-sm group">
-                    <i class="fa-solid fa-map-location-dot"></i> <span class="hidden sm:inline">Buka World Monitor</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
-                </a>
-
-                <div class="w-full h-full relative z-10 bg-white">
-                    <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-economic-map.js"></script>
-                    <tv-economic-map metrics="gdp,ur,gdg,intr,iryy" style="width: 100%; height: 100%; display: block;"></tv-economic-map>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. INDIKATOR MAKRO -->
-    <section class="bg-darkbg py-16 md:py-32 px-5 md:px-16 lg:px-24 border-b border-gray-800 relative">
-        <div class="absolute inset-0 bg-grid-pattern-dark opacity-30 pointer-events-none"></div>
-        
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="text-center mb-12 md:mb-16">
-                <p class="text-brand font-bold text-xs tracking-widest uppercase mb-4">Data Historis & Sumber Valid</p>
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-4">Macroeconomic <span class="text-brand">Indicators</span></h2>
-                <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">Histori rilis <span class="text-brand font-bold">high-impact data</span> 3 bulan terakhir beserta <span class="text-brand font-bold">first-hand sources</span> aslinya.</p>
-            </div>
-
-            <div class="bg-darkpanel border border-gray-800 rounded-[2rem] p-4 md:p-6 lg:p-10 shadow-xl">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
-                    <!-- Table 1: Inflasi & Tenaga Kerja -->
-                    <div class="bg-[#0d1522] border border-gray-700 rounded-2xl shadow-sm overflow-hidden group hover:border-brand transition-colors">
-                        <div class="p-4 md:p-5 border-b border-gray-700 flex items-center gap-3">
-                            <i class="fa-solid fa-users-viewfinder text-brand bg-brand/10 p-2 rounded-lg"></i>
-                            <h3 class="font-bold text-xs md:text-sm tracking-widest uppercase text-gray-300">INFLASI & TENAGA KERJA</h3>
-                        </div>
-                        <div class="custom-scrollbar overflow-x-auto">
-                            <table class="w-full text-left text-xs md:text-sm border-collapse min-w-[450px] md:min-w-[500px]">
-                                <thead>
-                                    <tr class="border-b border-gray-700 bg-gray-800/50">
-                                        <th class="py-3 px-4 md:px-5 font-bold text-white uppercase text-[9px] md:text-[10px] tracking-wider w-1/2">Indikator</th>
-                                        <th class="py-3 px-4 md:px-5 font-bold text-gray-500 uppercase text-[9px] md:text-[10px] tracking-wider text-center">May</th>
-                                        <th class="py-3 px-4 md:px-5 font-bold text-gray-500 uppercase text-[9px] md:text-[10px] tracking-wider text-center">Jun</th>
-                                        <th class="py-3 px-4 md:px-5 font-bold text-brand uppercase text-[9px] md:text-[10px] tracking-wider text-center">Jul</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">ADP Non-Farm Employment</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">Avg Hourly Earnings m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">NFP Change</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">Unemployment Rate</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">JOLTS Job Openings</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">PPI m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">CPI m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">Core CPI m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Table 2: Pertumbuhan & Kebijakan -->
-                    <div class="bg-[#0d1522] border border-gray-700 rounded-2xl shadow-sm overflow-hidden h-max group hover:border-brand transition-colors">
-                        <div class="p-4 md:p-5 border-b border-gray-700 flex items-center gap-3">
-                            <i class="fa-solid fa-chart-line text-brand bg-brand/10 p-2 rounded-lg"></i>
-                            <h3 class="font-bold text-xs md:text-sm tracking-widest uppercase text-gray-300">PERTUMBUHAN & KEBIJAKAN</h3>
-                        </div>
-                        <div class="custom-scrollbar overflow-x-auto">
-                            <table class="w-full text-left text-xs md:text-sm border-collapse min-w-[450px] md:min-w-[500px]">
-                                <thead>
-                                    <tr class="border-b border-gray-700 bg-gray-800/50">
-                                        <th class="py-3 px-4 md:px-5 font-bold text-white uppercase text-[9px] md:text-[10px] tracking-wider w-1/2">Indikator</th>
-                                        <th class="py-3 px-4 md:px-5 font-bold text-gray-500 uppercase text-[9px] md:text-[10px] tracking-wider text-center">May</th>
-                                        <th class="py-3 px-4 md:px-5 font-bold text-gray-500 uppercase text-[9px] md:text-[10px] tracking-wider text-center">Jun</th>
-                                        <th class="py-3 px-4 md:px-5 font-bold text-brand uppercase text-[9px] md:text-[10px] tracking-wider text-center">Jul</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">ISM Manufacturing PMI</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">ISM Services PMI</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">Retail Sales m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                    <tr class="hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">GDP (q/q)</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <!-- Advanced Chart -->
+                <div class="bg-darkpanel border border-gray-800 rounded-2xl shadow-xl hover:border-brand transition-colors mb-8 overflow-hidden h-[500px] md:h-[600px] lg:h-[700px] tv-widget-wrapper relative z-20" data-aos="zoom-in-up" data-aos-delay="150">
+                    <div class="tradingview-widget-container" style="height:100%;width:100%">
+                      <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+                      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                      {
+                      "allow_symbol_change": true,
+                      "calendar": false,
+                      "details": false,
+                      "hide_side_toolbar": true,
+                      "hide_top_toolbar": false,
+                      "hide_legend": false,
+                      "hide_volume": false,
+                      "hotlist": false,
+                      "interval": "60",
+                      "locale": "id",
+                      "save_image": true,
+                      "style": "2",
+                      "symbol": "OANDA:XAUUSD",
+                      "theme": "dark",
+                      "timezone": "Asia/Jakarta",
+                      "backgroundColor": "#0a111d",
+                      "gridColor": "rgba(242, 242, 242, 0.06)",
+                      "watchlist": [],
+                      "withdateranges": false,
+                      "compareSymbols": [ { "symbol": "OANDA:BTCUSD", "position": "SameScale" } ],
+                      "studies": [],
+                      "autosize": true
+                    }
+                      </script>
                     </div>
                 </div>
 
-                <!-- Link Sumber Tangan Pertama -->
-                <div>
-                    <div class="flex items-center gap-3 mb-6">
-                        <i class="fa-solid fa-link text-brand text-lg"></i>
-                        <h3 class="font-bold text-xs md:text-sm tracking-widest uppercase text-gray-300">AKSES LANGSUNG SUMBER DATA (TANGAN PERTAMA)</h3>
+                <!-- Heatmaps & News -->
+                <div class="mb-8">
+                    <div class="flex items-center gap-3 mb-6" data-aos="fade-right">
+                        <div class="w-1.5 h-6 bg-brand rounded-full"></div>
+                        <h3 class="text-xl md:text-2xl font-bold text-white tracking-wide">Market Heatmaps & Live News</h3>
                     </div>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <a href="https://www.forexfactory.com/calendar" target="_blank" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-green-500/10 flex-shrink-0 flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors"><i class="fa-solid fa-folder-open"></i></div>
-                            <div><h4 class="text-white font-bold text-sm md:text-base mb-1">ForexFactory</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Agregator jadwal berita ekonomi global & pengingat folder merah (High Impact).</p></div>
-                        </a>
 
-                        <a href="https://www.federalreserve.gov/" target="_blank" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-yellow-500/10 flex-shrink-0 flex items-center justify-center text-yellow-500 group-hover:bg-yellow-500 group-hover:text-white transition-colors"><i class="fa-solid fa-building-columns"></i></div>
-                            <div><h4 class="text-white font-bold text-sm md:text-base mb-1">The Federal Reserve</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Bank Sentral AS. Sumber sentimen Hawkish/Dovish & keputusan Suku Bunga (FOMC).</p></div>
-                        </a>
-
-                        <a href="https://www.bls.gov/cpi/data.htm" target="_blank" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex-shrink-0 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors"><i class="fa-solid fa-users"></i></div>
-                            <div><h4 class="text-white font-bold text-sm md:text-base mb-1">Biro Statistik (BLS)</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Pusat rilis resmi untuk data Tenaga Kerja (NFP) dan Inflasi Konsumen (CPI).</p></div>
-                        </a>
-
-                        <a href="https://www.bea.gov/" target="_blank" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex-shrink-0 flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors"><i class="fa-solid fa-chart-pie"></i></div>
-                            <div><h4 class="text-white font-bold text-sm md:text-base mb-1">Biro Analisis (BEA)</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Mengeluarkan PDB (Pertumbuhan Ekonomi) dan Indeks PCE (Inflasi favorit The Fed).</p></div>
-                        </a>
-
-                        <a href="https://www.census.gov/data.html" target="_blank" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-orange-500/10 flex-shrink-0 flex items-center justify-center text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors"><i class="fa-solid fa-cart-shopping"></i></div>
-                            <div><h4 class="text-white font-bold text-sm md:text-base mb-1">US Census Bureau</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Sumber rilis Retail Sales (Penjualan Ritel). Indikator utama daya beli masyarakat AS.</p></div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. DISCORD CTA EKSKLUSIF -->
-    <section class="bg-white py-16 md:py-32 px-5 md:px-16 lg:px-24 relative overflow-hidden border-t border-gray-200">
-        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-branddark/5 rounded-full blur-[100px] md:blur-[150px] pointer-events-none"></div>
-        
-        <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
-            <div class="text-center lg:text-left">
-                <div class="inline-flex items-center gap-2 mb-6 border border-branddark/30 bg-branddark/10 px-4 py-2 rounded-full text-[10px] md:text-xs font-bold text-branddark uppercase tracking-widest">
-                    <span class="w-2 h-2 rounded-full bg-branddark animate-blink"></span> LIVE COMMUNITY
-                </div>
-                <h2 class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-4">
-                    Tingkatkan <span class="text-branddark">Trading Edge</span> Anda. <br>Execute <span class="text-branddark">Now</span>.
-                </h2>
-                <p class="text-gray-600 mb-8 md:mb-10 text-base md:text-xl leading-relaxed max-w-lg mx-auto lg:mx-0">
-                    Akses <span class="text-branddark font-bold">exclusive setup</span>, diskusi <span class="text-branddark font-bold">market action</span> secara real-time tiap <span class="text-branddark font-bold">New York Session</span>, dan bergabung bersama ribuan <span class="text-branddark font-bold">trader</span> lainnya di <span class="text-branddark font-bold">inner circle</span> Discord resmi AcademyFX.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 md:gap-6">
-                    <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="bg-brand text-darkbg font-bold py-4 px-8 md:px-10 rounded-full transition-all duration-300 transform md:hover:scale-105 shadow-md text-base md:text-lg flex items-center justify-center gap-3 w-full sm:w-auto">
-                        <i class="fa-brands fa-discord text-xl md:text-2xl"></i> Join Discord Sekarang
-                    </a>
-                    
-                    <a href="index.html" class="text-gray-500 hover:text-gray-900 font-bold text-xs md:text-sm flex items-center justify-center gap-2 transition-colors group w-full sm:w-auto">
-                        Kembali ke Beranda <i class="fa-solid fa-angle-right text-[10px] md:text-xs group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="relative w-full max-w-md mx-auto lg:ml-auto mt-10 lg:mt-0">
-                <div class="bg-[#313338] rounded-2xl shadow-2xl overflow-hidden border border-gray-700/50 text-left">
-                    <div class="bg-[#2B2D31] px-4 md:px-5 py-3 md:py-4 flex items-center gap-3 border-b border-[#1E1F22] shadow-sm">
-                        <i class="fa-solid fa-hashtag text-gray-400 text-lg"></i>
-                        <span class="text-white font-bold text-sm md:text-base tracking-wide">live-trading-room</span>
-                    </div>
-                    
-                    <div class="p-4 md:p-6 space-y-4 md:space-y-6 custom-scrollbar overflow-y-auto max-h-[300px] md:max-h-none">
-                        <div class="flex gap-3 md:gap-4">
-                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-branddark flex-shrink-0 flex items-center justify-center text-white font-black text-xs md:text-sm shadow-[0_0_10px_rgba(0,184,204,0.3)]">
-                                AFX
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2 mb-1 flex-wrap">
-                                    <span class="text-branddark font-bold text-xs md:text-sm">Coach AcademyFX</span>
-                                    <span class="bg-branddark/20 text-branddark text-[8px] md:text-[9px] px-1.5 py-0.5 rounded uppercase font-bold">Mentor</span>
-                                    <span class="text-[10px] md:text-xs text-gray-400">Hari ini 08:30 PM</span>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8">
+                        <!-- Forex Heatmap -->
+                        <div class="lg:col-span-2 bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[500px] md:h-[650px] flex flex-col" data-aos="fade-right">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-fire text-brand text-lg"></i>
+                                    <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">FOREX HEATMAP UTAMA (MAJOR CURRENCIES)</h3>
                                 </div>
-                                <p class="text-gray-300 text-xs md:text-sm leading-relaxed">
-                                    ⚠️ Perhatian semuanya! NFP rilis 15 menit lagi. Pastikan amankan posisi atau geser SL ke BEP. Prediksi volatilitas akan sangat ekstrim di XAUUSD.
-                                </p>
+                                <span class="bg-brand/10 border border-brand/30 text-brand text-[9px] md:text-[10px] font-bold px-2 py-0.5 rounded-full">MAIN FEATURE</span>
+                            </div>
+                            <div class="flex-1 tv-widget-wrapper w-full h-full relative">
+                                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                                  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
+                                  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-heat-map.js" async>
+                                  {
+                                    "width": "100%",
+                                    "height": "100%",
+                                    "currencies": ["EUR","USD","JPY","GBP","CHF","AUD","CAD","NZD"],
+                                    "isTransparent": true,
+                                    "colorTheme": "dark",
+                                    "locale": "id"
+                                  }
+                                  </script>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="flex gap-3 md:gap-4">
-                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center text-white font-bold text-xs md:text-base">
-                                <i class="fa-solid fa-user"></i>
+                        <!-- Live Market News -->
+                        <div class="lg:col-span-1 bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[500px] md:h-[650px] flex flex-col" data-aos="fade-left">
+                            <div class="flex items-center gap-2 mb-4">
+                                <i class="fa-solid fa-newspaper text-brand text-lg"></i>
+                                <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">LIVE MARKET NEWS</h3>
                             </div>
-                            <div>
-                                <div class="flex items-baseline gap-2 mb-1 flex-wrap">
-                                    <span class="text-white font-bold text-xs md:text-sm">TraderPro99</span>
-                                    <span class="text-[10px] md:text-xs text-gray-400">Hari ini 08:32 PM</span>
+                            <div class="flex-1 tv-widget-wrapper w-full h-full relative">
+                                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                                  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
+                                  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+                                  {
+                                    "displayMode": "regular",
+                                    "feedMode": "all_symbols",
+                                    "colorTheme": "dark",
+                                    "isTransparent": true,
+                                    "locale": "en",
+                                    "width": "100%",
+                                    "height": "100%"
+                                  }
+                                  </script>
                                 </div>
-                                <p class="text-gray-300 text-xs md:text-sm leading-relaxed">
-                                    Siap coach! Setup Gold kemarin udah running profit +40 pips, sebagian lot udah di-close. Santai nunggu news. 🔥💰
-                                </p>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="p-4 bg-[#313338] border-t border-[#1E1F22]">
-                        <div class="bg-[#383A40] rounded-xl px-4 py-3 text-gray-400 text-xs md:text-sm flex items-center gap-3">
-                            <i class="fa-solid fa-circle-plus text-gray-300"></i>
-                            <span class="truncate">Message #live-trading-room...</span>
+
+                    <!-- Stock, Crypto, ETF -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                        <div class="bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[450px] flex flex-col" data-aos="fade-up" data-aos-delay="100">
+                            <div class="flex items-center gap-2 mb-4">
+                                <i class="fa-solid fa-layer-group text-brand text-lg"></i>
+                                <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">S&P 500 STOCK HEATMAP</h3>
+                            </div>
+                            <div class="flex-1 tv-widget-wrapper w-full h-full">
+                                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                                  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
+                                  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
+                                  {
+                                    "dataSource": "SPX500",
+                                    "blockSize": "market_cap_basic",
+                                    "blockColor": "change",
+                                    "grouping": "sector",
+                                    "locale": "en",
+                                    "symbolUrl": "",
+                                    "colorTheme": "dark",
+                                    "exchanges": [],
+                                    "hasTopBar": false,
+                                    "isDataSetEnabled": false,
+                                    "isZoomEnabled": true,
+                                    "hasSymbolTooltip": true,
+                                    "isMonoSize": false,
+                                    "width": "100%",
+                                    "height": "100%"
+                                  }
+                                  </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[450px] flex flex-col" data-aos="fade-up" data-aos-delay="200">
+                            <div class="flex items-center gap-2 mb-4">
+                                <i class="fa-brands fa-bitcoin text-brand text-lg"></i>
+                                <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">CRYPTO HEATMAP</h3>
+                            </div>
+                            <div class="flex-1 tv-widget-wrapper w-full h-full">
+                                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                                  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
+                                  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-crypto-coins-heatmap.js" async>
+                                  {
+                                    "dataSource": "Crypto",
+                                    "blockSize": "market_cap_calc",
+                                    "blockColor": "24h_close_change|5",
+                                    "locale": "en",
+                                    "symbolUrl": "",
+                                    "colorTheme": "dark",
+                                    "hasTopBar": false,
+                                    "isDataSetEnabled": false,
+                                    "isZoomEnabled": true,
+                                    "hasSymbolTooltip": true,
+                                    "isMonoSize": false,
+                                    "width": "100%",
+                                    "height": "100%"
+                                  }
+                                  </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-darkpanel border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl hover:border-brand transition-all duration-300 h-[450px] flex flex-col sm:col-span-2 lg:col-span-1" data-aos="fade-up" data-aos-delay="300">
+                            <div class="flex items-center gap-2 mb-4">
+                                <i class="fa-solid fa-chart-pie text-brand text-lg"></i>
+                                <h3 class="font-bold text-white uppercase text-[10px] md:text-xs tracking-widest">ETF HEATMAP</h3>
+                            </div>
+                            <div class="flex-1 tv-widget-wrapper w-full h-full">
+                                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                                  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%;"></div>
+                                  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-etf-heatmap.js" async>
+                                  {
+                                    "dataSource": "AllUSEtf",
+                                    "blockSize": "volume",
+                                    "blockColor": "change",
+                                    "grouping": "asset_class",
+                                    "locale": "en",
+                                    "symbolUrl": "",
+                                    "colorTheme": "dark",
+                                    "hasTopBar": false,
+                                    "isDataSetEnabled": false,
+                                    "isZoomEnabled": true,
+                                    "hasSymbolTooltip": true,
+                                    "isMonoSize": false,
+                                    "width": "100%",
+                                    "height": "100%"
+                                  }
+                                  </script>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 7. FOOTER -->
-    <footer class="bg-darkbg text-gray-400 py-10 px-5 md:px-16 lg:px-24 text-xs font-sans relative z-10 border-t border-gray-800">
-        <div class="max-w-6xl mx-auto border-b border-gray-800 pb-6 mb-6 text-center md:text-left">
-            <p class="leading-relaxed">
-                <strong class="text-white">Disclaimer.</strong> AcademyFX adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. AcademyFX tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. 
+        <!-- ==================== 3. KALENDER EKONOMI ==================== -->
+        <section class="bg-white py-16 md:py-28 px-5 md:px-16 lg:px-24 border-b border-gray-200 relative overflow-hidden">
+            <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none"></div>
+
+            <div class="max-w-[1400px] mx-auto relative z-10">
+                <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
+                    <p class="text-branddark font-bold text-xs tracking-widest uppercase mb-4">Jadwal & Data Rilis</p>
+                    <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4">Economic <span class="text-branddark">Calendar</span></h2>
+                    <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">Pantau <span class="text-branddark font-bold">high-impact news</span>. Hindari <span class="text-branddark font-bold">liquidity sweep</span> dan <span class="text-branddark font-bold">fakeout</span> saat rilis berita penting.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-16 md:mb-24">
+                    <!-- TradingView Calendar -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-3xl p-4 md:p-6 shadow-sm hover:border-branddark transition-colors h-[500px] md:h-[600px] flex flex-col w-full" data-aos="fade-up" data-aos-delay="100">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                            <div class="flex items-center gap-2 text-gray-900 font-bold text-xs md:text-sm">
+                                <i class="fa-solid fa-bolt text-branddark"></i> HIGH IMPACT <span class="hidden sm:inline">(TradingView)</span>
+                            </div>
+                            <span class="bg-red-50 text-red-500 text-[10px] font-bold px-2 py-1 rounded border border-red-200">LIVE</span>
+                        </div>
+                        <div class="flex-1 tv-widget-wrapper bg-white">
+                            <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+                            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+                            { "colorTheme": "light", "isTransparent": false, "width": "100%", "height": "100%", "locale": "id", "importanceFilter": "1", "currencyFilter": "USD,EUR,GBP,JPY,CAD,AUD,NZD,CHF" }
+                            </script></div>
+                        </div>
+                    </div>
+
+                    <!-- Investing.com Calendar -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-3xl p-4 md:p-6 shadow-sm hover:border-branddark transition-colors h-[500px] md:h-[600px] flex flex-col w-full" data-aos="fade-up" data-aos-delay="200">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                            <div class="flex items-center gap-2 text-gray-900 font-bold text-xs md:text-sm">
+                                <i class="fa-solid fa-calendar-days text-branddark"></i> INVESTING.COM
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-blue-50 text-blue-500 text-[9px] md:text-[10px] font-bold px-1.5 md:px-2 py-1 rounded border border-blue-200">WIB (GMT+7)</span>
+                                <select id="investing-filter" aria-label="Filter kalender" class="text-[9px] md:text-[10px] border border-gray-200 rounded px-1.5 md:px-2 py-1 bg-white font-bold text-gray-700 outline-none cursor-pointer hover:border-branddark transition-colors">
+                                    <option value="all">Semua</option>
+                                    <option value="high">🔥 High Saja</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex-1 bg-white rounded-xl overflow-hidden relative flex flex-col">
+                            <iframe id="investing-iframe" src="about:blank" title="Kalender Ekonomi Investing.com" width="100%" height="100%" frameborder="0" allowtransparency="true" marginwidth="0" marginheight="0" class="flex-1"></iframe>
+                            <div class="poweredBy text-center py-1 bg-gray-50 border-t border-gray-100" style="font-family: Arial, Helvetica, sans-serif;">
+                                <span style="font-size: 10px;color: #333333;">Kalender Ekonomi Real Time dipersembahkan oleh <a href="https://id.investing.com" rel="nofollow noopener" target="_blank" style="font-size: 10px;color: #06529D; font-weight: bold;" class="underline_link">Investing.com Indonesia</a>.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tradays Calendar -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-3xl p-4 md:p-6 shadow-sm hover:border-branddark transition-colors h-[500px] md:h-[600px] flex flex-col w-full" data-aos="fade-up" data-aos-delay="300">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                            <div class="flex items-center gap-2 text-gray-900 font-bold text-xs md:text-sm">
+                                <i class="fa-solid fa-clock-rotate-left text-branddark"></i> TRADAYS <span class="hidden sm:inline">CALENDAR</span>
+                            </div>
+                            <span class="bg-green-50 text-green-600 text-[9px] md:text-[10px] font-bold px-1.5 md:px-2 py-1 rounded border border-green-200">REAL-TIME</span>
+                        </div>
+                        <div class="flex-1 bg-white rounded-xl overflow-hidden relative flex flex-col p-1">
+                            <div id="economicCalendarWidget" class="flex-1 w-full h-full"></div>
+                            <div class="ecw-copyright text-center py-1 mt-1 bg-gray-50">
+                                <a href="https://www.metatrader.com/?utm_source=calendar.widget&utm_medium=link&utm_term=economic.calendar&utm_content=visit.mql5.calendar&utm_campaign=202.calendar.widget" rel="noopener nofollow" target="_blank" class="text-[8px] text-gray-400 hover:text-branddark">MetaTrader World Markets</a>
+                            </div>
+                            <script async type="text/javascript" data-type="calendar-widget" src="https://www.tradays.com/c/js/widgets/calendar/widget.js?v=15">
+                              {"width":"100%","height":"100%","mode":"1","fw":"html"}
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Global Map -->
+                <div class="text-center mb-8 md:mb-12" data-aos="fade-up">
+                    <p class="text-branddark font-bold text-xs tracking-widest uppercase mb-4">Visual Interaktif</p>
+                    <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4">Global <span class="text-branddark">Macro</span> Heatmap</h2>
+                    <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">Pantau indikator <span class="text-branddark font-bold">makroekonomi global</span> seperti <span class="text-branddark font-bold">PDB, Suku Bunga, dan tingkat Inflasi</span> berbagai negara.</p>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-2xl md:rounded-3xl shadow-lg hover:border-branddark transition-colors h-[400px] md:h-[600px] relative overflow-hidden w-full" data-aos="zoom-in-up">
+                    <a href="https://finance.worldmonitor.app/dashboard?lat=20.0000&lon=0.0000&zoom=1.00&view=global&timeRange=7d&layers=cables%2Cpipelines%2Csanctions%2Cweather%2Ceconomic%2Cwaterways%2Coutages%2Cnatural%2CtradeRoutes" target="_blank" rel="noopener" class="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-30 bg-white/90 backdrop-blur border border-gray-300 hover:border-branddark text-branddark hover:bg-branddark hover:text-white px-3 py-2 md:px-5 md:py-3 rounded-xl font-bold text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-2 transition-all duration-300 shadow-sm group">
+                        <i class="fa-solid fa-map-location-dot"></i> <span class="hidden sm:inline">Buka World Monitor</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+                    </a>
+
+                    <div class="w-full h-full relative z-10 bg-white">
+                        <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-economic-map.js"></script>
+                        <tv-economic-map metrics="gdp,ur,gdg,intr,iryy" style="width: 100%; height: 100%; display: block;"></tv-economic-map>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 4. INDIKATOR MAKRO ==================== -->
+        <section class="bg-darkbg py-16 md:py-28 px-5 md:px-16 lg:px-24 border-b border-gray-800 relative">
+            <div class="absolute inset-0 bg-grid-pattern-dark opacity-30 pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
+                    <p class="text-brand font-bold text-xs tracking-widest uppercase mb-4">Data Historis & Sumber Valid</p>
+                    <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-4">Macroeconomic <span class="text-brand">Indicators</span></h2>
+                    <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">Histori rilis <span class="text-brand font-bold">high-impact data</span> 3 bulan terakhir beserta <span class="text-brand font-bold">first-hand sources</span> aslinya.</p>
+                </div>
+
+                <div class="bg-darkpanel border border-gray-800 rounded-[2rem] p-4 md:p-6 lg:p-10 shadow-xl" data-aos="fade-up">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
+                        <!-- Table 1 -->
+                        <div class="bg-[#0d1522] border border-gray-700 rounded-2xl shadow-sm overflow-hidden group hover:border-brand transition-colors">
+                            <div class="p-4 md:p-5 border-b border-gray-700 flex items-center gap-3">
+                                <i class="fa-solid fa-users-viewfinder text-brand bg-brand/10 p-2 rounded-lg"></i>
+                                <h3 class="font-bold text-xs md:text-sm tracking-widest uppercase text-gray-300">INFLASI & TENAGA KERJA</h3>
+                            </div>
+                            <div class="custom-scrollbar overflow-x-auto">
+                                <table class="w-full text-left text-xs md:text-sm border-collapse min-w-[450px] md:min-w-[500px]">
+                                    <thead>
+                                        <tr class="border-b border-gray-700 bg-gray-800/50">
+                                            <th class="py-3 px-4 md:px-5 font-bold text-white uppercase text-[9px] md:text-[10px] tracking-wider w-1/2">Indikator</th>
+                                            <th class="py-3 px-4 md:px-5 font-bold text-gray-500 uppercase text-[9px] md:text-[10px] tracking-wider text-center">May</th>
+                                            <th class="py-3 px-4 md:px-5 font-bold text-gray-500 uppercase text-[9px] md:text-[10px] tracking-wider text-center">Jun</th>
+                                            <th class="py-3 px-4 md:px-5 font-bold text-brand uppercase text-[9px] md:text-[10px] tracking-wider text-center">Jul</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">ADP Non-Farm Employment</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">Avg Hourly Earnings m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">NFP Change</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">Unemployment Rate</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">JOLTS Job Openings</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">PPI m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">CPI m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">Core CPI m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Table 2 -->
+                        <div class="bg-[#0d1522] border border-gray-700 rounded-2xl shadow-sm overflow-hidden h-max group hover:border-brand transition-colors">
+                            <div class="p-4 md:p-5 border-b border-gray-700 flex items-center gap-3">
+                                <i class="fa-solid fa-chart-line text-brand bg-brand/10 p-2 rounded-lg"></i>
+                                <h3 class="font-bold text-xs md:text-sm tracking-widest uppercase text-gray-300">PERTUMBUHAN & KEBIJAKAN</h3>
+                            </div>
+                            <div class="custom-scrollbar overflow-x-auto">
+                                <table class="w-full text-left text-xs md:text-sm border-collapse min-w-[450px] md:min-w-[500px]">
+                                    <thead>
+                                        <tr class="border-b border-gray-700 bg-gray-800/50">
+                                            <th class="py-3 px-4 md:px-5 font-bold text-white uppercase text-[9px] md:text-[10px] tracking-wider w-1/2">Indikator</th>
+                                            <th class="py-3 px-4 md:px-5 font-bold text-gray-500 uppercase text-[9px] md:text-[10px] tracking-wider text-center">May</th>
+                                            <th class="py-3 px-4 md:px-5 font-bold text-gray-500 uppercase text-[9px] md:text-[10px] tracking-wider text-center">Jun</th>
+                                            <th class="py-3 px-4 md:px-5 font-bold text-brand uppercase text-[9px] md:text-[10px] tracking-wider text-center">Jul</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">ISM Manufacturing PMI</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">ISM Services PMI</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="border-b border-gray-800 hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">Retail Sales m/m</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                        <tr class="hover:bg-gray-800/30"><td class="py-3 px-4 md:px-5 font-medium text-gray-300">GDP (q/q)</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-gray-500">-</td><td class="py-3 px-4 md:px-5 text-center text-white font-bold">-</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sumber Data -->
+                    <div>
+                        <div class="flex items-center gap-3 mb-6" data-aos="fade-right">
+                            <i class="fa-solid fa-link text-brand text-lg"></i>
+                            <h3 class="font-bold text-xs md:text-sm tracking-widest uppercase text-gray-300">AKSES LANGSUNG SUMBER DATA (TANGAN PERTAMA)</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <a href="https://www.forexfactory.com/calendar" target="_blank" rel="noopener" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4" data-aos="fade-up" data-aos-delay="100">
+                                <div class="w-10 h-10 rounded-lg bg-green-500/10 flex-shrink-0 flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors"><i class="fa-solid fa-folder-open"></i></div>
+                                <div><h4 class="text-white font-bold text-sm md:text-base mb-1">ForexFactory</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Agregator jadwal berita ekonomi global & pengingat folder merah (High Impact).</p></div>
+                            </a>
+
+                            <a href="https://www.federalreserve.gov/" target="_blank" rel="noopener" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4" data-aos="fade-up" data-aos-delay="150">
+                                <div class="w-10 h-10 rounded-lg bg-yellow-500/10 flex-shrink-0 flex items-center justify-center text-yellow-500 group-hover:bg-yellow-500 group-hover:text-white transition-colors"><i class="fa-solid fa-building-columns"></i></div>
+                                <div><h4 class="text-white font-bold text-sm md:text-base mb-1">The Federal Reserve</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Bank Sentral AS. Sumber sentimen Hawkish/Dovish & keputusan Suku Bunga (FOMC).</p></div>
+                            </a>
+
+                            <a href="https://www.bls.gov/cpi/data.htm" target="_blank" rel="noopener" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4" data-aos="fade-up" data-aos-delay="200">
+                                <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex-shrink-0 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors"><i class="fa-solid fa-users"></i></div>
+                                <div><h4 class="text-white font-bold text-sm md:text-base mb-1">Biro Statistik (BLS)</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Pusat rilis resmi untuk data Tenaga Kerja (NFP) dan Inflasi Konsumen (CPI).</p></div>
+                            </a>
+
+                            <a href="https://www.bea.gov/" target="_blank" rel="noopener" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4" data-aos="fade-up" data-aos-delay="250">
+                                <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex-shrink-0 flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors"><i class="fa-solid fa-chart-pie"></i></div>
+                                <div><h4 class="text-white font-bold text-sm md:text-base mb-1">Biro Analisis (BEA)</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Mengeluarkan PDB (Pertumbuhan Ekonomi) dan Indeks PCE (Inflasi favorit The Fed).</p></div>
+                            </a>
+
+                            <a href="https://www.census.gov/data.html" target="_blank" rel="noopener" class="bg-[#0d1522] border border-gray-700 p-4 md:p-5 rounded-xl hover:border-brand hover:-translate-y-1 hover:shadow-lg transition-all group flex items-start gap-4" data-aos="fade-up" data-aos-delay="300">
+                                <div class="w-10 h-10 rounded-lg bg-orange-500/10 flex-shrink-0 flex items-center justify-center text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors"><i class="fa-solid fa-cart-shopping"></i></div>
+                                <div><h4 class="text-white font-bold text-sm md:text-base mb-1">US Census Bureau</h4><p class="text-[10px] md:text-[11px] text-gray-400 leading-relaxed">Sumber rilis Retail Sales (Penjualan Ritel). Indikator utama daya beli masyarakat AS.</p></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 5. DISCORD CTA ==================== -->
+        <section class="bg-white py-16 md:py-28 px-5 md:px-16 lg:px-24 relative overflow-hidden border-t border-gray-200">
+            <div class="absolute top-1/2 left-0 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-branddark/5 rounded-full blur-[100px] md:blur-[150px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+                <div class="text-center lg:text-left" data-aos="fade-right">
+                    <div class="inline-flex items-center gap-2 mb-6 border border-branddark/30 bg-branddark/10 px-4 py-2 rounded-full text-[10px] md:text-xs font-bold text-branddark uppercase tracking-widest">
+                        <span class="w-2 h-2 rounded-full bg-branddark animate-blink"></span> LIVE COMMUNITY
+                    </div>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-4">
+                        Tingkatkan <span class="text-branddark">Trading Edge</span> Anda. <br>Execute <span class="text-branddark">Now</span>.
+                    </h2>
+                    <p class="text-gray-600 mb-8 md:mb-10 text-base md:text-xl leading-relaxed max-w-lg mx-auto lg:mx-0">
+                        Akses <span class="text-branddark font-bold">exclusive setup</span>, diskusi <span class="text-branddark font-bold">market action</span> secara real-time tiap <span class="text-branddark font-bold">New York Session</span>, dan bergabung bersama ribuan <span class="text-branddark font-bold">trader</span> lainnya di <span class="text-branddark font-bold">inner circle</span> Discord resmi Analyst Area.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 md:gap-6">
+                        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="bg-brand text-darkbg font-bold py-4 px-8 md:px-10 rounded-full transition-all duration-300 md:hover:scale-105 shadow-md text-base md:text-lg flex items-center justify-center gap-3 w-full sm:w-auto">
+                            <i class="fa-brands fa-discord text-xl md:text-2xl"></i> Join Discord Sekarang
+                        </a>
+                        <a href="index.html" class="text-gray-500 hover:text-gray-900 font-bold text-xs md:text-sm flex items-center justify-center gap-2 transition-colors group w-full sm:w-auto">
+                            Kembali ke Beranda <i class="fa-solid fa-angle-right text-[10px] md:text-xs group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative w-full max-w-md mx-auto lg:ml-auto mt-10 lg:mt-0" data-aos="fade-left">
+                    <div class="bg-[#313338] rounded-2xl shadow-2xl overflow-hidden border border-gray-700/50 text-left">
+                        <div class="bg-[#2B2D31] px-4 md:px-5 py-3 md:py-4 flex items-center gap-3 border-b border-[#1E1F22] shadow-sm">
+                            <i class="fa-solid fa-hashtag text-gray-400 text-lg"></i>
+                            <span class="text-white font-bold text-sm md:text-base tracking-wide">live-trading-room</span>
+                        </div>
+
+                        <div class="p-4 md:p-6 space-y-4 md:space-y-6 custom-scrollbar overflow-y-auto max-h-[300px] md:max-h-none">
+                            <div class="flex gap-3 md:gap-4">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-branddark flex-shrink-0 flex items-center justify-center text-white font-black text-xs md:text-sm shadow-[0_0_10px_rgba(0,184,204,0.3)]">AFX</div>
+                                <div>
+                                    <div class="flex items-baseline gap-2 mb-1 flex-wrap">
+                                        <span class="text-branddark font-bold text-xs md:text-sm">Coach Analyst Area</span>
+                                        <span class="bg-branddark/20 text-branddark text-[8px] md:text-[9px] px-1.5 py-0.5 rounded uppercase font-bold">Mentor</span>
+                                        <span class="text-[10px] md:text-xs text-gray-400">Hari ini 08:30 PM</span>
+                                    </div>
+                                    <p class="text-gray-300 text-xs md:text-sm leading-relaxed">
+                                        ⚠️ Perhatian semuanya! NFP rilis 15 menit lagi. Pastikan amankan posisi atau geser SL ke BEP. Prediksi volatilitas akan sangat ekstrim di XAUUSD.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 md:gap-4">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center text-white font-bold text-xs md:text-base">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-baseline gap-2 mb-1 flex-wrap">
+                                        <span class="text-white font-bold text-xs md:text-sm">TraderPro99</span>
+                                        <span class="text-[10px] md:text-xs text-gray-400">Hari ini 08:32 PM</span>
+                                    </div>
+                                    <p class="text-gray-300 text-xs md:text-sm leading-relaxed">
+                                        Siap coach! Setup Gold kemarin udah running profit +40 pips, sebagian lot udah di-close. Santai nunggu news. 🔥💰
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-[#313338] border-t border-[#1E1F22]">
+                            <div class="bg-[#383A40] rounded-xl px-4 py-3 text-gray-400 text-xs md:text-sm flex items-center gap-3">
+                                <i class="fa-solid fa-circle-plus text-gray-300"></i>
+                                <span class="truncate">Message #live-trading-room...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-[#f8f9fa] text-gray-500 py-10 px-5 md:px-16 lg:px-24 text-xs font-sans relative z-10 border-t border-gray-200">
+        <div class="max-w-6xl mx-auto border-b border-gray-200 pb-6 mb-6" data-aos="fade-up">
+            <p class="leading-relaxed text-center md:text-left">
+                <strong class="text-gray-700">Disclaimer.</strong> Analyst Area adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. Analyst Area tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. Founder Analyst Area Richo G.
                 <br class="block md:hidden mt-2">
-                <a href="#" class="text-brand font-medium hover:underline inline-block mt-2 md:mt-0 md:ml-1">Disclaimer</a> <span class="hidden md:inline">·</span> 
-                <a href="#" class="text-brand font-medium hover:underline inline-block mt-2 md:mt-0 md:ml-1">Terms & Conditions</a>
+                <a href="about.html" class="text-blue-500 hover:underline inline-block mt-2 md:mt-0">Disclaimer</a> <span class="hidden md:inline">·</span>
+                <a href="about.html" class="text-blue-500 hover:underline inline-block mt-2 md:mt-0 ml-2 md:ml-0">Terms & Conditions</a> <span class="hidden md:inline">·</span>
+                <a href="about.html" class="text-blue-500 hover:underline inline-block mt-2 md:mt-0 ml-2 md:ml-0">Risk Disclosure</a>
             </p>
         </div>
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">
-            <p class="text-center md:text-left w-full md:w-auto">Copyright &copy; 2026 AcademyFX. Semua hak dilindungi.</p>
-            <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 w-full md:w-auto">
-                <a href="https://www.instagram.com/richolinggar_?igsh=b28zZmxsdjV6ejM5" target="_blank" class="text-[#E1306C] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
-                    <i class="fa-brands fa-instagram text-lg md:text-xl"></i> <span class="hidden md:inline">Instagram</span>
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-center md:text-left" data-aos="fade-up" data-aos-delay="100">
+            <p>Copyright &copy; 2026 Analyst Area. Semua hak dilindungi.</p>
+            <div class="flex items-center gap-6">
+                <a href="https://www.instagram.com/richolinggar_?igsh=b28zZmxsdjV6ejM5" target="_blank" rel="noopener" class="text-[#E1306C] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
+                    <i class="fa-brands fa-instagram text-xl"></i> <span class="hidden md:inline">Instagram</span>
                 </a>
-                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="text-[#5865F2] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
-                    <i class="fa-brands fa-discord text-lg md:text-xl"></i> <span class="hidden md:inline">Komunitas Discord</span>
+                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="text-[#5865F2] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
+                    <i class="fa-brands fa-discord text-xl"></i> <span class="hidden md:inline">Komunitas Discord</span>
                 </a>
             </div>
         </div>
     </footer>
 
-    <!-- TOMBOL WHATSAPP MELAYANG -->
-    <a href="https://wa.me/6281217618728?text=Assalamualaikum%2C%20Wr.%20Wb.%20Permisi%20Mas%20Richo." target="_blank" class="fixed bottom-6 right-6 md:bottom-6 md:right-6 bg-white text-gray-800 px-3 md:px-4 py-3 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-gray-100 flex items-center gap-3 z-50 hover:-translate-y-1 transition duration-300 group">
+    <!-- WhatsApp Floating -->
+    <a href="https://wa.me/6281217618728?text=Assalamualaikum%2C%20Wr.%20Wb.%20Permisi%20Mas%20Richo." target="_blank" rel="noopener" class="fixed bottom-6 right-6 md:bottom-6 md:right-6 bg-white text-gray-800 px-3 py-3 md:px-4 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-gray-100 flex items-center gap-3 z-50 hover:-translate-y-1 transition duration-300 group" aria-label="Hubungi Admin via WhatsApp">
         <div class="bg-[#25D366] text-white rounded-full w-10 h-10 flex items-center justify-center text-xl group-hover:bg-[#20b858] transition">
             <i class="fa-brands fa-whatsapp"></i>
         </div>
@@ -729,67 +716,67 @@
         </div>
     </a>
 
-    <!-- SCRIPTS CONTROL & RENDER -->
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
-        // MOBILE MENU TOGGLE
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            // === AOS INIT ===
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 50 });
+            }
+
+            // === MOBILE MENU TOGGLE ===
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
-            
             if (mobileBtn && mobileMenu) {
                 const icon = mobileBtn.querySelector('i');
                 const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+                const setState = (open) => {
+                    mobileMenu.classList.toggle('-translate-y-full', !open);
+                    icon.classList.toggle('fa-bars', !open);
+                    icon.classList.toggle('fa-xmark', open);
+                    mobileBtn.setAttribute('aria-expanded', String(open));
+                };
+                mobileBtn.addEventListener('click', () => {
+                    const isOpen = !mobileMenu.classList.contains('-translate-y-full');
+                    setState(!isOpen);
+                });
+                mobileLinks.forEach(link => link.addEventListener('click', () => setState(false)));
+            }
 
-                function toggleMenu() {
-                    mobileMenu.classList.toggle('-translate-y-full');
-                    if(mobileMenu.classList.contains('-translate-y-full')) {
-                        icon.classList.remove('fa-xmark');
-                        icon.classList.add('fa-bars');
-                    } else {
-                        icon.classList.remove('fa-bars');
-                        icon.classList.add('fa-xmark');
-                    }
-                }
+            // === TERMINAL CLOCK (WIB) ===
+            function updateTerminalClock() {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('en-GB', {
+                    timeZone: 'Asia/Jakarta', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
+                }).replace(/:/g, '.');
+                const timeEl = document.getElementById('terminal-time');
+                if (timeEl) timeEl.innerText = timeStr;
 
-                mobileBtn.addEventListener('click', toggleMenu);
+                const dateStr = now.toLocaleDateString('id-ID', {
+                    timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short', year: 'numeric'
+                });
+                const dateEl = document.getElementById('terminal-date');
+                if (dateEl) dateEl.innerText = dateStr;
+            }
+            updateTerminalClock();
+            setInterval(updateTerminalClock, 1000);
 
-                mobileLinks.forEach(link => {
-                    link.addEventListener('click', toggleMenu);
+            // === INVESTING.COM CALENDAR & FILTER ===
+            const investingBaseUrl = "https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=5,25,37,45,39,14,48,4,10,35,17,6,11,42,44,22,43,36,26,12,46,41,178,72&calType=day&timeZone=27&lang=54";
+            const iframe = document.getElementById('investing-iframe');
+            if (iframe) iframe.src = investingBaseUrl;
+
+            const investingFilter = document.getElementById('investing-filter');
+            if (investingFilter && iframe) {
+                investingFilter.addEventListener('change', (e) => {
+                    iframe.src = e.target.value === 'high'
+                        ? investingBaseUrl + "&importance=3"
+                        : investingBaseUrl;
                 });
             }
         });
-
-        // 1. REAL TIME CLOCK SCRIPT
-        function updateTerminalClock() {
-            const now = new Date();
-            const optionsTime = { timeZone: 'Asia/Jakarta', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            let timeStr = now.toLocaleTimeString('en-GB', optionsTime).replace(/:/g, '.'); 
-            if(document.getElementById('terminal-time')) document.getElementById('terminal-time').innerText = timeStr;
-            const optionsDate = { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short', year: 'numeric' };
-            if(document.getElementById('terminal-date')) document.getElementById('terminal-date').innerText = now.toLocaleDateString('id-ID', optionsDate);
-        }
-        updateTerminalClock(); 
-        setInterval(updateTerminalClock, 1000);
-
-        // 3. INVESTING.COM FILTER CALENDAR LOGIC
-        const investingBaseUrl = "https://sslecal2.investing.com?columns=exc_flags,exc_currency,exc_importance,exc_actual,exc_forecast,exc_previous&features=datepicker,timezone&countries=5,25,37,45,39,14,48,4,10,35,17,6,11,42,44,22,43,36,26,12,46,41,178,72&calType=day&timeZone=27&lang=54";
-        
-        window.addEventListener('load', function() {
-            const iframe = document.getElementById('investing-iframe');
-            if(iframe) iframe.src = investingBaseUrl;
-        });
-
-        const investingFilter = document.getElementById('investing-filter');
-        if(investingFilter) {
-            investingFilter.addEventListener('change', function(e) {
-                const iframe = document.getElementById('investing-iframe');
-                let newUrl = investingBaseUrl;
-                if(e.target.value === 'high') {
-                    newUrl += "&importance=3";
-                }
-                iframe.src = newUrl;
-            });
-        }
     </script>
 </body>
 </html>
