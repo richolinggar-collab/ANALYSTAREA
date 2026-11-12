@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jam Sesi Forex - Analyst Area</title>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS Animation CSS (Untuk efek scroll yang smooth) -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -50,11 +46,11 @@
         html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         body { padding-top: 64px; overflow-x: hidden; }
         
-        /* Nav Link Hover Animation */
         .nav-link { position: relative; }
         .nav-link::after {
             content: ''; position: absolute; width: 0; height: 2px;
-            bottom: -4px; left: 0; background-color: #00e5ff;
+            bottom: -4px; left: 0;
+            background: linear-gradient(to right, #00e5ff, #2563eb);
             transition: width 0.3s ease;
         }
         .nav-link:hover::after,
@@ -62,19 +58,16 @@
             width: 100%;
         }
 
-        /* Custom Scrollbars */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
-        /* Dark Scrollbar for Discord */
         .discord-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .discord-scrollbar::-webkit-scrollbar-track { background: transparent; border-radius: 4px; }
         .discord-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
         .discord-scrollbar::-webkit-scrollbar-thumb:hover { background: #6b7280; }
 
-        /* Grid Patterns dengan Efek Parallax (bg-fixed) */
         .bg-grid-pattern-light {
             background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLCAwLCAwLCAwLjA0KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+');
             background-attachment: fixed;
@@ -84,7 +77,6 @@
             background-attachment: fixed;
         }
 
-        /* Status Indicator Styles */
         .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; transition: all 0.3s ease;}
         .status-dot.active { background-color: #00b8cc; box-shadow: 0 0 8px #00e5ff; animation: blink 2s infinite; }
         .status-dot.inactive { background-color: #9ca3af; }
@@ -93,21 +85,26 @@
         .status-badge.active { background-color: rgba(0, 184, 204, 0.1); border-color: rgba(0, 184, 204, 0.3); color: #00b8cc; transform: scale(1.05); }
         .status-badge.inactive { background-color: #f3f4f6; border-color: #e5e7eb; color: #6b7280; transform: scale(1); }
 
-        /* Timeline Axis Ticks */
         .timeline-axis span {
             flex: 1; text-align: center; font-size: 10px; color: #9ca3af; font-weight: bold; position: relative;
         }
         .timeline-axis span::before {
             content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 1px; height: 6px; background-color: #374151; margin-top: 4px;
         }
+
+        .text-brand-gradient {
+            background-image: linear-gradient(to right, #00e5ff, #2563eb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
     </style>
 </head>
 <body class="antialiased font-sans flex flex-col min-h-screen text-gray-900 bg-white overflow-x-hidden">
 
-    <!-- NAVIGATION (GELAP) -->
+    <!-- NAVIGATION -->
     <nav class="fixed top-0 w-full z-50 px-5 md:px-8 py-4 bg-[#060b13]/90 backdrop-blur-md border-b border-gray-800 transition-all">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <!-- LOGO ANALYST AREA -->
             <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
                 <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.7)] group-hover:scale-110 transition-transform duration-500">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full">
@@ -117,82 +114,72 @@
                         <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </div>
-                <span class="font-extrabold text-2xl tracking-tight uppercase text-white group-hover:text-brand transition duration-300">Analyst <span class="text-brand">Area</span></span>
+                <span class="font-extrabold text-2xl tracking-tight uppercase text-white group-hover:text-brand transition duration-300">ANALYST <span class="text-brand-gradient">AREA</span></span>
             </a>
             
-            <!-- DESKTOP MENU -->
             <div class="hidden md:flex space-x-8 text-sm font-medium">
                 <a href="index.html#home" class="nav-link text-gray-300 hover:text-brand transition duration-300">Home</a>
-                <a href="index.html#academy" class="nav-link text-gray-300 hover:text-brand transition duration-300">Academy</a>
                 <a href="tools.html" class="nav-link text-brand active-nav transition duration-300">Tools</a>
                 <a href="jurnal.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">Journal</a>
                 <a href="terminal.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">Terminal</a>
-                <a href="index.html#roadmap" class="nav-link text-gray-300 hover:text-brand transition duration-300">Roadmap</a>
+                <a href="backtest.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">Backtest Labs</a>
                 <a href="about.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">About</a>
             </div>
             
             <div class="flex items-center gap-4">
-                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="hidden md:inline-block bg-brand hover:bg-[#00c2d6] hover:-translate-y-1 transform text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="hidden md:inline-block bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 hover:-translate-y-1 transform text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg hover:shadow-brand/50">
                     Join Discord
                 </a>
-                <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none" aria-label="Buka menu navigasi">
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- MOBILE MENU PANEL -->
     <div id="mobile-menu" class="fixed top-[64px] left-0 w-full bg-[#060b13]/95 backdrop-blur-xl border-b border-gray-800 z-40 transform -translate-y-full transition-transform duration-300 ease-in-out flex flex-col text-center shadow-2xl md:hidden">
         <a href="index.html#home" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Home</a>
-        <a href="index.html#academy" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Academy</a>
-        <a href="tools.html" class="py-4 border-b border-gray-800 text-brand font-medium mobile-nav-link transition-colors">Tools</a>
+        <a href="tools.html" class="py-4 border-b border-gray-800 font-medium mobile-nav-link transition-colors"><span class="text-brand-gradient">Tools</span></a>
         <a href="jurnal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Journal</a>
         <a href="terminal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Terminal</a>
-        <a href="index.html#roadmap" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Roadmap</a>
+        <a href="backtest.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Backtest Labs</a>
         <a href="about.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">About</a>
-        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="py-4 bg-brand text-darkbg font-bold mobile-nav-link">Join Discord</a>
+        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="py-4 bg-gradient-to-r from-brand to-blue-500 text-darkbg font-bold mobile-nav-link">Join Discord</a>
     </div>
 
-    <!-- SECTION 1: HERO & LIVE CLOCK (TERANG) -->
+    <!-- SECTION 1 -->
     <section class="pt-24 pb-16 md:pt-32 md:pb-24 px-5 md:px-16 lg:px-24 border-b border-gray-200 relative overflow-hidden bg-white">
-        <!-- Parallax Background Grid -->
         <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none"></div>
-        <!-- Floating Glow Effects -->
         <div class="absolute top-1/4 left-[20%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-brand/10 rounded-full blur-[100px] pointer-events-none animate-float"></div>
         <div class="absolute bottom-1/4 right-[20%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-[#0055ff]/5 rounded-full blur-[100px] pointer-events-none animate-float-delayed"></div>
 
         <div class="max-w-7xl mx-auto relative z-10 text-center">
             <div class="mb-12 md:mb-16">
-                <!-- Wrapper ditambahkan agar animasi AOS tidak ditimpa oleh JS -->
                 <div data-aos="fade-down" class="flex justify-center mb-6">
                     <div id="status-market-badge" class="inline-flex items-center justify-center gap-2 border border-branddark/30 bg-branddark/10 px-4 py-1.5 rounded-full text-[10px] font-bold text-branddark uppercase tracking-widest shadow-sm">
                         <span class="w-2 h-2 rounded-full bg-branddark animate-blink"></span> SINKRONISASI AKTIF
                     </div>
                 </div>
                 
-                <h1 data-aos="zoom-in" data-aos-delay="100" class="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[1.2] mb-6 text-gray-900 max-w-4xl mx-auto drop-shadow-sm">
-                    Pantau <span class="text-branddark">Sesi Market</span> <br>
-                    Secara Akurat.
+                <h1 data-aos="zoom-in" data-aos-delay="100" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-tight mb-6 max-w-4xl mx-auto">
+                    <span class="text-gray-900">Pantau Sesi Market</span> <br>
+                    <span class="text-brand-gradient">Secara Akurat.</span>
                 </h1>
                 
                 <p data-aos="fade-up" data-aos-delay="200" class="text-gray-500 text-base md:text-xl leading-relaxed max-w-3xl mx-auto font-medium">
-                    Lacak pergerakan empat <span class="text-branddark font-bold">major session</span> dunia: Sydney, Tokyo, London, dan New York. Ketahui kapan <span class="text-branddark font-bold">liquidity pool</span> memuncak saat fase <span class="text-branddark font-bold">overlap</span> untuk menentukan <span class="text-branddark font-bold">timing entry</span> yang paling presisi.
+                    Empat sesi utama. Satu tujuan: presisi. Pantau ritme pasar <span class="text-branddark font-bold">Sydney, Tokyo, London, dan New York</span> — temukan jendela <span class="text-branddark font-bold">likuiditas tertinggi</span> saat fase <span class="text-branddark font-bold">overlap</span> untuk <span class="text-branddark font-bold">timing entry</span> paling tajam.
                 </p>
             </div>
 
-            <!-- LIVE CLOCK DASHBOARD (TERANG) -->
             <div data-aos="fade-up" data-aos-delay="300" class="bg-white border-2 border-gray-100 rounded-[2rem] p-6 md:p-8 lg:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.08)] relative overflow-hidden flex flex-col lg:flex-row justify-between lg:items-center gap-8 md:gap-10 text-left transition-all duration-500 hover:border-branddark/40 hover:shadow-[0_25px_60px_rgba(0,229,255,0.15)] hover:-translate-y-2 group">
-                <!-- Digital Clock -->
                 <div class="lg:w-1/2 text-center lg:text-left">
                     <p class="text-gray-500 font-bold text-[10px] tracking-widest uppercase mb-2">LOCAL TIME (WIB)</p>
                     <div class="text-5xl md:text-[6rem] font-black text-gray-900 tracking-tighter tabular-nums flex items-baseline justify-center lg:justify-start gap-1 md:gap-2 mb-2" id="live-time">
-                        <span id="h">00</span><span class="text-branddark animate-blink pb-1 md:pb-2">:</span><span id="m">00</span><span class="text-branddark animate-blink pb-1 md:pb-2">:</span><span id="s">00</span>
+                        <span id="h">00</span><span class="text-gray-900 animate-blink pb-1 md:pb-2">:</span><span id="m">00</span><span class="text-gray-900 animate-blink pb-1 md:pb-2">:</span><span id="s">00</span>
                     </div>
                     <p class="text-gray-500 font-medium text-sm md:text-lg" id="live-date">Menyinkronkan tanggal...</p>
                 </div>
 
-                <!-- Session Indicators -->
                 <div class="bg-gray-50 border border-gray-200 p-5 md:p-6 lg:p-8 rounded-2xl lg:w-1/2 transition-all duration-300 group-hover:bg-white group-hover:shadow-md">
                     <p class="text-gray-500 font-bold text-[10px] tracking-widest uppercase mb-4">STATUS MARKET SAAT INI</p>
                     <div class="flex flex-wrap gap-2 md:gap-3 mb-6">
@@ -210,7 +197,6 @@
                         </div>
                     </div>
                     
-                    <!-- Dynamic Note -->
                     <div class="bg-white border-l-4 border-branddark p-4 rounded-r-lg transition-colors duration-500 shadow-sm" id="note-container">
                         <p id="dynamic-note" class="text-gray-700 text-xs md:text-sm font-medium leading-relaxed">
                             Menganalisis pergerakan <i>smart money</i> terkini...
@@ -221,25 +207,24 @@
         </div>
     </section>
 
-    <!-- SECTION 2: TIMELINE & DETAIL SESI (GELAP) -->
+    <!-- SECTION 2 -->
     <section class="bg-darkbg py-16 md:py-24 px-5 md:px-16 lg:px-24 border-b border-gray-800 relative overflow-hidden">
-        <!-- Parallax Background Grid -->
         <div class="absolute inset-0 bg-grid-pattern-dark opacity-30 pointer-events-none"></div>
         <div class="absolute right-0 bottom-0 w-96 h-96 bg-brand/5 blur-[100px] pointer-events-none animate-float"></div>
 
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="mb-12 text-center" data-aos="fade-up">
                 <p class="text-brand font-bold text-[10px] uppercase tracking-widest mb-2">01 / 24-HOUR MARKET CYCLE</p>
-                <h2 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">Ketahui <span class="text-brand">Session</span> Mana<br> yang Sedang <span class="text-brand">Active</span>.</h2>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-4 leading-tight">
+                    <span class="text-white">Ketahui Session Mana</span> <br>
+                    <span class="text-brand-gradient">yang Sedang Active.</span>
+                </h2>
                 <p class="text-gray-400 max-w-2xl text-base md:text-lg font-medium mx-auto">Sumbu horizontal mewakili jam lokal (WIB). Indikator hijau menandakan presisi waktu saat ini. Fokus pada area <span class="text-brand font-bold">overlap</span> London dan New York (20:00 - 00:00 WIB) untuk menangkap <span class="text-brand font-bold">high impact setup</span>.</p>
             </div>
 
-            <!-- VISUAL TIMELINE CHART -->
             <div data-aos="zoom-in-up" data-aos-delay="200" class="bg-darkpanel border border-gray-800 rounded-[2rem] p-4 md:p-6 lg:p-10 mb-12 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative transition-all duration-500 hover:border-brand/40 hover:-translate-y-2">
                 <div class="w-full overflow-x-auto custom-scrollbar pb-4">
                     <div class="min-w-[800px] relative">
-                        
-                        <!-- Timeline Header (00 - 23) -->
                         <div class="flex ml-28 border-b border-gray-800 pb-3 mb-6 timeline-axis">
                             <span>00</span><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span>
                             <span>06</span><span>07</span><span>08</span><span>09</span><span>10</span><span>11</span>
@@ -247,9 +232,7 @@
                             <span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span>
                         </div>
 
-                        <!-- Rows Container -->
                         <div class="relative ml-28 h-[200px]">
-                            <!-- Real-time Indicator Line -->
                             <div id="timeline-now" class="absolute top-0 bottom-0 w-[2px] bg-brand z-20 flex flex-col items-center transition-all duration-1000 ease-linear shadow-[0_0_15px_rgba(0,229,255,1)]" style="left: 0%;">
                                 <div class="bg-brand text-darkbg text-[9px] font-black px-1.5 py-0.5 rounded absolute -top-5 z-30 shadow-sm animate-pulse">NOW</div>
                                 <div class="w-3 h-3 bg-brand rounded-full absolute top-[18px] shadow-[0_0_8px_rgba(0,229,255,0.8)]"></div>
@@ -258,7 +241,6 @@
                                 <div class="w-3 h-3 bg-brand rounded-full absolute top-[162px] shadow-[0_0_8px_rgba(0,229,255,0.8)]"></div>
                             </div>
 
-                            <!-- Bar Background Grid Lines -->
                             <div class="absolute inset-0 flex pointer-events-none opacity-20 z-0">
                                 <div class="flex-1 border-l border-gray-700"></div><div class="flex-1 border-l border-gray-700"></div>
                                 <div class="flex-1 border-l border-gray-700"></div><div class="flex-1 border-l border-gray-700"></div>
@@ -274,7 +256,6 @@
                                 <div class="flex-1 border-l border-gray-700"></div><div class="flex-1 border-l border-gray-700"></div>
                             </div>
 
-                            <!-- SYDNEY ROW -->
                             <div class="absolute w-full h-8 top-3 flex items-center z-10 group hover:z-30">
                                 <div class="absolute -left-28 w-24 flex items-center gap-2 font-bold text-sm text-white transition-transform group-hover:translate-x-1">
                                     <span class="w-7 h-7 rounded-full bg-red-500/20 border border-red-500/50 text-red-500 flex items-center justify-center text-[10px]">SY</span> Sydney
@@ -284,7 +265,6 @@
                                 </div>
                             </div>
 
-                            <!-- TOKYO ROW -->
                             <div class="absolute w-full h-8 top-[51px] flex items-center z-10 group hover:z-30">
                                 <div class="absolute -left-28 w-24 flex items-center gap-2 font-bold text-sm text-white transition-transform group-hover:translate-x-1">
                                     <span class="w-7 h-7 rounded-full bg-orange-500/20 border border-orange-500/50 text-orange-500 flex items-center justify-center text-[10px]">TK</span> Tokyo
@@ -294,7 +274,6 @@
                                 </div>
                             </div>
 
-                            <!-- LONDON ROW -->
                             <div class="absolute w-full h-8 top-[99px] flex items-center z-10 group hover:z-30">
                                 <div class="absolute -left-28 w-24 flex items-center gap-2 font-bold text-sm text-white transition-transform group-hover:translate-x-1">
                                     <span class="w-7 h-7 rounded-full bg-blue-600/20 border border-blue-600/50 text-blue-400 flex items-center justify-center text-[10px]">LN</span> London
@@ -305,7 +284,6 @@
                                 </div>
                             </div>
 
-                            <!-- NEW YORK ROW -->
                             <div class="absolute w-full h-8 top-[147px] flex items-center z-10 group hover:z-30">
                                 <div class="absolute -left-28 w-24 flex items-center gap-2 font-bold text-sm text-white transition-transform group-hover:translate-x-1">
                                     <span class="w-7 h-7 rounded-full bg-purple-600/20 border border-purple-600/50 text-purple-400 flex items-center justify-center text-[10px]">NY</span> New York
@@ -320,11 +298,8 @@
                 </div>
             </div>
 
-            <!-- CARDS GRID -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
                 
-                <!-- CARD SYDNEY -->
-                <!-- Wrapper div digunakan untuk melindungi data-aos agar tidak tertimpa JavaScript -->
                 <div data-aos="fade-up" data-aos-delay="100" class="h-full">
                     <div id="card-sydney" class="h-full flex flex-col bg-[#0a111d] border border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 shadow-sm hover:-translate-y-2 transition-all duration-300 relative cursor-default group">
                         <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
@@ -334,7 +309,7 @@
                             </div>
                             <span id="tag-sydney" class="bg-gray-800 text-gray-400 text-[9px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase">OFFLINE</span>
                         </div>
-                        <p class="text-base md:text-lg font-mono font-bold text-gray-300 mb-6">05:00 - 14:00 WIB</p>
+                        <p class="text-xl md:text-2xl font-sans font-black text-white tracking-tight mb-6">05:00 - 14:00 WIB</p>
                         <div class="grid grid-cols-2 gap-y-5 gap-x-4 text-xs md:text-sm mt-auto">
                             <div><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-1">Behavior</p><p class="font-semibold text-gray-300"><i>Sideways</i></p></div>
                             <div><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-1">Volume</p><p class="font-semibold text-gray-300"><i>Low</i></p></div>
@@ -344,7 +319,6 @@
                     </div>
                 </div>
 
-                <!-- CARD TOKYO -->
                 <div data-aos="fade-up" data-aos-delay="200" class="h-full">
                     <div id="card-tokyo" class="h-full flex flex-col bg-[#0a111d] border border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 shadow-sm hover:-translate-y-2 transition-all duration-300 relative cursor-default group">
                         <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
@@ -354,7 +328,7 @@
                             </div>
                             <span id="tag-tokyo" class="bg-gray-800 text-gray-400 text-[9px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase">OFFLINE</span>
                         </div>
-                        <p class="text-base md:text-lg font-mono font-bold text-gray-300 mb-6">07:00 - 16:00 WIB</p>
+                        <p class="text-xl md:text-2xl font-sans font-black text-white tracking-tight mb-6">07:00 - 16:00 WIB</p>
                         <div class="grid grid-cols-2 gap-y-5 gap-x-4 text-xs md:text-sm mt-auto">
                             <div><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-1">Behavior</p><p class="font-semibold text-gray-300"><i>Ranging</i></p></div>
                             <div><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-1">Volume</p><p class="font-semibold text-gray-300"><i>Moderate</i></p></div>
@@ -364,7 +338,6 @@
                     </div>
                 </div>
 
-                <!-- CARD LONDON -->
                 <div data-aos="fade-up" data-aos-delay="300" class="h-full">
                     <div id="card-london" class="h-full flex flex-col bg-[#0a111d] border border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 shadow-sm hover:-translate-y-2 transition-all duration-300 relative cursor-default group">
                         <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
@@ -374,7 +347,7 @@
                             </div>
                             <span id="tag-london" class="bg-gray-800 text-gray-400 text-[9px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase">OFFLINE</span>
                         </div>
-                        <p class="text-base md:text-lg font-mono font-bold text-gray-300 mb-6">15:00 - 00:00 WIB</p>
+                        <p class="text-xl md:text-2xl font-sans font-black text-white tracking-tight mb-6">15:00 - 00:00 WIB</p>
                         <div class="grid grid-cols-2 gap-y-5 gap-x-4 text-xs md:text-sm mt-auto">
                             <div><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-1">Behavior</p><p class="font-semibold text-gray-300"><i>Trending</i></p></div>
                             <div><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-1">Volume</p><p class="font-semibold text-gray-300"><i>High</i></p></div>
@@ -384,7 +357,6 @@
                     </div>
                 </div>
 
-                <!-- CARD NEW YORK -->
                 <div data-aos="fade-up" data-aos-delay="400" class="h-full">
                     <div id="card-ny" class="h-full flex flex-col bg-[#0a111d] border border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 shadow-sm hover:-translate-y-2 transition-all duration-300 relative cursor-default group">
                         <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
@@ -394,7 +366,7 @@
                             </div>
                             <span id="tag-ny" class="bg-gray-800 text-gray-400 text-[9px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase">OFFLINE</span>
                         </div>
-                        <p class="text-base md:text-lg font-mono font-bold text-gray-300 mb-6">20:00 - 05:00 WIB</p>
+                        <p class="text-xl md:text-2xl font-sans font-black text-white tracking-tight mb-6">20:00 - 05:00 WIB</p>
                         <div class="grid grid-cols-2 gap-y-5 gap-x-4 text-xs md:text-sm mt-auto">
                             <div><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-1">Behavior</p><p class="font-semibold text-gray-300"><i>Aggressive</i></p></div>
                             <div><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-1">Volume</p><p class="font-semibold text-gray-300"><i>Extreme</i></p></div>
@@ -407,58 +379,57 @@
         </div>
     </section>
 
-    <!-- SECTION 3: COUNTDOWN TIMERS (TERANG) -->
+    <!-- SECTION 3 -->
     <section class="bg-white py-16 md:py-24 px-5 md:px-16 lg:px-24 border-b border-gray-200 relative overflow-hidden">
         <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="mb-12 text-center" data-aos="fade-down">
                 <p class="text-branddark font-bold text-[10px] uppercase tracking-widest mb-2">02 / SESSION COUNTDOWN</p>
-                <h2 class="text-3xl md:text-5xl font-black tracking-tight text-gray-900 mb-4">Persiapkan Diri Untuk <br class="block md:hidden"><span class="text-branddark">Next Session</span>...</h2>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-4 leading-tight">
+                    <span class="text-gray-900">Persiapkan Diri Untuk</span> <br>
+                    <span class="text-brand-gradient">Next Session...</span>
+                </h2>
                 <p class="text-gray-500 max-w-2xl text-base md:text-lg font-medium mx-auto">Kendalikan <i>timing</i> trading Anda. Peluang <span class="text-branddark font-bold">massive movement</span> umumnya terjadi di sekitar 30 menit menjelang hingga setelah <span class="text-branddark font-bold">Open Market</span> Eropa dan Amerika.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-                <!-- Count Sydney -->
                 <div data-aos="zoom-in" data-aos-delay="100" class="h-full">
                     <div class="h-full bg-gray-50 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-center text-left transition-all duration-300 hover:border-branddark hover:shadow-[0_15px_30px_rgba(0,184,204,0.15)] hover:-translate-y-2 group cursor-default">
                         <div class="flex items-center gap-2 mb-4">
                             <span class="w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center text-[8px] font-bold shadow-md group-hover:scale-110 transition-transform">SY</span>
                             <p class="text-xs font-bold text-gray-500 uppercase tracking-widest group-hover:text-gray-900 transition-colors">SYDNEY</p>
                         </div>
-                        <h3 id="count-time-sydney" class="text-3xl md:text-4xl font-mono font-black text-gray-900 tracking-tighter mb-1 transition-colors group-hover:text-branddark">--j --m</h3>
+                        <h3 id="count-time-sydney" class="text-3xl md:text-4xl font-sans font-black text-gray-900 tracking-tighter mb-1 transition-colors group-hover:text-branddark">--j --m</h3>
                         <p id="count-label-sydney" class="text-xs text-gray-500 font-medium">menunggu data...</p>
                     </div>
                 </div>
-                <!-- Count Tokyo -->
                 <div data-aos="zoom-in" data-aos-delay="200" class="h-full">
                     <div class="h-full bg-gray-50 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-center text-left transition-all duration-300 hover:border-branddark hover:shadow-[0_15px_30px_rgba(0,184,204,0.15)] hover:-translate-y-2 group cursor-default">
                         <div class="flex items-center gap-2 mb-4">
                             <span class="w-5 h-5 rounded-full bg-orange-500 text-white flex items-center justify-center text-[8px] font-bold shadow-md group-hover:scale-110 transition-transform">TK</span>
                             <p class="text-xs font-bold text-gray-500 uppercase tracking-widest group-hover:text-gray-900 transition-colors">TOKYO</p>
                         </div>
-                        <h3 id="count-time-tokyo" class="text-3xl md:text-4xl font-mono font-black text-gray-900 tracking-tighter mb-1 transition-colors group-hover:text-branddark">--j --m</h3>
+                        <h3 id="count-time-tokyo" class="text-3xl md:text-4xl font-sans font-black text-gray-900 tracking-tighter mb-1 transition-colors group-hover:text-branddark">--j --m</h3>
                         <p id="count-label-tokyo" class="text-xs text-gray-500 font-medium">menunggu data...</p>
                     </div>
                 </div>
-                <!-- Count London -->
                 <div data-aos="zoom-in" data-aos-delay="300" class="h-full">
                     <div class="h-full bg-gray-50 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-center text-left transition-all duration-300 hover:border-branddark hover:shadow-[0_15px_30px_rgba(0,184,204,0.15)] hover:-translate-y-2 group cursor-default">
                         <div class="flex items-center gap-2 mb-4">
                             <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[8px] font-bold shadow-md group-hover:scale-110 transition-transform">LN</span>
                             <p class="text-xs font-bold text-gray-500 uppercase tracking-widest group-hover:text-gray-900 transition-colors">LONDON</p>
                         </div>
-                        <h3 id="count-time-london" class="text-3xl md:text-4xl font-mono font-black text-gray-900 tracking-tighter mb-1 transition-colors group-hover:text-branddark">--j --m</h3>
+                        <h3 id="count-time-london" class="text-3xl md:text-4xl font-sans font-black text-gray-900 tracking-tighter mb-1 transition-colors group-hover:text-branddark">--j --m</h3>
                         <p id="count-label-london" class="text-xs text-gray-500 font-medium">menunggu data...</p>
                     </div>
                 </div>
-                <!-- Count NY -->
                 <div data-aos="zoom-in" data-aos-delay="400" class="h-full">
                     <div class="h-full bg-gray-50 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-center text-left transition-all duration-300 hover:border-branddark hover:shadow-[0_15px_30px_rgba(0,184,204,0.15)] hover:-translate-y-2 group cursor-default">
                         <div class="flex items-center gap-2 mb-4">
                             <span class="w-5 h-5 rounded-full bg-purple-600 text-white flex items-center justify-center text-[8px] font-bold shadow-md group-hover:scale-110 transition-transform">NY</span>
                             <p class="text-xs font-bold text-gray-500 uppercase tracking-widest group-hover:text-gray-900 transition-colors">NEW YORK</p>
                         </div>
-                        <h3 id="count-time-ny" class="text-3xl md:text-4xl font-mono font-black text-gray-900 tracking-tighter mb-1 transition-colors group-hover:text-branddark">--j --m</h3>
+                        <h3 id="count-time-ny" class="text-3xl md:text-4xl font-sans font-black text-gray-900 tracking-tighter mb-1 transition-colors group-hover:text-branddark">--j --m</h3>
                         <p id="count-label-ny" class="text-xs text-gray-500 font-medium">menunggu data...</p>
                     </div>
                 </div>
@@ -466,57 +437,54 @@
         </div>
     </section>
 
-    <!-- SECTION 4: CATATAN & TIPS (GELAP) -->
+    <!-- SECTION 4 -->
     <section class="bg-darkbg py-16 md:py-24 px-5 md:px-16 lg:px-24 border-b border-gray-800 relative">
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="mb-12 md:mb-16 text-center" data-aos="fade-up">
                 <p class="text-brand font-bold text-[10px] uppercase tracking-widest mb-2">03 / MARKET BEHAVIOR GUIDE</p>
-                <h2 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">Pahami Karakteristiknya <br class="hidden md:block">Sebelum <span class="text-brand">Execute Market</span>.</h2>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-4 leading-tight">
+                    <span class="text-white">Pahami Karakteristiknya Sebelum</span> <br>
+                    <span class="text-brand-gradient">Execute Market.</span>
+                </h2>
                 <p class="text-gray-400 max-w-2xl text-base md:text-lg mx-auto font-medium">Setiap <i>session</i> memiliki ritme volatilitasnya masing-masing. Mengenali pola <span class="text-brand font-bold">price action</span> di awal pembukaan adalah kunci menghindari <span class="text-brand font-bold">false breakout</span> yang sering menjebak trader retail.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-                <!-- Tip 1 -->
                 <div data-aos="fade-up" data-aos-delay="100" class="h-full flex flex-col bg-darkpanel border border-gray-800 p-6 md:p-8 rounded-3xl hover:border-brand transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,229,255,0.1)] hover:-translate-y-2 group cursor-default">
                     <p class="text-brand font-bold text-[10px] uppercase tracking-widest mb-4 group-hover:text-white transition-colors">/ INSIGHT 01</p>
                     <h4 class="font-extrabold text-xl text-white mb-3 tracking-tight"><span class="text-brand">London Open</span> = <i>The Sweet Spot</i></h4>
                     <p class="text-gray-400 text-sm leading-relaxed mt-auto font-medium">Arah <i>trend</i> harian yang solid seringkali tervalidasi pasca pergerakan awal di jam <strong class="text-gray-200">15:00 - 16:30 WIB</strong>. Injeksi likuiditas institusional mulai masuk secara masif.</p>
                 </div>
-                <!-- Tip 2 -->
                 <div data-aos="fade-up" data-aos-delay="200" class="h-full flex flex-col bg-darkpanel border border-gray-800 p-6 md:p-8 rounded-3xl hover:border-brand transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,229,255,0.1)] hover:-translate-y-2 group cursor-default">
                     <p class="text-brand font-bold text-[10px] uppercase tracking-widest mb-4 group-hover:text-white transition-colors">/ INSIGHT 02</p>
                     <h4 class="font-extrabold text-xl text-white mb-3 tracking-tight"><span class="text-brand">Fase Overlap</span> = <i>Peak Liquidity</i></h4>
                     <p class="text-gray-400 text-sm leading-relaxed mt-auto font-medium">Antara pukul <strong class="text-gray-200">20:00 - 00:00 WIB</strong>, bursa Eropa dan Amerika beroperasi bersamaan. Inilah zona waktu ideal untuk menangkap peluang <i>breakout strategy</i>.</p>
                 </div>
-                <!-- Tip 3 -->
                 <div data-aos="fade-up" data-aos-delay="300" class="h-full flex flex-col bg-darkpanel border border-gray-800 p-6 md:p-8 rounded-3xl hover:border-brand transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,229,255,0.1)] hover:-translate-y-2 group cursor-default">
                     <p class="text-brand font-bold text-[10px] uppercase tracking-widest mb-4 group-hover:text-white transition-colors">/ INSIGHT 03</p>
                     <h4 class="font-extrabold text-xl text-white mb-3 tracking-tight"><span class="text-brand">Asian Session</span> = <i>Watch for Ranging</i></h4>
                     <p class="text-gray-400 text-sm leading-relaxed mt-auto font-medium">Sesi Pasifik dan Tokyo umumnya mencetak volume rendah dengan harga yang tertahan (<i>sideways</i>). Sangat berisiko memaksakan strategi tren panjang di jam ini.</p>
                 </div>
-                <!-- Tip 4 -->
                 <div data-aos="fade-up" data-aos-delay="100" class="h-full flex flex-col bg-darkpanel border border-gray-800 p-6 md:p-8 rounded-3xl hover:border-brand transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,229,255,0.1)] hover:-translate-y-2 group cursor-default">
                     <p class="text-brand font-bold text-[10px] uppercase tracking-widest mb-4 group-hover:text-white transition-colors">/ INSIGHT 04</p>
                     <h4 class="font-extrabold text-xl text-white mb-3 tracking-tight"><span class="text-brand">Friday Close</span> = <i>Unpredictable Spike</i></h4>
                     <p class="text-gray-400 text-sm leading-relaxed mt-auto font-medium">Menjelang libur akhir pekan (<i>weekend</i>), institusi mulai melakukan <i>profit taking</i> massal. Hindari <i>open position</i> baru saat melewati <strong class="text-gray-200">pukul 00:00 WIB hari Jumat</strong>.</p>
                 </div>
-                <!-- Tip 5 -->
                 <div data-aos="fade-up" data-aos-delay="200" class="h-full flex flex-col bg-darkpanel border border-gray-800 p-6 md:p-8 rounded-3xl hover:border-brand transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,229,255,0.1)] hover:-translate-y-2 group cursor-default">
                     <p class="text-brand font-bold text-[10px] uppercase tracking-widest mb-4 group-hover:text-white transition-colors">/ INSIGHT 05</p>
                     <h4 class="font-extrabold text-xl text-white mb-3 tracking-tight"><span class="text-brand">News Release?</span> <i>Monitor NFP & CPI</i></h4>
                     <p class="text-gray-400 text-sm leading-relaxed mt-auto font-medium">Data fundamental <i>high impact</i> sering rilis di jam <strong class="text-gray-200">19:30 atau 20:30 WIB</strong>. Dalam kondisi ini, <i>technical structure</i> kerap di-<i>sweep</i> oleh <i>smart money</i>.</p>
                 </div>
-                <!-- Tip 6 -->
                 <div data-aos="fade-up" data-aos-delay="300" class="h-full flex flex-col bg-darkpanel border border-gray-800 p-6 md:p-8 rounded-3xl hover:border-brand transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,229,255,0.1)] hover:-translate-y-2 group cursor-default">
                     <p class="text-brand font-bold text-[10px] uppercase tracking-widest mb-4 group-hover:text-white transition-colors">/ INSIGHT 06</p>
                     <h4 class="font-extrabold text-xl text-white mb-3 tracking-tight"><span class="text-brand">Daylight Saving Time</span> (DST)</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed mt-auto font-medium">Zona waktu Amerika dan Eropa mengalami pergeseran jadwal 1 jam pada bulan tertentu. Manfaatkan *tools sinkronisasi otomatis* ini agar Anda tidak pernah <i>miss</i> pembukaan sesi.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mt-auto font-medium">Zona waktu Amerika dan Eropa mengalami pergeseran jadwal 1 jam pada bulan tertentu. Manfaatkan <i>tools sinkronisasi otomatis</i> ini agar Anda tidak pernah <i>miss</i> pembukaan sesi.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 5: CTA AKHIR DENGAN MOCKUP DISCORD (TERANG) -->
+    <!-- SECTION 5 -->
     <section class="py-16 md:py-24 px-5 md:px-16 lg:px-24 relative overflow-hidden bg-gray-50 border-t border-gray-200">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-branddark/5 blur-[80px] pointer-events-none animate-float-delayed"></div>
         
@@ -526,24 +494,24 @@
                 <div class="inline-flex items-center gap-2 border border-branddark/30 bg-branddark/10 px-4 py-1.5 rounded-full font-bold text-[10px] text-branddark uppercase tracking-widest mb-6">
                     <i class="fa-brands fa-discord"></i> Exclusive Community
                 </div>
-                <h2 class="text-3xl md:text-[3.5rem] font-black mb-6 tracking-tighter leading-tight text-gray-900">
-                    Tingkatkan <span class="text-branddark">Trading Edge</span> Anda. <br><span class="text-branddark">Execute Now.</span>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-6 tracking-tighter leading-tight">
+                    <span class="text-gray-900">Tingkatkan Trading Edge Anda.</span> <br>
+                    <span class="text-brand-gradient">Execute Now.</span>
                 </h2>
                 <p class="text-gray-600 mb-10 text-base md:text-lg font-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
                     Mengetahui kapan harus memantau <i>chart</i> barulah langkah awal; disiplin mengeksekusi <span class="text-branddark font-bold">trading plan</span> di lingkungan yang profesional adalah kuncinya. Bergabunglah bersama komunitas <span class="font-bold text-gray-900">Analyst Area</span>.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 md:gap-6">
-                    <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="bg-gray-900 hover:bg-branddark text-white font-bold py-4 px-8 rounded-xl transition transform hover:-translate-y-1 shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_30px_rgba(0,184,204,0.3)] text-lg flex items-center justify-center gap-3 group w-full sm:w-auto">
+                    <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 text-darkbg font-bold py-4 px-8 rounded-xl transition transform hover:-translate-y-1 flex items-center justify-center gap-3 text-lg group w-full sm:w-auto shadow-[0_10px_20px_rgba(37,99,235,0.3)]">
                         <i class="fa-brands fa-discord text-2xl group-hover:scale-110 transition"></i> Join Server Discord
                     </a>
                 </div>
             </div>
 
-            <!-- Discord Mockup interaktif -->
             <div class="relative group mt-10 lg:mt-0" data-aos="fade-left" data-aos-delay="200">
-                <div class="absolute -inset-2 bg-gradient-to-tr from-brand/30 to-blue-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-100 transition duration-700"></div>
+                <div class="absolute -inset-2 bg-gradient-to-tr from-brand to-blue-600 rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition duration-700"></div>
                 
-                <div class="bg-discordbg rounded-2xl border border-gray-700 shadow-[0_20px_50px_rgba(0,0,0,0.2)] overflow-hidden flex flex-col h-[400px] transition-transform duration-700 hover:-translate-y-2 relative z-10 text-left animate-float">
+                <div class="bg-discordbg rounded-2xl border border-gray-700 shadow-2xl overflow-hidden flex flex-col h-[400px] transition-transform duration-700 hover:-translate-y-2 relative z-10 text-left animate-float">
                     <div class="bg-discordheader px-4 py-3 border-b border-[#1e1f22] flex items-center justify-between shadow-sm">
                         <div class="flex items-center gap-3">
                             <i class="fa-solid fa-hashtag text-gray-400 text-lg"></i>
@@ -568,8 +536,7 @@
                         </div>
                         
                         <div class="flex gap-4 group/msg hover:bg-[#2e3035] -mx-4 px-4 py-1 transition-colors">
-                            <div class="relative w-10 h-10 rounded-full shadow-[0_0_10px_rgba(0,229,255,0.4)] bg-brand flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition">
-                                <!-- Logo Analyst Area Simple Version -->
+                            <div class="relative w-10 h-10 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.4)] bg-gradient-to-br from-brand to-blue-600 flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition">
                                 <svg class="w-5 h-5 text-darkbg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <circle cx="12" cy="12" r="11" stroke-width="1.5"></circle>
                                     <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1"></polygon>
@@ -578,7 +545,7 @@
                                 <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#313338] rounded-full"></div>
                             </div>
                             <div>
-                                <h4 class="text-brand font-semibold text-sm flex items-center gap-2 cursor-pointer hover:underline">Richo G. 
+                                <h4 class="text-brand font-semibold text-sm flex items-center gap-2 cursor-pointer hover:underline">Analyst. 
                                     <span class="bg-discordblue text-white text-[9px] px-1.5 py-0.5 rounded font-bold tracking-wider"><i class="fa-solid fa-check text-[8px]"></i> ADMIN</span>
                                     <span class="text-xs text-gray-500 font-normal">Hari ini pukul 15:22</span>
                                 </h4>
@@ -606,31 +573,30 @@
         </div>
     </section>
 
-    <!-- FOOTER (GELAP) -->
+    <!-- FOOTER -->
     <footer class="bg-darkbg text-gray-500 py-10 px-5 md:px-16 lg:px-24 text-xs font-sans relative z-10 border-t border-gray-800">
         <div class="max-w-7xl mx-auto border-b border-gray-800 pb-6 mb-6 text-center md:text-left" data-aos="fade-up">
             <p class="leading-relaxed text-gray-400">
                 <strong class="text-gray-300">Risk Warning.</strong> Analyst Area merupakan platform bimbingan serta literasi finansial. Data perhitungan jam bersifat simulasi otomatis yang didasarkan pada waktu lokal gawai Anda. Harap dipahami bahwa aktivitas jual-beli aset (seperti forex, kripto, atau saham) membawa risiko penurunan hingga kehilangan modal yang tinggi.  
                 <br class="block md:hidden mt-2">
-                <a href="#" class="text-brand font-medium hover:underline inline-block mt-2 md:mt-0 md:ml-1">Penyangkalan</a> <span class="hidden md:inline">·</span> 
-                <a href="#" class="text-brand font-medium hover:underline inline-block mt-2 md:mt-0 md:ml-1">Syarat & Ketentuan</a>
+                <a href="about.html" class="text-brand font-medium hover:underline inline-block mt-2 md:mt-0 md:ml-1">Penyangkalan</a> <span class="hidden md:inline text-gray-600">·</span> 
+                <a href="about.html" class="text-brand font-medium hover:underline inline-block mt-2 md:mt-0 md:ml-1">Syarat &amp; Ketentuan</a>
             </p>
         </div>
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4" data-aos="fade-up" data-aos-delay="100">
             <p class="font-medium text-gray-500 text-center md:text-left w-full md:w-auto">Hak Cipta &copy; 2026 Analyst Area. Dilindungi Undang-Undang.</p>
-        <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 w-full md:w-auto">
-                <a href="https://www.instagram.com/richolinggar_?igsh=b28zZmxsdjV6ejM5" target="_blank" class="text-[#E1306C] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
+            <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 w-full md:w-auto">
+                <a href="https://www.instagram.com/richolinggar_?igsh=b28zZmxsdjV6ejM5" target="_blank" rel="noopener" class="text-[#E1306C] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
                     <i class="fa-brands fa-instagram text-lg md:text-xl"></i> <span class="hidden md:inline">Instagram</span>
                 </a>
-                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="text-[#5865F2] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
+                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="text-[#5865F2] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
                     <i class="fa-brands fa-discord text-lg md:text-xl"></i> <span class="hidden md:inline">Komunitas Discord</span>
                 </a>
             </div>
         </div>
     </footer>
 
-    <!-- TOMBOL WHATSAPP MELAYANG -->
-    <a href="https://wa.me/6281217618728?text=Assalamualaikum%2C%20Wr.%20Wb.%20Permisi%20Mas%20Richo." target="_blank" class="fixed bottom-6 right-6 md:bottom-6 md:right-6 bg-white text-gray-800 px-3 md:px-4 py-3 rounded-full shadow-xl border border-gray-200 flex items-center gap-3 z-50 hover:-translate-y-1 transition duration-300 group">
+    <a href="https://wa.me/6281217618728?text=Assalamualaikum%2C%20Wr.%20Wb.%20Permisi%20Mas%20Richo." target="_blank" rel="noopener" class="fixed bottom-6 right-6 md:bottom-6 md:right-6 bg-white text-gray-800 px-3 md:px-4 py-3 rounded-full shadow-xl border border-gray-200 flex items-center gap-3 z-50 hover:-translate-y-1 transition duration-300 group" aria-label="Hubungi Admin via WhatsApp">
         <div class="bg-[#25D366] text-white rounded-full w-10 h-10 flex items-center justify-center text-xl group-hover:bg-[#20b858] transition">
             <i class="fa-brands fa-whatsapp"></i>
         </div>
@@ -640,13 +606,10 @@
         </div>
     </a>
 
-    <!-- AOS Script JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- REAL-TIME TIMELINE, COUNTDOWN & MOBILE MENU LOGIC -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // INITIALIZE AOS (Animasi Scroll)
             AOS.init({
                 duration: 800,
                 easing: 'ease-out-cubic',
@@ -654,7 +617,6 @@
                 offset: 50
             });
 
-            // MOBILE MENU TOGGLE LOGIC
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             
@@ -674,22 +636,19 @@
                 }
 
                 mobileBtn.addEventListener('click', toggleMenu);
-
                 mobileLinks.forEach(link => {
                     link.addEventListener('click', toggleMenu);
                 });
             }
         });
 
-        // Logika Hitung Mundur (Countdown) Cerdas
         function getNextEventString(openHour, closeHour, currentDayWIB, h, m, s, isWeekendClosed) {
             let isOpen = false;
             
-            // Cek apakah jam saat ini berada dalam rentang buka (abaikan weekend dulu)
             if (!isWeekendClosed) {
                 if (openHour < closeHour) {
                     isOpen = (h >= openHour && h < closeHour);
-                } else { // Overlap tengah malam (misal 20:00 ke 05:00)
+                } else {
                     isOpen = (h >= openHour || h < closeHour);
                 }
             }
@@ -699,39 +658,33 @@
             let label = "";
 
             if (isWeekendClosed) {
-                targetDay = 1; // Paksa target hari Senin
+                targetDay = 1;
                 targetHour = openHour;
                 label = "open dalam (Senin)";
             } else if (isOpen) {
                 targetHour = closeHour;
-                // Jika melewati tengah malam sebelum tutup (misal NY tutup jam 5, sekarang jam 2) targetDay tetap
                 if (h >= closeHour && openHour < closeHour) targetDay = (currentDayWIB + 1) % 7;
                 label = "close dalam";
             } else {
                 targetHour = openHour;
-                if (h >= openHour) targetDay = (currentDayWIB + 1) % 7; // Sudah lewat jam bukanya hari ini, target besok
+                if (h >= openHour) targetDay = (currentDayWIB + 1) % 7;
                 label = "open dalam";
                 
-                // Jika besok adalah Sabtu (6), paksa mundur ke Senin (1)
                 if (targetDay === 6) {
                     targetDay = 1;
                     label = "open dalam (Senin)";
                 }
             }
 
-            // Hitung selisih hari
             let daysDiff = targetDay - currentDayWIB;
             if (daysDiff < 0) daysDiff += 7;
             
-            // Konversi total target dan current ke satuan detik
             let targetTotalSeconds = (daysDiff * 24 * 3600) + (targetHour * 3600);
             let currentTotalSeconds = (h * 3600) + (m * 60) + s;
             
-            // Safety untuk target yang harusnya besok tapi daysDiff nya masih 0
             if (targetTotalSeconds <= currentTotalSeconds && !isWeekendClosed && targetDay === currentDayWIB) {
                 targetTotalSeconds += 24 * 3600; 
             }
-            // Fallback safety absolut
             if (targetTotalSeconds < currentTotalSeconds) targetTotalSeconds += 7 * 24 * 3600;
 
             let diffMs = (targetTotalSeconds - currentTotalSeconds) * 1000;
@@ -747,14 +700,11 @@
         }
 
         function updateDashboard() {
-            // Kita menggunakan waktu lokal perangkat user, lalu diformat menjadi patokan WIB
             const now = new Date();
             
-            // Dapatkan string waktu spesifik Jakarta dari object "now"
             const timeStr = now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Jakarta', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
             const dateStr = now.toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             
-            // Dapatkan index hari (0=Minggu, 1=Senin... 6=Sabtu) secara persis di Jakarta
             const weekdayStr = now.toLocaleDateString('en-US', { timeZone: 'Asia/Jakarta', weekday: 'short' });
             const daysMap = { 'Sun':0, 'Mon':1, 'Tue':2, 'Wed':3, 'Thu':4, 'Fri':5, 'Sat':6 };
             const currentDayWIB = daysMap[weekdayStr];
@@ -764,19 +714,15 @@
             const m = parseInt(timeParts[1], 10);
             const s = parseInt(timeParts[2], 10);
 
-            // 1. Update Jam Digital di UI
             document.getElementById('h').innerText = timeParts[0];
             document.getElementById('m').innerText = timeParts[1];
             document.getElementById('s').innerText = timeParts[2];
             document.getElementById('live-date').innerText = dateStr + " (WIB)";
 
-            // 2. Logika Libur Market: Sabtu jam 05:00 WIB sampai Senin jam 05:00 WIB
             const isWeekendClosed = (currentDayWIB === 6 && h >= 5) || 
                                     (currentDayWIB === 0) || 
                                     (currentDayWIB === 1 && h < 5);
 
-            // 3. Kalkulasi Data Setiap Sesi
-            // SY: 05:00 - 14:00 | TK: 07:00 - 16:00 | LN: 15:00 - 00:00 | NY: 20:00 - 05:00
             const sessions = {
                 sydney: getNextEventString(5, 14, currentDayWIB, h, m, s, isWeekendClosed),
                 tokyo: getNextEventString(7, 16, currentDayWIB, h, m, s, isWeekendClosed),
@@ -784,7 +730,6 @@
                 ny: getNextEventString(20, 5, currentDayWIB, h, m, s, isWeekendClosed)
             };
 
-            // 4. Update UI Fungsi (Cards & Badges)
             function syncUI(id, data) {
                 document.getElementById('count-time-' + id).innerText = data.timeStr;
                 document.getElementById('count-label-' + id).innerText = data.label;
@@ -794,22 +739,16 @@
                 const card = document.getElementById('card-' + id);
                 const tag = document.getElementById('tag-' + id);
 
-                // Section 2 Cards (Dark Mode Theme Base)
                 if (data.isOpen) {
                     badge.className = "status-badge active px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-xs md:text-sm flex items-center shadow-sm";
                     dot.className = "status-dot active";
-                    
-                    // JS Overwrite kelas card bagian dalam (tidak menyentuh wrapper pelindung animasi luar)
                     card.className = "h-full flex flex-col bg-[#111827] border-2 border-[#00e5ff] shadow-[0_0_25px_rgba(0,229,255,0.15)] rounded-3xl p-6 md:p-8 transition-all duration-500 transform -translate-y-2 cursor-default relative group";
-                    
                     tag.className = "bg-brand/20 text-brand text-[9px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase border border-brand/50";
                     tag.innerText = "RUNNING";
                 } else {
                     badge.className = "status-badge inactive px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-xs md:text-sm flex items-center shadow-sm";
                     dot.className = "status-dot inactive";
-                    
                     card.className = "h-full flex flex-col bg-[#0a111d] border border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 shadow-sm hover:-translate-y-2 transition-all duration-300 relative cursor-default group";
-                    
                     tag.className = "bg-gray-800 text-gray-400 text-[9px] font-bold px-2.5 py-1 rounded-md tracking-wider uppercase group-hover:bg-gray-700 transition-colors";
                     tag.innerText = "OFFLINE";
                 }
@@ -820,11 +759,9 @@
             syncUI('london', sessions.london);
             syncUI('ny', sessions.ny);
 
-            // 5. Update Visual Timeline Line "NOW"
             const percentageOfDay = ((h * 60 * 60) + (m * 60) + s) / (24 * 60 * 60) * 100;
             document.getElementById('timeline-now').style.left = `${percentageOfDay}%`;
 
-            // 6. Update Hero Status Note & Notifikasi
             const noteEl = document.getElementById('dynamic-note');
             const noteContainer = document.getElementById('note-container');
             const heroStatus = document.getElementById('status-market-badge');
@@ -858,7 +795,6 @@
             }
         }
 
-        // Eksekusi fungsi pertama kali, lalu looping otomatis per 1 detik
         updateDashboard();
         setInterval(updateDashboard, 1000);
     </script>
