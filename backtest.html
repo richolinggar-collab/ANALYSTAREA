@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backtest Laboratory - Analyst Area</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Swiper CSS untuk Slide -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: { brand: '#00e5ff', branddark: '#00b8cc', darkbg: '#060b13', darkpanel: '#0a111d', darkborder: '#1f2937' },
+                    keyframes: {
+                        'value-flash': {
+                            '0%': { transform: 'scale(1)', color: 'inherit' },
+                            '30%': { transform: 'scale(1.15)', color: '#00e5ff' },
+                            '100%': { transform: 'scale(1)', color: 'inherit' }
+                        },
+                        'border-pulse': {
+                            '0%, 100%': { boxShadow: '0 0 0 0 rgba(0,229,255,0.4)' },
+                            '50%': { boxShadow: '0 0 0 6px rgba(0,229,255,0)' }
+                        },
+                        'gradient-shift': {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' }
+                        },
+                        'shimmer': {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' }
+                        }
+                    },
+                    animation: {
+                        'value-flash': 'value-flash 0.6s ease-out',
+                        'border-pulse': 'border-pulse 2s ease-in-out infinite',
+                        'gradient-shift': 'gradient-shift 4s ease infinite',
+                        'shimmer': 'shimmer 3s linear infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; scroll-padding-top: 81px; }
+        body { padding-top: 73px; overflow-x: hidden; background-color: #060b13; color: #e2e8f0; }
+        .nav-link { position: relative; }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background: linear-gradient(to right, #00e5ff, #2563eb); transition: width 0.3s ease; }
+        .nav-link:hover::after, .nav-link.active-nav::after { width: 100%; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: 10px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af; border-bottom: 1px solid #1f2937; text-align: center; white-space: nowrap; font-weight: 700; position: sticky; top: 0; background: #0d1522; z-index: 10; cursor: pointer; transition: color 0.2s; }
+        th:hover { color: #00e5ff; }
+        td { padding: 8px; border-bottom: 1px solid #1f2937; text-align: center; vertical-align: middle; white-space: nowrap; font-size: 12px; }
+        
+        .input-modal { width: 100%; background: #060b13; border: 1px solid #374151; color: white; font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 10px 12px; border-radius: 6px; transition: all 0.2s; outline: none; }
+        .input-modal:focus { border-color: #00e5ff; box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.15); }
+        select, input[type="date"] { color-scheme: dark; }
+        select option { background-color: #0a111d; color: #fff; }
+        
+        .calendar-wrapper { background: #0d1522; border: 1px solid #1f2937; border-radius: 12px; overflow: hidden; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #1f2937; }
+        .cal-header { text-align: center; font-size: 11px; font-weight: 700; color: #9ca3af; padding: 12px 0; background: #0d1522; }
+        .cal-cell { background: #0a111d; min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.2s; position: relative; cursor: default; }
+        .cal-cell:hover:not(.cal-empty) { background: rgba(0,229,255,0.08) !important; transform: scale(1.05); z-index: 5; }
+        .cal-empty { background: #060b13; }
+        .cal-no-trade { background: #0a111d; }
+        .cal-profit-strong { background: rgba(34, 197, 94, 0.15); }
+        .cal-profit-weak { background: rgba(34, 197, 94, 0.05); }
+        .cal-loss-strong { background: rgba(239, 68, 68, 0.15); }
+        .cal-loss-weak { background: rgba(239, 68, 68, 0.05); }
+        
+        .cal-day { font-size: 12px; font-weight: bold; color: #6b7280; position: absolute; top: 6px; left: 10px; }
+        .cal-profit-text { font-size: 10px; font-weight: 800; font-family: 'JetBrains Mono', monospace; margin-top: 12px; letter-spacing: -0.5px; }
+        .cal-today { border: 1px solid #00e5ff; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); animation: border-pulse 2s ease-in-out infinite; }
+        .cal-today .cal-day { color: #00e5ff; }
+
+        .bg-grid-pattern-light {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLCAwLCAwLCAwLjA0KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+');
+        }
+
+        .text-brand-gradient {
+            background-image: linear-gradient(to right, #00e5ff, #2563eb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .metric-card { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), background 0.3s ease, border-color 0.3s ease; }
+        .metric-card:hover { transform: translateY(-2px); background: rgba(0,229,255,0.03); }
+        .stat-value { transition: color 0.3s ease; }
+        .stat-value.flash { animation: value-flash 0.6s ease-out; }
+
+        .btn-interactive { transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease; }
+        .btn-interactive:hover { transform: translateY(-1px) scale(1.02); }
+        .btn-interactive:active { transform: translateY(0) scale(0.98); }
+
+        .chart-container { transition: all 0.3s ease; }
+        .chart-container:hover { border-color: rgba(0,229,255,0.4); box-shadow: 0 0 20px rgba(0,229,255,0.1); }
+
+        .system-ready-badge {
+            background: linear-gradient(90deg, rgba(0,229,255,0.1), rgba(37,99,235,0.1), rgba(0,229,255,0.1));
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .quote-card { transition: all 0.3s ease; }
+        .quote-card:hover { box-shadow: 0 0 25px rgba(0,229,255,0.15); }
+
+        #tradeBody tr { transition: background 0.2s ease, transform 0.2s ease; animation: row-in 0.3s ease-out backwards; }
+        #tradeBody tr:hover { background: rgba(0,229,255,0.04) !important; }
+        #tradeBody tr:nth-child(1) { animation-delay: 0.02s; }
+        #tradeBody tr:nth-child(2) { animation-delay: 0.04s; }
+        #tradeBody tr:nth-child(3) { animation-delay: 0.06s; }
+        @keyframes row-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+        #tradeModal { transition: opacity 0.25s ease; }
+        #tradeModal.hidden { opacity: 0; pointer-events: none; }
+        #tradeModal:not(.hidden) > div { animation: modal-pop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes modal-pop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        #insightsPanel { transition: box-shadow 0.4s ease; }
+        #insightsPanel:hover { box-shadow: 0 0 30px rgba(0,229,255,0.08); }
+
+        input:focus, select:focus { animation: focus-pulse 0.4s ease-out; }
+        @keyframes focus-pulse { 0% { box-shadow: 0 0 0 0 rgba(0,229,255,0.5); } 100% { box-shadow: 0 0 0 4px rgba(0,229,255,0); } }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a111d; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        
+        /* Swiper Custom Styles */
+        .swiper-pagination-bullet { background: #00e5ff; opacity: 0.3; }
+        .swiper-pagination-bullet-active { opacity: 1; transform: scale(1.2); }
+    </style>
+</head>
+<body class="antialiased font-sans flex flex-col min-h-screen">
+
+    <div id="errorBox" class="hidden fixed top-20 left-1/2 -translate-x-1/2 z-[999] bg-red-600 text-white px-6 py-3 rounded-lg shadow-2xl font-bold text-sm max-w-lg text-center"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full z-50 px-5 md:px-8 py-4 bg-[#060b13]/90 backdrop-blur-md border-b border-gray-800 transition-all">
+        <div class="max-w-[1600px] mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.7)] group-hover:scale-110 transition-transform duration-500">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full"><circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle><polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon><path d="M5.5 17.5 L9 8.5 L12 13.5 L15 8.5 L18.5 17.5" stroke-width="1.5" stroke-linejoin="round"></path><path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+                <span class="font-extrabold text-xl md:text-2xl tracking-tight uppercase text-white">ANALYST <span class="text-brand-gradient">AREA</span></span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="index.html#home" class="nav-link text-gray-300 hover:text-brand transition">Home</a>
+                <a href="tools.html" class="nav-link text-gray-300 hover:text-brand transition">Tools</a>
+                <a href="jurnal.html" class="nav-link text-gray-300 hover:text-brand transition">Journal</a>
+                <a href="terminal.html" class="nav-link text-gray-300 hover:text-brand transition">Terminal</a>
+                <a href="backtest.html" class="nav-link text-brand active-nav transition">Backtest Labs</a>
+                <a href="about.html" class="nav-link text-gray-300 hover:text-brand transition">About</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="hidden md:inline-block bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 hover:-translate-y-1 text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg hover:shadow-brand/50">Join Discord</a>
+                <button id="mobile-menu-btn" class="md:hidden text-white rounded p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand" aria-expanded="false" aria-controls="mobile-menu" aria-label="Buka menu navigasi">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div id="mobile-menu" class="fixed top-[73px] left-0 w-full bg-[#060b13]/95 backdrop-blur-xl border-b border-gray-800 z-40 transform -translate-y-full transition-transform duration-300 ease-in-out flex flex-col text-center shadow-2xl md:hidden">
+        <a href="index.html#home" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Home</a>
+        <a href="tools.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Tools</a>
+        <a href="jurnal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Journal</a>
+        <a href="terminal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Terminal</a>
+        <a href="backtest.html" class="py-4 border-b border-gray-800 font-medium mobile-nav-link"><span class="text-brand-gradient">Backtest Labs</span></a>
+        <a href="about.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">About</a>
+        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="py-4 bg-gradient-to-r from-brand to-blue-500 text-darkbg font-bold mobile-nav-link">Join Discord</a>
+    </div>
+
+    <!-- HERO SECTION ENHANCED -->
+    <section class="bg-white pt-16 pb-12 md:pt-20 md:pb-16 relative overflow-hidden">
+        <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-brand/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto px-5 relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 px-4 py-1.5 rounded-full mb-6 shadow-sm" data-aos="fade-down">
+                <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
+                <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Backtest Laboratory Pro</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-gray-900 tracking-tight mb-6 leading-tight" data-aos="fade-up" data-aos-delay="100">
+                Stop Guessing. <br>
+                <span class="text-brand-gradient">Start Proving.</span>
+            </h1>
+            
+            <p class="text-gray-500 text-base md:text-xl max-w-2xl mx-auto leading-relaxed mb-8" data-aos="fade-up" data-aos-delay="200">
+                "The best way to predict the future is to test the past. Backtesting turns random market noise into a measurable, repeatable statistical edge."
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12" data-aos="fade-up" data-aos-delay="300">
+                <a href="#tool" class="btn-interactive bg-gray-900 hover:bg-black text-white font-bold py-3.5 px-8 rounded-xl transition duration-300 shadow-xl w-full sm:w-auto flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-flask text-brand"></i> Mulai Simulasi
+                </a>
+                <a href="index.html" class="btn-interactive text-gray-500 hover:text-gray-900 bg-white border border-gray-200 hover:border-gray-300 font-bold py-3.5 px-8 rounded-xl transition duration-300 shadow-sm w-full sm:w-auto flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </a>    
+            </div>
+
+            <!-- CAROUSEL / SLIDER FITUR -->
+            <div class="w-full max-w-4xl mx-auto mt-8" data-aos="fade-up" data-aos-delay="400">
+                <div class="swiper featureSwiper pb-12">
+                    <div class="swiper-wrapper">
+                        <!-- Slide 1 -->
+                        <div class="swiper-slide">
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left hover:shadow-lg transition-shadow">
+                                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-chart-line"></i></div>
+                                <h3 class="font-bold text-gray-900 text-lg mb-2">Equity Curve & Metrics</h3>
+                                <p class="text-gray-500 text-sm">Visualisasikan pertumbuhan modal Anda dengan grafik interaktif dan perhitungan metrik profesional (Win Rate, Profit Factor, Drawdown).</p>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="swiper-slide">
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left hover:shadow-lg transition-shadow">
+                                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-robot"></i></div>
+                                <h3 class="font-bold text-gray-900 text-lg mb-2">AI Trade Insight</h3>
+                                <p class="text-gray-500 text-sm">Sistem membaca data Anda dan memberikan narasi analisa layaknya mentor pribadi. Kenali bias dan kelemahan strategi Anda.</p>
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="swiper-slide">
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left hover:shadow-lg transition-shadow">
+                                <div class="w-12 h-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+                                <h3 class="font-bold text-gray-900 text-lg mb-2">Auto Risk Mode</h3>
+                                <p class="text-gray-500 text-sm">Kalkulasi lot otomatis berdasarkan risiko per trade ($) dan jarak Stop Loss, menjaga psikologi dan ketahanan dana Anda tetap aman.</p>
+                            </div>
+                        </div>
+                        <!-- Slide 4 -->
+                        <div class="swiper-slide">
+                            <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-left hover:shadow-lg transition-shadow">
+                                <div class="w-12 h-12 rounded-xl bg-yellow-50 text-yellow-600 flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-calendar-check"></i></div>
+                                <h3 class="font-bold text-gray-900 text-lg mb-2">Trading Calendar</h3>
+                                <p class="text-gray-500 text-sm">Pemetaan profit dan loss harian dalam tampilan kalender yang elegan untuk melihat konsistensi performa Anda dari waktu ke waktu.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN TOOL -->
+    <main id="tool" class="flex-1 max-w-[1600px] w-full mx-auto p-3 md:p-5 pt-10">
+        
+        <!-- HEADER TOOL -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-2" data-aos="fade-right">
+            <div>
+                <a href="tools.html" class="text-branddark hover:text-brand text-[10px] font-bold tracking-widest uppercase mb-1 inline-block transition"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Tools</a>
+                <h1 class="text-2xl md:text-4xl font-black text-white tracking-tight flex items-center gap-2">
+                    <i class="fa-solid fa-flask text-brand"></i> Backtest <span class="text-brand-gradient">Laboratory</span>
+                </h1>
+                <p class="text-gray-400 text-xs mt-1">Simulasikan strategi, ukur ekspektasi matematis, dan analisa psikologi trading Anda secara presisi.</p>
+            </div>
+            
+            <div class="hidden md:inline-flex items-center gap-2 system-ready-badge border border-brand/20 px-3 py-1.5 rounded-full text-[10px] font-bold text-brand uppercase tracking-widest shadow-[0_0_15px_rgba(0,229,255,0.15)]">
+                <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span> System Ready
+            </div>
+        </div>
+
+        <!-- Control Bar -->
+        <div class="bg-darkpanel border border-darkborder rounded-xl shadow-lg mb-4 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-darkborder chart-container" data-aos="fade-up" data-aos-delay="100">
+            <div class="p-3 flex-1 flex flex-wrap gap-4 items-center">
+                <div class="flex items-center gap-2">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Modal</label>
+                    <div class="relative">
+                        <span class="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 font-mono text-xs">$</span>
+                        <input type="number" id="initialCapital" value="10000" class="bg-darkbg border border-gray-700 text-brand text-xs font-bold rounded pl-6 pr-2 py-1 w-24 outline-none focus:border-brand transition">
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Mode Lot</label>
+                    <select id="lotMode" onchange="updateLotModeUI(); renderTable(); calculateMetrics(); saveData();" class="bg-darkbg border border-gray-700 text-white text-xs rounded px-2 py-1 outline-none focus:border-brand cursor-pointer">
+                        <option value="manual">Manual</option>
+                        <option value="auto">Auto Risk</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2" id="riskContainer">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider" id="riskLabel">Risk</label>
+                    <div class="relative">
+                        <span class="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 font-mono text-xs" id="riskSymbol">$</span>
+                        <input type="number" id="riskPerTrade" value="100" class="bg-darkbg border border-gray-700 text-red-400 text-xs font-bold rounded pl-6 pr-2 py-1 w-20 outline-none focus:border-brand transition">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 ml-auto">
+                    <button onclick="downloadTemplate()" class="btn-interactive bg-gray-800 hover:bg-gray-700 text-gray-300 px-2 py-1 rounded text-[10px] font-semibold transition border border-gray-700"><i class="fa-regular fa-file-excel"></i> Template</button>
+                    <label class="btn-interactive bg-[#1D6F42] hover:bg-[#155230] text-white px-2 py-1 rounded text-[10px] font-semibold transition flex items-center gap-1 cursor-pointer"><i class="fa-solid fa-file-import"></i> Import <input type="file" id="excelUpload" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleExcelUpload(event)"></label>
+                    <button onclick="exportExcel()" class="btn-interactive bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 text-darkbg px-2 py-1 rounded text-[10px] font-bold transition"><i class="fa-solid fa-file-export"></i> Export</button>
+                </div>
+            </div>
+            
+            <div class="p-3 bg-[#0d1522] rounded-b-xl lg:rounded-r-xl lg:rounded-bl-none flex items-center gap-2 relative z-20">
+                <label class="text-[10px] text-brand font-bold uppercase tracking-widest whitespace-nowrap"><i class="fa-solid fa-filter"></i> Pair</label>
+                <select id="pairFilter" onchange="calculateMetrics()" class="bg-darkbg border border-brand/50 text-brand text-xs font-bold rounded px-2 py-1 outline-none focus:border-brand cursor-pointer w-32">
+                    <option value="all">Semua</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Grid Layout Utama -->
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 mb-4">
+            
+            <!-- KIRI (Tabel Scrollable) -->
+            <div class="xl:col-span-9 flex flex-col h-[600px] min-w-0" data-aos="fade-right" data-aos-delay="150">
+                <div class="bg-darkpanel border border-darkborder rounded-xl shadow-lg overflow-hidden flex flex-col h-full chart-container">
+                    <div class="overflow-auto custom-scrollbar flex-1">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th class="w-8" onclick="sortTable('number')"># <i id="icon-number" class="fa-solid fa-sort text-[8px] opacity-50 ml-1"></i></th>
+                                    <th class="w-20 text-left pl-2" onclick="sortTable('pair')">Pair <i id="icon-pair" class="fa-solid fa-sort text-[8px] opacity-50 ml-1"></i></th>
+                                    <th class="w-24" onclick="sortTable('action')">Action <i id="icon-action" class="fa-solid fa-sort text-[8px] opacity-50 ml-1"></i></th>
+                                    <th class="w-16" onclick="sortTable('lot')">Lot <i id="icon-lot" class="fa-solid fa-sort text-[8px] opacity-50 ml-1"></i></th>
+                                    <th class="w-20" onclick="sortTable('entry')">Entry <i id="icon-entry" class="fa-solid fa-sort text-[8px] opacity-50 ml-1"></i></th>
+                                    <th class="w-24">SL / TP</th>
+                                    <th class="w-16" onclick="sortTable('rr')">RR <i id="icon-rr" class="fa-solid fa-sort text-[8px] opacity-50 ml-1"></i></th>
+                                    <th class="w-20" onclick="sortTable('pips')">Pips <i id="icon-pips" class="fa-solid fa-sort text-[8px] opacity-50 ml-1"></i></th>
+                                    <th class="w-20" onclick="sortTable('result')">Hasil <i id="icon-result" class="fa-solid fa-sort text-[8px] opacity-50 ml-1"></i></th>
+                                    <th class="w-16">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tradeBody" class="divide-y divide-darkborder/50">
+                                <!-- Diisi oleh JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-2 bg-[#0d1522] border-t border-darkborder flex justify-between items-center">
+                        <button onclick="openModal()" class="btn-interactive bg-brand/10 hover:bg-brand/20 text-brand text-xs font-bold py-1.5 px-4 rounded transition border border-brand/30 flex items-center gap-1"><i class="fa-solid fa-plus"></i> Tambah Data</button>
+                        <button onclick="clearAll()" class="text-[10px] font-bold text-gray-500 hover:text-red-400 transition">Hapus Semua</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KANAN (Charts & Quotes) -->
+            <div class="xl:col-span-3 flex flex-col gap-4 min-w-0" data-aos="fade-left" data-aos-delay="200">
+                <div class="bg-darkpanel border border-gray-700 rounded-xl p-4 relative overflow-hidden shadow-xl chart-container">
+                    <p class="text-[9px] text-gray-400 uppercase font-bold tracking-widest mb-1 relative z-10">Total Ekuitas</p>
+                    <p class="text-2xl font-black text-white font-mono relative z-10 stat-value" id="statCurrentBalance">$10,000.00</p>
+                    
+                    <div class="flex items-center justify-between mt-2 relative z-10 border-t border-gray-800 pt-2">
+                        <div>
+                            <p class="text-[9px] text-gray-500 uppercase font-bold mb-0.5">Net P/L</p>
+                            <p class="text-xs font-bold font-mono stat-value" id="statNetPL">$0.00</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] text-gray-500 uppercase font-bold mb-0.5">Return</p>
+                            <p class="text-xs font-bold font-mono stat-value" id="statReturnPercent">0.00%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-darkpanel border border-darkborder rounded-xl p-3 shadow-lg h-[140px] flex flex-col relative chart-container">
+                    <h3 class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Equity Curve</h3>
+                    <div class="flex-1 relative w-full h-full"><canvas id="equityChart"></canvas></div>
+                </div>
+
+                <div class="bg-darkpanel border border-darkborder rounded-xl p-3 shadow-lg h-[140px] flex flex-col relative chart-container">
+                    <h3 class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">R-Multiple Dist.</h3>
+                    <div class="flex-1 relative w-full h-full"><canvas id="histogramChart"></canvas></div>
+                </div>
+
+                <div class="quote-card bg-gradient-to-br from-[#0d1522] to-[#0a111d] border border-brand/20 rounded-xl p-4 shadow-lg flex-1 flex flex-col justify-between relative overflow-hidden group">
+                    <i class="fa-solid fa-quote-left absolute top-2 left-2 text-brand/10 text-3xl"></i>
+                    <p id="quoteText" class="text-xs text-gray-300 italic relative z-10 leading-relaxed text-center mt-2 mb-2 transition-opacity duration-300">
+                        "The goal of a successful trader is to make the best trades. Money is secondary."
+                    </p>
+                    <div class="flex justify-between items-center relative z-10">
+                        <span id="quoteAuthor" class="text-[10px] font-bold text-brand uppercase">- Alexander Elder</span>
+                        <button onclick="nextQuote()" class="btn-interactive text-gray-500 hover:text-white transition transform group-hover:rotate-180 duration-500"><i class="fa-solid fa-rotate-right text-xs"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADVANCED STATISTICS -->
+        <div class="bg-darkpanel border border-darkborder rounded-xl shadow-lg mb-4 overflow-hidden chart-container" data-aos="fade-up" data-aos-delay="250">
+            <div class="bg-[#0d1522] px-4 py-3 border-b border-darkborder flex items-center gap-2">
+                <i class="fa-solid fa-microchip text-brand animate-pulse"></i>
+                <h3 class="text-xs font-bold text-white uppercase tracking-widest">Comprehensive Performance Metrics</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-darkborder/50">
+                
+                <div class="p-4 space-y-3 metric-card" data-aos="fade-up" data-aos-delay="100">
+                    <h4 class="text-[10px] font-bold text-brand uppercase tracking-wider mb-2 border-b border-brand/20 pb-1">Profitability</h4>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Win Rate</span><span class="text-sm font-black text-white font-mono stat-value" id="statWinRate">0%</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Profit Factor</span><span class="text-sm font-black text-white font-mono stat-value" id="statProfitFactor">0.0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Expectancy (R)</span><span class="text-sm font-black text-white font-mono stat-value" id="statExpectancy">0.0 R</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Expectancy ($)</span><span class="text-sm font-black text-brand font-mono stat-value" id="statExpectancyDollar">$0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Avg Win (R)</span><span class="text-sm font-black text-green-400 font-mono stat-value" id="statAvgWinR">0.0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Avg Loss (R)</span><span class="text-sm font-black text-red-400 font-mono stat-value" id="statAvgLossR">0.0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Win/Loss Ratio</span><span class="text-sm font-black text-white font-mono stat-value" id="statWinLossRatio">0.0</span></div>
+                </div>
+
+                <div class="p-4 space-y-3 metric-card" data-aos="fade-up" data-aos-delay="150">
+                    <h4 class="text-[10px] font-bold text-red-400 uppercase tracking-wider mb-2 border-b border-red-500/20 pb-1">Risk & Drawdown</h4>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Total Trades</span><span class="text-sm font-black text-white font-mono stat-value" id="statTotalTrades">0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Max DD ($)</span><span class="text-sm font-black text-red-400 font-mono stat-value" id="statMaxDD">$0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Max DD (%)</span><span class="text-sm font-black text-red-400 font-mono stat-value" id="statMaxDDPercent">0%</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Recovery Factor</span><span class="text-sm font-black text-white font-mono stat-value" id="statRecoveryFactor">0.0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Avg Duration</span><span class="text-sm font-black text-white font-mono stat-value" id="statAvgDuration">0d</span></div>
+                </div>
+
+                <div class="p-4 space-y-3 metric-card" data-aos="fade-up" data-aos-delay="200">
+                    <h4 class="text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-2 border-b border-purple-500/20 pb-1">Psychology & Streaks</h4>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Max Win Streak</span><span class="text-sm font-black text-green-400 font-mono stat-value" id="statWinStreak">0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Max Loss Streak</span><span class="text-sm font-black text-red-400 font-mono stat-value" id="statLossStreak">0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Long (Buy) Win %</span><span class="text-sm font-black text-green-400 font-mono stat-value" id="statLongWin">0%</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Short (Sell) Win %</span><span class="text-sm font-black text-red-400 font-mono stat-value" id="statShortWin">0%</span></div>
+                </div>
+
+                <div class="p-4 space-y-3 metric-card" data-aos="fade-up" data-aos-delay="250">
+                    <h4 class="text-[10px] font-bold text-yellow-400 uppercase tracking-wider mb-2 border-b border-yellow-500/20 pb-1">Pips Analysis</h4>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Net Pips</span><span class="text-sm font-black text-brand font-mono stat-value" id="statNetPips">+0.0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Total Pips</span><span class="text-sm font-black text-white font-mono stat-value" id="statTotalPips">0.0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Profit Pips</span><span class="text-sm font-black text-green-400 font-mono stat-value" id="statProfitPips">+0.0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Loss Pips</span><span class="text-sm font-black text-red-400 font-mono stat-value" id="statLossPips">-0.0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Avg Win Pips</span><span class="text-sm font-black text-green-400 font-mono stat-value" id="statAvgWinPips">+0.0</span></div>
+                    <div class="flex justify-between items-center"><span class="text-[11px] text-gray-400">Avg Loss Pips</span><span class="text-sm font-black text-red-400 font-mono stat-value" id="statAvgLossPips">-0.0</span></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Calendar & AI Insight -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch mb-10">
+            
+            <div class="lg:col-span-5 bg-darkpanel border border-darkborder rounded-xl shadow-lg p-4 flex flex-col min-w-0 chart-container" data-aos="fade-right" data-aos-delay="300">
+                <div class="flex justify-between items-center mb-3 relative z-20">
+                    <h3 class="text-[10px] font-bold text-white uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-calendar-days text-brand"></i> Trading Calendar</h3>
+                    <div class="flex gap-2 relative">
+                        <select id="calMonth" class="bg-darkbg text-white text-[10px] border border-gray-700 rounded p-0.5 outline-none focus:border-brand" onchange="renderCalendar()"></select>
+                        <select id="calYear" class="bg-darkbg text-white text-[10px] border border-gray-700 rounded p-0.5 outline-none focus:border-brand" onchange="renderCalendar()"></select>
+                    </div>
+                </div>
+                
+                <div class="calendar-wrapper">
+                    <div class="calendar-grid">
+                        <div class="cal-header">SEN</div><div class="cal-header">SEL</div><div class="cal-header">RAB</div><div class="cal-header">KAM</div><div class="cal-header">JUM</div><div class="cal-header text-gray-500">SAB</div><div class="cal-header text-red-400">MIN</div>
+                    </div>
+                    <div id="calendarGrid" class="calendar-grid"></div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 flex flex-col gap-4 min-w-0" data-aos="fade-left" data-aos-delay="350">
+                <div id="insightsPanel" class="bg-gradient-to-r from-[#0d1522] to-[#0a111d] border-l-2 border-brand rounded-r-xl p-5 shadow-lg relative flex-1 flex flex-col">
+                    <h3 class="text-xs font-bold text-brand uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-robot"></i> AI Insight & Analisa</h3>
+                    <div id="insightsText" class="text-[11px] text-gray-300 leading-relaxed font-medium space-y-2 overflow-y-auto custom-scrollbar pr-2" style="max-height: 350px;">
+                        <p>Memuat analisa...</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-darkpanel border border-darkborder rounded-xl shadow-lg p-3 flex flex-col chart-container">
+                        <h3 class="text-[10px] font-bold text-white uppercase tracking-widest flex items-center gap-2 mb-2"><i class="fa-solid fa-clock text-brand"></i> Day of Week</h3>
+                        <div class="overflow-y-auto custom-scrollbar flex-1 max-h-[100px]">
+                            <table class="w-full text-[10px]"><tbody id="dayOfWeekBody" class="divide-y divide-darkborder/50"></tbody></table>
+                        </div>
+                    </div>
+                    <div class="bg-darkpanel border border-darkborder rounded-xl shadow-lg p-3 flex flex-col chart-container">
+                        <h3 class="text-[10px] font-bold text-white uppercase tracking-widest flex items-center gap-2 mb-2"><i class="fa-solid fa-chart-pie text-brand"></i> Monthly</h3>
+                        <div class="overflow-y-auto custom-scrollbar flex-1 max-h-[100px]">
+                            <table class="w-full text-[10px]"><tbody id="monthlyBody" class="divide-y divide-darkborder/50"></tbody></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER WITH WHITE THEME -->
+    <footer class="bg-white text-gray-500 py-10 px-5 md:px-16 lg:px-24 text-xs font-sans relative z-10 border-t border-gray-200 mt-4">
+        <div class="max-w-6xl mx-auto border-b border-gray-200 pb-6 mb-6">
+            <p class="leading-relaxed text-center md:text-left text-gray-500">
+                <strong class="text-gray-900">Disclaimer.</strong> Analyst Area adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. Analyst Area tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. Founder Analyst Area Richo G.
+                <br class="block md:hidden mt-2">
+                <a href="about.html" class="text-branddark hover:text-brand hover:underline inline-block mt-2 md:mt-0 transition">Disclaimer</a> <span class="hidden md:inline text-gray-300">·</span>
+                <a href="about.html" class="text-branddark hover:text-brand hover:underline inline-block mt-2 md:ml-0 transition">Terms &amp; Conditions</a> <span class="hidden md:inline text-gray-300">·</span>
+                <a href="about.html" class="text-branddark hover:text-brand hover:underline inline-block mt-2 md:ml-0 transition">Risk Disclosure</a>
+            </p>
+        </div>
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-center md:text-left">
+            <p class="text-gray-500">Copyright &copy; 2026 Analyst Area. Semua hak dilindungi.</p>
+            <div class="flex items-center gap-6">
+                <a href="https://www.instagram.com/richolinggar_?igsh=b28zZmxsdjV6ejM5" target="_blank" rel="noopener" class="text-[#E1306C] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
+                    <i class="fa-brands fa-instagram text-xl"></i> <span class="hidden md:inline">Instagram</span>
+                </a>
+                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="text-[#5865F2] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
+                    <i class="fa-brands fa-discord text-xl"></i> <span class="hidden md:inline">Komunitas Discord</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/6281217618728?text=Assalamualaikum%2C%20Wr.%20Wb.%20Permisi%20Mas%20Richo." target="_blank" rel="noopener" class="btn-interactive fixed bottom-4 right-4 bg-white text-gray-800 p-2.5 rounded-full shadow-xl border border-gray-100 flex items-center gap-2 z-50 hover:-translate-y-1 transition group" aria-label="Hubungi Admin via WhatsApp">
+        <div class="bg-[#25D366] text-white rounded-full w-8 h-8 flex items-center justify-center text-lg group-hover:bg-[#20b858] transition"><i class="fa-brands fa-whatsapp"></i></div>
+        <div class="hidden sm:flex flex-col pr-1"><span class="text-[8px] font-bold text-[#25D366] uppercase leading-none mb-0.5">Butuh Bantuan?</span><span class="text-[10px] font-bold leading-none text-gray-800">Chat Admin</span></div>
+    </a>
+
+    <!-- MODAL -->
+    <div id="tradeModal" class="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-darkpanel border border-darkborder rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col">
+            <div class="bg-[#0d1522] px-6 py-4 border-b border-darkborder flex justify-between items-center">
+                <h3 class="font-bold text-white text-lg" id="modalTitle">Tambah Data Trade</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white transition btn-interactive"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="p-6 flex-1 overflow-y-auto custom-scrollbar space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Pair</label>
+                        <input type="text" id="mPair" list="pairList" class="input-modal uppercase" placeholder="Ketik atau pilih pair...">
+                        <datalist id="pairList">
+                            <option value="XAUUSD"><option value="XAGUSD"><option value="EURUSD"><option value="GBPUSD"><option value="USDJPY"><option value="AUDUSD"><option value="USDCAD"><option value="USDCHF"><option value="NZDUSD"><option value="EURGBP"><option value="EURJPY"><option value="GBPJPY"><option value="GBPAUD"><option value="AUDCAD"><option value="BTCUSD"><option value="ETHUSD"><option value="US30"><option value="NAS100"><option value="SPX500"><option value="GER40"><option value="USOIL"><option value="UKOIL">
+                        </datalist>
+                    </div>
+                    <div><label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Action</label><select id="mType" class="input-modal"><option value="BUY">BUY (Market)</option><option value="SELL">SELL (Market)</option><option value="BUY_LIMIT">BUY LIMIT</option><option value="SELL_LIMIT">SELL LIMIT</option><option value="BUY_STOP">BUY STOP</option><option value="SELL_STOP">SELL STOP</option></select></div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Tgl Entry</label><input type="date" id="mEntryDate" class="input-modal"></div>
+                    <div><label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Tgl Exit</label><input type="date" id="mExitDate" class="input-modal"></div>
+                </div>
+                <div class="grid grid-cols-4 gap-4">
+                    <div><label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Entry</label><input type="number" step="any" id="mEntry" class="input-modal" placeholder="0.00"></div>
+                    <div><label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">SL</label><input type="number" step="any" id="mSL" class="input-modal text-red-400" placeholder="0.00"></div>
+                    <div><label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">TP</label><input type="number" step="any" id="mTP" class="input-modal text-green-400" placeholder="0.00"></div>
+                    <div id="manualLotContainer">
+                        <label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Lot</label>
+                        <input type="number" step="0.01" id="mLot" class="input-modal text-brand" placeholder="0.10">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Hasil Akhir</label><select id="mResult" class="input-modal"><option value="">- (Pending)</option><option value="SL">SL</option><option value="BE">BE</option><option value="TP">TP</option></select></div>
+                    <div><label class="block text-[11px] font-bold text-gray-400 uppercase mb-1">Keterangan</label><input type="text" id="mNotes" class="input-modal" placeholder="Setup, dll..."></div>
+                </div>
+            </div>
+            <div class="bg-[#0d1522] px-6 py-4 border-t border-darkborder flex justify-end gap-3">
+                <button onclick="closeModal()" class="btn-interactive px-4 py-2 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition">Batal</button>
+                <button onclick="saveModalData()" class="btn-interactive bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 text-darkbg px-6 py-2 rounded-lg text-sm font-bold transition shadow-lg hover:shadow-brand/50">Simpan Data</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Init Swiper (Slide Fitur)
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof Swiper !== 'undefined') {
+                new Swiper(".featureSwiper", {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    autoplay: {
+                        delay: 3500,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: ".swiper-pagination",
+                        clickable: true,
+                    },
+                    breakpoints: {
+                        640: { slidesPerView: 2, spaceBetween: 20 },
+                        1024: { slidesPerView: 3, spaceBetween: 30 },
+                    },
+                });
+            }
+        });
+
+        window.addEventListener('error', function(e) {
+            const errBox = document.getElementById('errorBox');
+            errBox.innerText = "Error: " + e.message + " (Silakan refresh halaman)";
+            errBox.classList.remove('hidden');
+        });
+
+        let trades = [];
+        let editingId = null;
+        const storageKey = 'analystArea_proBacktest_v42';
+        let equityChartInstance = null;
+        let histogramChartInstance = null;
+        let calendarData = {}; 
+        let currentCalDate = new Date(); 
+
+        const quotes = [
+            { text: "The goal of a successful trader is to make the best trades. Money is secondary.", author: "Alexander Elder" },
+            { text: "Amateurs focus on how much they can make. Professionals focus on how much they can lose.", author: "Unknown" },
+            { text: "You don't need to be a genius. You just need to be disciplined.", author: "Unknown" },
+            { text: "The market is a device for transferring money from the impatient to the patient.", author: "Warren Buffett" },
+            { text: "Risk comes from not knowing what you're doing.", author: "Warren Buffett" },
+            { text: "In trading, the only thing you can control is your risk. The market does the rest.", author: "Unknown" },
+            { text: "Consistency is not about being right every time; it's about doing the right thing every time.", author: "Unknown" },
+            { text: "Cut your losses short and let your profits run.", author: "Old Trading Proverb" },
+            { text: "There is a time to go long, a time to go short and a time to go fishing.", author: "Jesse Livermore" },
+            { text: "The market does not beat them. They beat themselves, because though they have brains they cannot sit tight.", author: "Jesse Livermore" },
+            { text: "It's not whether you're right or wrong that's important, but how much money you make when you're right and how much you lose when you're wrong.", author: "George Soros" },
+            { text: "Good investing is boring. If you're looking for excitement, go to Vegas.", author: "George Soros" },
+            { text: "The elements of good trading are: (1) cutting losses, (2) cutting losses, and (3) cutting losses.", author: "Ed Seykota" },
+            { text: "Win or lose, everybody gets what they want out of the market.", author: "Ed Seykota" },
+            { text: "I'm always thinking about losing money as opposed to making money. Don't focus on making money, focus on protecting what you have.", author: "Paul Tudor Jones" },
+            { text: "Where you want to be is always in control, never wishing, always trading.", author: "Paul Tudor Jones" },
+            { text: "If you don't bet, you can't win. But if you lose all your chips, you can't bet.", author: "Larry Hite" },
+            { text: "The best traders aren't afraid to be wrong. They are afraid of staying wrong.", author: "Unknown" },
+            { text: "There is no single market secret to discover, no single correct way to trade. Every trader must find their own path.", author: "Unknown" },
+            { text: "Successful trading is about managing risk, not predicting the future.", author: "Unknown" },
+            { text: "You will become a better trader when you learn to love the process, not the outcome.", author: "Unknown" },
+            { text: "A losing trade is just a business expense. Don't let it ruin your emotional capital.", author: "Unknown" },
+            { text: "The trend is your friend until the end when it bends.", author: "Ed Seykota" },
+            { text: "Don't focus on making money. Focus on making good trades.", author: "Unknown" },
+            { text: "The hard work in trading comes in the preparation, not the execution.", author: "Unknown" },
+            { text: "You can't control the market, but you can control your lot size.", author: "Analyst Area" },
+            { text: "Trade with logic, not emotion. The market rewards discipline.", author: "Analyst Area" },
+            { text: "Small losses are the cost of doing business. Big losses are a choice.", author: "Unknown" }
+        ];
+        let currentQuoteIndex = 0;
+
+        let sortDirection = 1;
+        let sortColumn = 'date';
+
+        // ============ INTERACTIVE HELPERS ============
+        function animateValue(el, targetText, duration = 500) {
+            if (!el) return;
+            const prevText = el.innerText;
+            if (prevText === targetText) return;
+            
+            el.classList.remove('flash');
+            void el.offsetWidth;
+            el.classList.add('flash');
+            
+            const match = targetText.match(/-?[\d,.]+/);
+            if (!match) {
+                el.innerText = targetText;
+                return;
+            }
+            
+            const numStr = match[0].replace(/,/g, '');
+            const targetNum = parseFloat(numStr);
+            if (isNaN(targetNum)) {
+                el.innerText = targetText;
+                return;
+            }
+            
+            const startTime = performance.now();
+            const startNum = 0;
+            
+            const prefix = targetText.substring(0, match.index);
+            const suffix = targetText.substring(match.index + match[0].length);
+            const hasComma = match[0].includes(',');
+            const decimals = match[0].includes('.') ? match[0].split('.')[1].length : 0;
+            
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = startNum + (targetNum - startNum) * eased;
+                
+                let display = current.toFixed(decimals);
+                if (hasComma) {
+                    display = parseFloat(display).toLocaleString('en-US', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
+                }
+                
+                el.innerText = prefix + display + suffix;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    el.innerText = targetText;
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
+        function setStat(id, value) {
+            const el = document.getElementById(id);
+            if (el) animateValue(el, value);
+        }
+
+        function initApp() {
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 700,
+                    easing: 'ease-out-cubic',
+                    once: true,
+                    offset: 40
+                });
+            }
+
+            initCalendarDropdowns();
+            loadData(); 
+            if (typeof Chart !== 'undefined') { initCharts(); }
+            calculateMetrics();
+            
+            document.getElementById('riskPerTrade').addEventListener('input', function() {
+                renderTable();
+                calculateMetrics();
+                saveData();
+            });
+            
+            document.getElementById('initialCapital').addEventListener('input', function() {
+                calculateMetrics();
+                saveData();
+            });
+            
+            nextQuote(); 
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                const icon = mobileBtn.querySelector('i');
+                const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+                const setState = (open) => {
+                    mobileMenu.classList.toggle('-translate-y-full', !open);
+                    icon.classList.toggle('fa-bars', !open);
+                    icon.classList.toggle('fa-xmark', open);
+                    mobileBtn.setAttribute('aria-expanded', String(open));
+                };
+                mobileBtn.addEventListener('click', () => {
+                    const isOpen = !mobileMenu.classList.contains('-translate-y-full');
+                    setState(!isOpen);
+                });
+                mobileLinks.forEach(link => link.addEventListener('click', () => setState(false)));
+            }
+        }
+
+        function nextQuote() {
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            const txtEl = document.getElementById('quoteText');
+            const authEl = document.getElementById('quoteAuthor');
+            
+            txtEl.style.opacity = 0;
+            setTimeout(() => {
+                txtEl.innerText = `"${quotes[currentQuoteIndex].text}"`;
+                authEl.innerText = `- ${quotes[currentQuoteIndex].author}`;
+                txtEl.style.opacity = 1;
+            }, 200);
+        }
+
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection *= -1;
+            } else {
+                sortColumn = column;
+                sortDirection = 1;
+            }
+
+            document.querySelectorAll('[id^="icon-"]').forEach(el => {
+                el.className = 'fa-solid fa-sort text-[8px] opacity-50 ml-1';
+            });
+            const iconEl = document.getElementById(`icon-${column}`);
+            if (iconEl) {
+                iconEl.className = sortDirection === 1 
+                    ? 'fa-solid fa-sort-up text-[8px] text-brand ml-1' 
+                    : 'fa-solid fa-sort-down text-[8px] text-brand ml-1';
+            }
+
+            trades.sort((a, b) => {
+                let valA, valB;
+                if (column === 'date') {
+                    valA = new Date(a.exitDate || a.entryDate || 0).getTime();
+                    valB = new Date(b.exitDate || b.entryDate || 0).getTime();
+                } else if (column === 'pair') {
+                    valA = a.pair; valB = b.pair;
+                } else if (column === 'action') {
+                    valA = a.type; valB = b.type;
+                } else if (column === 'lot') {
+                    valA = parseFloat(a.lot) || 0; valB = parseFloat(b.lot) || 0;
+                } else if (column === 'entry') {
+                    valA = parseFloat(a.entry) || 0; valB = parseFloat(b.entry) || 0;
+                } else if (column === 'rr') {
+                    const getRR = (t) => {
+                        const ep = parseFloat(t.entry), sl = parseFloat(t.sl), tp = parseFloat(t.tp);
+                        if (ep && sl && tp && ep !== sl) return Math.abs(tp - ep) / Math.abs(ep - sl);
+                        return 0;
+                    };
+                    valA = getRR(a); valB = getRR(b);
+                } else if (column === 'pips') {
+                    const getPips = (t) => {
+                        const ep = parseFloat(t.entry), sl = parseFloat(t.sl), tp = parseFloat(t.tp);
+                        if (!ep || !sl || !tp || ep === sl) return 0;
+                        const pipMult = getPipMultiplier(t.pair);
+                        if (t.result === 'TP') return Math.abs(tp - ep) * pipMult;
+                        if (t.result === 'SL') return -Math.abs(ep - sl) * pipMult;
+                        return 0;
+                    };
+                    valA = getPips(a); valB = getPips(b);
+                } else if (column === 'result') {
+                    valA = a.result || 'Z'; valB = b.result || 'Z';
+                }
+
+                if (valA < valB) return -1 * sortDirection;
+                if (valA > valB) return 1 * sortDirection;
+                return 0;
+            });
+
+            renderTable();
+        }
+
+        function updateLotModeUI() {
+            const mode = document.getElementById('lotMode').value;
+            const manualContainer = document.getElementById('manualLotContainer');
+            if (mode === 'auto') {
+                manualContainer.style.opacity = '0.3';
+                manualContainer.style.pointerEvents = 'none';
+                document.getElementById('mLot').value = ''; 
+            } else {
+                manualContainer.style.opacity = '1';
+                manualContainer.style.pointerEvents = 'auto';
+            }
+        }
+
+        function loadData() {
+            localStorage.removeItem('analystArea_proBacktest_v41');
+            
+            const saved = localStorage.getItem(storageKey);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    trades = parsed.trades || [];
+                    document.getElementById('initialCapital').value = parsed.capital || 10000;
+                    document.getElementById('riskPerTrade').value = parsed.risk || 100;
+                    document.getElementById('lotMode').value = parsed.riskMode || 'manual';
+                } catch (e) { console.error(e); }
+            }
+            
+            if (trades.length === 0) {
+                const now = new Date();
+                const y = now.getFullYear();
+                const m = String(now.getMonth() + 1).padStart(2, '0');
+                const d = now.getDate();
+                
+                const dateToday = `${y}-${m}-${String(d).padStart(2, '0')}`;
+                const dateYest = `${y}-${m}-${String(d > 1 ? d - 1 : 1).padStart(2, '0')}`;
+                const datePrev = `${y}-${m}-${String(d > 2 ? d - 2 : 1).padStart(2, '0')}`;
+
+                trades = [
+                    { id: 'demo1', pair: 'XAUUSD', type: 'BUY', entryDate: datePrev, exitDate: dateYest, entry: 2340.50, sl: 2335.00, tp: 2355.00, lot: 0.1, result: 'TP', notes: 'Breakout' },
+                    { id: 'demo2', pair: 'EURUSD', type: 'SELL', entryDate: dateYest, exitDate: dateToday, entry: 1.0850, sl: 1.0880, tp: 1.0790, lot: 1.0, result: 'SL', notes: 'Fakeout' },
+                    { id: 'demo3', pair: 'GBPUSD', type: 'BUY', entryDate: dateToday, exitDate: dateToday, entry: 1.2650, sl: 1.2600, tp: 1.2750, lot: 0.5, result: 'TP', notes: 'Trendline' }
+                ];
+                saveData(); 
+            }
+
+            if (trades.length > 0) {
+                const dates = trades.map(t => t.exitDate || t.entryDate).filter(d => d).sort();
+                if (dates.length > 0) {
+                    currentCalDate = new Date(dates[dates.length - 1]);
+                }
+            }
+            
+            renderTable(); 
+            updatePairFilter(); 
+            updateRiskLabel();
+            updateLotModeUI();
+        }
+
+        function saveData() {
+            localStorage.setItem(storageKey, JSON.stringify({ capital: document.getElementById('initialCapital').value, risk: document.getElementById('riskPerTrade').value, riskMode: document.getElementById('lotMode').value, trades: trades }));
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tradeBody');
+            tbody.innerHTML = '';
+
+            if(trades.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" class="py-6 text-center text-gray-500 font-medium text-xs">Belum ada data trade.</td></tr>';
+                return;
+            }
+
+            const mode = document.getElementById('lotMode').value;
+            const riskInput = parseFloat(document.getElementById('riskPerTrade').value) || 100;
+
+            trades.forEach((trade, index) => {
+                const isBuy = trade.type.includes('BUY');
+                const isWin = trade.result === 'TP', isLoss = trade.result === 'SL', isBE = trade.result === 'BE';
+                let rr = 0, pips = 0;
+                const ep = parseFloat(trade.entry), sl = parseFloat(trade.sl), tp = parseFloat(trade.tp);
+                
+                if (ep && sl && tp && ep !== sl) {
+                    const risk = Math.abs(ep - sl), reward = Math.abs(tp - ep);
+                    rr = (reward / risk);
+                    const pipMult = getPipMultiplier(trade.pair);
+                    if (isWin) pips = (reward * pipMult); else if (isLoss) pips = -(risk * pipMult);
+                }
+
+                const rrColor = rr >= 2 ? 'text-green-400' : rr >= 1 ? 'text-blue-400' : rr > 0 ? 'text-red-400' : 'text-gray-600';
+
+                let displayLot = trade.lot || '0.1';
+                if (mode === 'auto' && ep && sl) {
+                    const riskPoints = Math.abs(ep - sl);
+                    const pipMult = getPipMultiplier(trade.pair);
+                    const pipVal = getPipValue(trade.pair);
+                    const pipsSL = riskPoints * pipMult;
+                    if (pipsSL > 0) {
+                        const autoLot = riskInput / (pipsSL * pipVal);
+                        displayLot = autoLot.toFixed(2);
+                    }
+                }
+
+                const typeColor = isBuy ? 'bg-green-500/10 text-green-400 border border-green-500/30' : 'bg-red-500/10 text-red-400 border border-red-500/30';
+                let resColor = 'text-gray-500';
+                if (isWin) resColor = 'text-green-400 font-bold';
+                else if (isLoss) resColor = 'text-red-400 font-bold';
+                else if (isBE) resColor = 'text-gray-300 font-bold';
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-white/5 transition-colors group';
+                tr.innerHTML = `
+                    <td class="font-mono text-gray-500">${index + 1}</td>
+                    <td class="text-left font-bold text-white pl-4">${trade.pair}</td>
+                    <td><span class="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${typeColor}">${trade.type.replace('_', ' ')}</span></td>
+                    <td class="font-mono text-brand font-bold">${displayLot}</td>
+                    <td class="font-mono text-gray-300">${trade.entry || '-'}</td>
+                    <td class="font-mono text-gray-400 text-[11px]"><span class="text-red-400/80">${trade.sl || '-'}</span> <br> <span class="text-green-400/80">${trade.tp || '-'}</span></td>
+                    <td class="font-mono font-bold ${rrColor}">${rr > 0 ? '1:' + rr.toFixed(1) : '-'}</td>
+                    <td class="font-mono font-bold ${pips > 0 ? 'text-green-400' : pips < 0 ? 'text-red-400' : 'text-gray-500'}">${pips !== 0 ? (pips > 0 ? '+' : '') + pips.toFixed(1) : '-'}</td>
+                    <td class="${resColor} text-xs">${trade.result || 'PENDING'}</td>
+                    <td>
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="editData('${trade.id}')" class="btn-interactive text-blue-400 hover:text-blue-300 p-1.5 bg-blue-400/10 rounded transition" title="Edit"><i class="fa-solid fa-pen text-xs"></i></button>
+                            <button onclick="removeRow('${trade.id}')" class="btn-interactive text-red-400 hover:text-red-300 p-1.5 bg-red-400/10 rounded transition" title="Hapus"><i class="fa-solid fa-trash text-xs"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function initCharts() {
+            try {
+                Chart.defaults.color = '#9ca3af';
+                Chart.defaults.font.family = "'Inter', sans-serif";
+                const ctxEq = document.getElementById('equityChart').getContext('2d');
+                let gradient = ctxEq.createLinearGradient(0, 0, 0, 140);
+                gradient.addColorStop(0, 'rgba(0, 229, 255, 0.2)'); gradient.addColorStop(1, 'rgba(0, 229, 255, 0)');
+                if (equityChartInstance) equityChartInstance.destroy();
+                equityChartInstance = new Chart(ctxEq, {
+                    type: 'line', data: { labels: ['Start'], datasets: [{ label: 'Cumulative R', data: [0], borderColor: '#00e5ff', backgroundColor: gradient, borderWidth: 2, pointRadius: 0, pointHoverRadius: 3, fill: true, tension: 0.2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }, ticks: { font: { size: 9 } } } }, animation: { duration: 600, easing: 'easeOutQuart' } }
+                });
+
+                const ctxHist = document.getElementById('histogramChart').getContext('2d');
+                if (histogramChartInstance) histogramChartInstance.destroy();
+                histogramChartInstance = new Chart(ctxHist, {
+                    type: 'bar', data: { labels: [], datasets: [{ label: 'Frekuensi', data: [], backgroundColor: '#00e5ff', borderRadius: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 9 } } }, y: { grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }, ticks: { display: false }, beginAtZero: true } }, animation: { duration: 600, easing: 'easeOutQuart' } }
+                });
+            } catch (e) { console.error("Gagal render chart", e); }
+        }
+
+        function initCalendarDropdowns() {
+            const monthSel = document.getElementById('calMonth');
+            const yearSel = document.getElementById('calYear');
+            if(!monthSel || !yearSel) return;
+            
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            monthSel.innerHTML = ''; yearSel.innerHTML = '';
+            months.forEach((m, i) => { monthSel.innerHTML += `<option value="${i}">${m}</option>`; });
+            
+            for (let y = 2001; y <= 2045; y++) { 
+                yearSel.innerHTML += `<option value="${y}">${y}</option>`; 
+            }
+            
+            let calYear = currentCalDate.getFullYear();
+            if (calYear < 2001) calYear = 2001;
+            if (calYear > 2045) calYear = 2045;
+            
+            monthSel.value = currentCalDate.getMonth();
+            yearSel.value = calYear;
+        }
+
+        function getPipMultiplier(pair) {
+            if (!pair) return 1;
+            pair = pair.toUpperCase();
+            if (pair.includes('JPY')) return 100; 
+            if (pair.includes('XAU') || pair.includes('GOLD')) return 10; 
+            if (pair.includes('BTC') || pair.includes('ETH') || pair.includes('US30') || pair.includes('NAS100') || pair.includes('SPX500')) return 1; 
+            return 10000; 
+        }
+
+        function getPipValue(pair) {
+            if (!pair) return 10;
+            pair = pair.toUpperCase();
+            if (pair.includes('JPY')) return 10; 
+            if (pair.includes('XAU') || pair.includes('GOLD')) return 10; 
+            if (pair.includes('BTC') || pair.includes('ETH') || pair.includes('US30') || pair.includes('NAS100') || pair.includes('SPX500')) return 1; 
+            return 10; 
+        }
+
+        function openModal() {
+            editingId = null;
+            document.getElementById('modalTitle').innerText = "Tambah Data Trade";
+            document.getElementById('mPair').value = ''; document.getElementById('mType').value = 'BUY';
+            document.getElementById('mEntryDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('mExitDate').value = ''; document.getElementById('mEntry').value = '';
+            document.getElementById('mSL').value = ''; document.getElementById('mTP').value = '';
+            document.getElementById('mLot').value = '0.10';
+            document.getElementById('mResult').value = ''; document.getElementById('mNotes').value = '';
+            document.getElementById('tradeModal').classList.remove('hidden');
+        }
+
+        function editData(id) {
+            const trade = trades.find(t => t.id === id);
+            if (!trade) return;
+            editingId = id;
+            document.getElementById('modalTitle').innerText = "Edit Data Trade";
+            document.getElementById('mPair').value = trade.pair; document.getElementById('mType').value = trade.type;
+            document.getElementById('mEntryDate').value = trade.entryDate; document.getElementById('mExitDate').value = trade.exitDate;
+            document.getElementById('mEntry').value = trade.entry; document.getElementById('mSL').value = trade.sl;
+            document.getElementById('mTP').value = trade.tp; document.getElementById('mLot').value = trade.lot || '0.10';
+            document.getElementById('mResult').value = trade.result; document.getElementById('mNotes').value = trade.notes;
+            document.getElementById('tradeModal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('tradeModal').classList.add('hidden'); }
+
+        function saveModalData() {
+            const pair = document.getElementById('mPair').value.toUpperCase();
+            const type = document.getElementById('mType').value;
+            const entryDate = document.getElementById('mEntryDate').value;
+            const exitDate = document.getElementById('mExitDate').value;
+            const entry = document.getElementById('mEntry').value;
+            const sl = document.getElementById('mSL').value;
+            const tp = document.getElementById('mTP').value;
+            const lot = document.getElementById('mLot').value || '0.10';
+            const result = document.getElementById('mResult').value;
+            const notes = document.getElementById('mNotes').value;
+
+            if (!pair || !entry || !sl || !tp) return alert("Pair, Entry, SL, dan TP wajib diisi!");
+
+            const data = { pair, type, entryDate, exitDate, entry, sl, tp, lot, result, notes };
+
+            if (editingId) {
+                const idx = trades.findIndex(t => t.id === editingId);
+                if (idx > -1) trades[idx] = { ...trades[idx], ...data };
+            } else {
+                trades.push({ id: Date.now().toString() + Math.random().toString(36).substr(2, 5), ...data });
+            }
+
+            closeModal();
+            renderTable(); updatePairFilter(); calculateMetrics(); saveData();
+        }
+
+        function removeRow(id) {
+            if(confirm("Hapus data trade ini?")) {
+                trades = trades.filter(t => t.id !== id);
+                renderTable(); updatePairFilter(); calculateMetrics(); saveData();
+            }
+        }
+
+        function updatePairFilter() {
+            const filter = document.getElementById('pairFilter');
+            const currentVal = filter.value;
+            const pairs = [...new Set(trades.map(t => t.pair.toUpperCase()).filter(p => p))];
+            filter.innerHTML = '<option value="all">Semua</option>';
+            pairs.forEach(p => { filter.innerHTML += `<option value="${p}">${p}</option>`; });
+            if (pairs.includes(currentVal)) filter.value = currentVal; else filter.value = 'all';
+        }
+
+        function updateRiskLabel() {
+            const label = document.getElementById('riskLabel');
+            const sym = document.getElementById('riskSymbol');
+            label.innerText = 'Risk'; 
+            sym.innerText = '$'; 
+            calculateMetrics();
+        }
+
+        function calculateMetrics() {
+            try {
+                const selectedPair = document.getElementById('pairFilter').value;
+                const filteredTrades = selectedPair === 'all' ? trades : trades.filter(t => t.pair.toUpperCase() === selectedPair);
+
+                let totalTrades = 0, pendingTrades = 0, wins = 0, losses = 0;
+                let totalWinR = 0, totalLossR = 0;
+                let totalProfitDollar = 0;
+                
+                let totalProfitPips = 0;
+                let totalLossPips = 0;
+                let totalDurationDays = 0, durationCount = 0;
+
+                let currentWinStreak = 0, maxWinStreak = 0;
+                let currentLossStreak = 0, maxLossStreak = 0;
+                let longTrades = 0, longWins = 0;
+                let shortTrades = 0, shortWins = 0;
+
+                let equityData = [0], currentEquityR = 0;
+                let currentBalance = parseFloat(document.getElementById('initialCapital').value) || 10000;
+                let peakBalance = currentBalance;
+                
+                let maxDrawdownDollar = 0;
+                let peakBalanceAtMaxDD = currentBalance; 
+
+                let monthlyR = {}, dayOfWeekR = {};
+                let rrList = [], pairStats = {}; 
+                calendarData = {};
+
+                const initialCapital = parseFloat(document.getElementById('initialCapital').value) || 10000;
+                const mode = document.getElementById('lotMode').value;
+                const riskInput = parseFloat(document.getElementById('riskPerTrade').value) || 100;
+
+                const sortedTrades = [...filteredTrades].sort((a, b) => {
+                    const dateA = a.exitDate || a.entryDate || '';
+                    const dateB = b.exitDate || b.entryDate || '';
+                    return new Date(dateA) - new Date(dateB);
+                });
+
+                sortedTrades.forEach(t => {
+                    const ep = parseFloat(t.entry), sl = parseFloat(t.sl), tp = parseFloat(t.tp);
+                    if (isNaN(ep) || isNaN(sl) || isNaN(tp) || ep === sl) return;
+                    
+                    const riskPoints = Math.abs(ep - sl), rewardPoints = Math.abs(tp - ep);
+                    const rr = rewardPoints / riskPoints;
+                    const pipMult = getPipMultiplier(t.pair);
+                    const pipVal = getPipValue(t.pair);
+                    
+                    let lot = parseFloat(t.lot) || 0.1;
+                    
+                    if (mode === 'auto') {
+                        const pipsSL = riskPoints * pipMult;
+                        if (pipsSL > 0) lot = riskInput / (pipsSL * pipVal);
+                    }
+
+                    const pName = t.pair.toUpperCase() || 'UNKNOWN';
+                    
+                    if (!pairStats[pName]) pairStats[pName] = 0;
+                    if (t.result === 'TP') pairStats[pName] += rr;
+                    else if (t.result === 'SL') pairStats[pName] -= 1;
+
+                    if (!t.result) { pendingTrades++; equityData.push(currentEquityR); return; }
+
+                    totalTrades++;
+                    let dayR = 0;
+                    let profitDollar = 0;
+
+                    if (t.entryDate && t.exitDate) {
+                        const diffTime = new Date(t.exitDate) - new Date(t.entryDate);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        if (diffDays >= 0) {
+                            totalDurationDays += diffDays;
+                            durationCount++;
+                        }
+                    }
+
+                    const isBuy = t.type.includes('BUY');
+                    if (isBuy) longTrades++; else shortTrades++;
+
+                    if (t.result === 'TP') {
+                        const pipsEarned = rewardPoints * pipMult;
+                        totalProfitPips += pipsEarned; 
+                        
+                        profitDollar = pipsEarned * lot * pipVal;
+                        wins++; currentEquityR += rr; totalWinR += rr; 
+                        dayR = rr; rrList.push(rr);
+
+                        if (isBuy) longWins++; else shortWins++;
+
+                        currentWinStreak++; currentLossStreak = 0;
+                        if (currentWinStreak > maxWinStreak) maxWinStreak = currentWinStreak;
+
+                    } else if (t.result === 'SL') {
+                        const pipsLost = riskPoints * pipMult;
+                        totalLossPips += pipsLost; 
+                        
+                        profitDollar = -(pipsLost * lot * pipVal);
+                        losses++; currentEquityR -= 1; totalLossR += 1;
+                        dayR = -1; rrList.push(-1);
+
+                        currentLossStreak++; currentWinStreak = 0;
+                        if (currentLossStreak > maxLossStreak) maxLossStreak = currentLossStreak;
+                    }
+
+                    totalProfitDollar += profitDollar;
+                    currentBalance = initialCapital + totalProfitDollar;
+
+                    if (currentBalance > peakBalance) peakBalance = currentBalance;
+                    const dd = peakBalance - currentBalance;
+                    if (dd > maxDrawdownDollar) {
+                        maxDrawdownDollar = dd;
+                        peakBalanceAtMaxDD = peakBalance; 
+                    }
+
+                    const dateKey = t.exitDate || t.entryDate;
+                    if (dateKey) {
+                        calendarData[dateKey] = (calendarData[dateKey] || 0) + profitDollar;
+                        const monthKey = dateKey.substring(0, 7);
+                        if (!monthlyR[monthKey]) monthlyR[monthKey] = { r: 0, trades: 0 };
+                        monthlyR[monthKey].r += dayR; monthlyR[monthKey].trades++;
+                        const dayIdx = new Date(dateKey).getDay();
+                        const dayName = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][dayIdx];
+                        if (!dayOfWeekR[dayName]) dayOfWeekR[dayName] = { r: 0, count: 0 };
+                        dayOfWeekR[dayName].r += dayR; dayOfWeekR[dayName].count++;
+                    }
+
+                    equityData.push(currentEquityR);
+                });
+
+                const winRate = totalTrades > 0 ? ((wins / totalTrades) * 100).toFixed(1) : 0;
+                let profitFactor = totalLossR === 0 && totalWinR > 0 ? '∞' : (totalLossR > 0 ? (totalWinR / totalLossR).toFixed(2) : 0);
+                const expectancyR = totalTrades > 0 ? (currentEquityR / totalTrades).toFixed(2) : 0;
+                const avgWinR = wins > 0 ? (totalWinR / wins).toFixed(2) : 0;
+                const avgLossR = losses > 0 ? (totalLossR / losses).toFixed(2) : 0;
+                let winLossRatio = avgLossR > 0 ? (parseFloat(avgWinR) / parseFloat(avgLossR)).toFixed(2) : (avgWinR > 0 ? '∞' : 0);
+                
+                const expectancyDollar = totalTrades > 0 ? (totalProfitDollar / totalTrades).toFixed(2) : 0;
+                const netPL = totalProfitDollar;
+                const netTotalPips = totalProfitPips - totalLossPips;
+                const returnPercent = initialCapital > 0 ? (netPL / initialCapital) * 100 : 0;
+                
+                const longWinRate = longTrades > 0 ? ((longWins / longTrades) * 100).toFixed(1) : 0;
+                const shortWinRate = shortTrades > 0 ? ((shortWins / shortTrades) * 100).toFixed(1) : 0;
+
+                const maxDrawdownPercent = peakBalanceAtMaxDD > 0 ? ((maxDrawdownDollar / peakBalanceAtMaxDD) * 100).toFixed(1) : 0;
+                
+                const recoveryFactor = maxDrawdownDollar > 0 ? (netPL / maxDrawdownDollar).toFixed(2) : (netPL > 0 ? '∞' : 0);
+                const avgDuration = durationCount > 0 ? (totalDurationDays / durationCount).toFixed(1) : 0;
+
+                // ============ ANIMATED STAT UPDATES ============
+                setStat('statCurrentBalance', '$' + currentBalance.toFixed(2));
+                setStat('statNetPL', (netPL >= 0 ? '+$' : '-$') + Math.abs(netPL).toFixed(2));
+                const plEl = document.getElementById('statNetPL');
+                plEl.className = `text-xs font-bold font-mono stat-value ${netPL >= 0 ? 'text-green-400' : 'text-red-400'}`;
+                setStat('statReturnPercent', (returnPercent >= 0 ? '+' : '') + returnPercent.toFixed(2) + '%');
+                const retEl = document.getElementById('statReturnPercent');
+                retEl.className = `text-xs font-bold font-mono stat-value ${returnPercent >= 0 ? 'text-green-400' : 'text-red-400'}`;
+
+                setStat('statWinRate', winRate + '%');
+                setStat('statProfitFactor', profitFactor.toString());
+                setStat('statExpectancy', expectancyR + ' R');
+                setStat('statExpectancyDollar', (expectancyDollar >= 0 ? '+' : '-') + '$' + Math.abs(expectancyDollar));
+                setStat('statAvgWinR', avgWinR.toString());
+                setStat('statAvgLossR', avgLossR.toString());
+                setStat('statWinLossRatio', winLossRatio.toString());
+
+                setStat('statTotalTrades', totalTrades + (pendingTrades > 0 ? ` (+${pendingTrades})` : ''));
+                setStat('statMaxDD', '$' + maxDrawdownDollar.toFixed(0));
+                setStat('statMaxDDPercent', maxDrawdownPercent + '%');
+                setStat('statRecoveryFactor', recoveryFactor.toString());
+                setStat('statAvgDuration', avgDuration + 'd');
+
+                setStat('statWinStreak', maxWinStreak.toString());
+                setStat('statLossStreak', maxLossStreak.toString());
+                setStat('statLongWin', longWinRate + '%');
+                setStat('statShortWin', shortWinRate + '%');
+
+                setStat('statNetPips', (netTotalPips >= 0 ? '+' : '') + netTotalPips.toFixed(1));
+                setStat('statTotalPips', (netTotalPips >= 0 ? '+' : '') + (totalProfitPips + totalLossPips).toFixed(1));
+                setStat('statProfitPips', '+' + totalProfitPips.toFixed(1));
+                setStat('statLossPips', '-' + totalLossPips.toFixed(1));
+                
+                const avgWinPips = wins > 0 ? (totalProfitPips / wins).toFixed(1) : 0;
+                const avgLossPips = losses > 0 ? (totalLossPips / losses).toFixed(1) : 0;
+                setStat('statAvgWinPips', '+' + avgWinPips);
+                setStat('statAvgLossPips', '-' + avgLossPips);
+
+                if (equityChartInstance) updateChart(equityData, currentEquityR);
+                if (histogramChartInstance) updateHistogram(rrList);
+                
+                renderCalendar(); 
+                renderMonthly(monthlyR); 
+                renderDayOfWeek(dayOfWeekR);
+                
+                generateNarrative(totalTrades, netPL, returnPercent, winRate, profitFactor, expectancyDollar, maxDrawdownDollar, maxDrawdownPercent, maxWinStreak, maxLossStreak, longWinRate, shortWinRate, dayOfWeekR, pairStats);
+            } catch (e) {
+                console.error("Error calculateMetrics", e);
+            }
+        }
+
+        function generateNarrative(totalTrades, netPL, returnPercent, winRate, profitFactor, expDollar, maxDD, maxDDPercent, maxWinStreak, maxLossStreak, longWinRate, shortWinRate, dayStats, pairStats) {
+            const container = document.getElementById('insightsText');
+            
+            if (totalTrades === 0) { 
+                container.innerHTML = `<p class="text-gray-400">Belum ada data trade yang diselesaikan (TP/SL). Masukkan data untuk melihat analisa mendalam dari AI.</p>`; 
+                return; 
+            }
+
+            let narasi = [];
+
+            narasi.push(`<h4 class="text-white font-bold mb-1 border-b border-gray-700 pb-1">1. Kesehatan Strategi</h4>`);
+            if (netPL > 0) {
+                narasi.push(`<p>📈 <strong>Profitabilitas:</strong> Strategi ini berhasil mencetak keuntungan <strong class="text-green-400">+$${netPL.toFixed(2)}</strong> (Return <strong>+${returnPercent.toFixed(2)}%</strong>) dari ${totalTrades} trade. Dengan Win Rate <strong>${winRate}%</strong>, strategi ini tergolong sehat. ${parseFloat(profitFactor) > 1.5 ? 'Profit Factor Anda di atas 1.5, yang berarti sangat baik.' : 'Profit Factor masih di bawah 1.5, coba tingkatkan rasio Risk/Reward Anda.'}</p>`);
+            } else {
+                narasi.push(`<p>📉 <strong>Profitabilitas:</strong> Sayangnya, strategi ini sedang merugi sebesar <strong class="text-red-400">-$${Math.abs(netPL).toFixed(2)}</strong> (Return <strong>${returnPercent.toFixed(2)}%</strong>). Win Rate <strong>${winRate}%</strong> tidak cukup untuk menutupi kerugian. Evaluasi ulang titik entry atau perketat filter market Anda.</p>`);
+            }
+
+            narasi.push(`<h4 class="text-white font-bold mt-3 mb-1 border-b border-gray-700 pb-1">2. Risiko & Psikologi</h4>`);
+            
+            if (parseFloat(maxDDPercent) > 20) {
+                narasi.push(`<p>⚠️ <strong>Peringatan Drawdown:</strong> Max Drawdown Anda mencapai <strong class="text-red-400">${maxDDPercent}% ($${maxDD})</strong>. Penurunan sebesar ini sangat berisiko menguras mental dan sulit untuk pulih. Segera turunkan risiko per trade Anda.</p>`);
+            } else {
+                narasi.push(`<p>🛡️ <strong>Manajemen Risiko:</strong> Max Drawdown sebesar <strong class="text-green-400">${maxDDPercent}% ($${maxDD})</strong> masih dalam batas wajar. Anda memiliki ketahanan modal yang cukup baik.</p>`);
+            }
+            
+            if (maxLossStreak >= 3) {
+                narasi.push(`<p>🧠 <strong>Peringatan Streak:</strong> Anda pernah mengalami <strong>${maxLossStreak}x Loss beruntun</strong>. Pastikan Anda memiliki aturan untuk berhenti (stop trading) setelah 2-3 kali loss agar tidak emosi (revenge trading).</p>`);
+            } else {
+                narasi.push(`<p>🧠 <strong>Psikologi:</strong> Max Loss Streak Anda hanya <strong>${maxLossStreak}x</strong>. Ini sangat baik dan tidak terlalu menguras mental.</p>`);
+            }
+            
+            if (maxWinStreak >= 3) {
+                narasi.push(`<p>🔥 <strong>Euforia:</strong> Anda pernah menang <strong>${maxWinStreak}x beruntun</strong>. Hati-hati dengan overconfidence (terlalu percaya diri) yang biasanya berujung pada lot size berlebihan.</p>`);
+            }
+
+            narasi.push(`<h4 class="text-white font-bold mt-3 mb-1 border-b border-gray-700 pb-1">3. Bias Arah</h4>`);
+            if (parseFloat(longWinRate) > parseFloat(shortWinRate) + 15) {
+                narasi.push(`<p>🎯 <strong>Long Bias:</strong> Anda jauh lebih akurat saat <strong>BUY (${longWinRate}%)</strong> dibanding SELL (${shortWinRate}%). Fokuslah mencari setup Buy dan hindari memaksakan Sell jika tren tidak mendukung.</p>`);
+            } else if (parseFloat(shortWinRate) > parseFloat(longWinRate) + 15) {
+                narasi.push(`<p>🎯 <strong>Short Bias:</strong> Anda jauh lebih akurat saat <strong>SELL (${shortWinRate}%)</strong> dibanding BUY (${longWinRate}%). Manfaatkan keahlian Anda dalam mendeteksi pelemahan harga.</p>`);
+            } else {
+                narasi.push(`<p>⚖️ <strong>Seimbang:</strong> Kemampuan BUY (${longWinRate}%) dan SELL (${shortWinRate}%) Anda cukup seimbang. Anda fleksibel mengikuti arah market.</p>`);
+            }
+
+            narasi.push(`<h4 class="text-white font-bold mt-3 mb-1 border-b border-gray-700 pb-1">4. Waktu & Instrumen</h4>`);
+            
+            let bestDay = '', worstDay = '', bestR = -9999, worstR = 9999;
+            for (const [day, data] of Object.entries(dayStats)) {
+                if (data.count > 0) {
+                    if (data.r > bestR) { bestR = data.r; bestDay = day; }
+                    if (data.r < worstR) { worstR = data.r; worstDay = day; }
+                }
+            }
+            if (bestDay && worstDay && bestDay !== worstDay) {
+                narasi.push(`<p>📅 <strong>Analisa Hari:</strong> Performa terbaik Anda ada di hari <strong class="text-green-400">${bestDay}</strong> (+${bestR.toFixed(1)} R). Namun, Anda harus waspada di hari <strong class="text-red-400">${worstDay}</strong> karena Anda sering merugi (${worstR.toFixed(1)} R) di hari tersebut.</p>`);
+            }
+
+            let bestPair = '', bestPairR = -9999;
+            for (const [pair, r] of Object.entries(pairStats)) { 
+                if (r > bestPairR) { bestPairR = r; bestPair = pair; } 
+            }
+            if (bestPair && Object.keys(pairStats).length > 1) {
+                narasi.push(`<p>💎 <strong>Pair Terbaik:</strong> Instrumen yang paling "cocok" dengan gaya trading Anda adalah <strong>${bestPair}</strong> (Net +${bestPairR.toFixed(1)} R). Pertimbangkan untuk hanya fokus pada pair ini dan buang pair yang performanya buruk.</p>`);
+            }
+
+            container.innerHTML = narasi.join('');
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            if(!grid) return;
+            grid.innerHTML = '';
+            const month = parseInt(document.getElementById('calMonth').value);
+            const year = parseInt(document.getElementById('calYear').value);
+            
+            if (isNaN(month) || isNaN(year)) return;
+
+            const firstDay = new Date(year, month, 1).getDay(); 
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
+            
+            for (let i = 0; i < emptyCells; i++) grid.innerHTML += `<div class="cal-cell cal-empty"></div>`;
+            
+            const today = new Date();
+            
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                const netProfit = calendarData[dateStr] || 0;
+                
+                let cellClass = 'cal-no-trade';
+                let textColor = 'text-gray-500';
+                let displayProfit = '';
+
+                if (netProfit > 0) {
+                    if (netProfit >= 100) { cellClass = 'cal-profit-strong'; textColor = 'text-green-400'; } 
+                    else { cellClass = 'cal-profit-weak'; textColor = 'text-green-500'; }
+                    displayProfit = `+${netProfit.toFixed(0)}$`;
+                } else if (netProfit < 0) {
+                    if (netProfit <= -100) { cellClass = 'cal-loss-strong'; textColor = 'text-red-400'; } 
+                    else { cellClass = 'cal-loss-weak'; textColor = 'text-red-500'; }
+                    displayProfit = `${netProfit.toFixed(0)}$`;
+                }
+
+                const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+                const todayClass = isToday ? 'cal-today' : '';
+
+                grid.innerHTML += `
+                    <div class="cal-cell ${cellClass} ${todayClass}" title="${dateStr}: ${displayProfit || 'No Trade'}">
+                        <span class="cal-day">${d}</span>
+                        <span class="cal-profit-text ${textColor}">${displayProfit}</span>
+                    </div>
+                `;
+            }
+            
+            const totalCells = emptyCells + daysInMonth;
+            const remainingCells = 42 - totalCells;
+            if (remainingCells > 0) {
+                for (let i = 0; i < remainingCells; i++) {
+                    grid.innerHTML += `<div class="cal-cell cal-empty"></div>`;
+                }
+            }
+        }
+
+        function updateChart(data, currentEquity) {
+            equityChartInstance.data.labels = data.map((_, i) => i === 0 ? 'Start' : `T${i}`);
+            equityChartInstance.data.datasets[0].data = data;
+            const color = currentEquity < 0 ? '#ef4444' : '#00e5ff';
+            equityChartInstance.data.datasets[0].borderColor = color;
+            equityChartInstance.data.datasets[0].pointBorderColor = color;
+            equityChartInstance.update();
+        }
+
+        function updateHistogram(rrList) {
+            let buckets = { '-1R (Loss)': 0, '0-1R': 0, '1-2R': 0, '2-3R': 0, '>3R': 0 };
+            rrList.forEach(r => {
+                if (r <= -0.9) buckets['-1R (Loss)']++;
+                else if (r <= 1) buckets['0-1R']++;
+                else if (r <= 2) buckets['1-2R']++;
+                else if (r <= 3) buckets['2-3R']++;
+                else buckets['>3R']++;
+            });
+            histogramChartInstance.data.labels = Object.keys(buckets);
+            histogramChartInstance.data.datasets[0].data = Object.values(buckets);
+            histogramChartInstance.data.datasets[0].backgroundColor = ['#ef4444', '#00e5ff', '#00e5ff', '#00e5ff', '#00e5ff'];
+            histogramChartInstance.update();
+        }
+
+        function renderMonthly(monthlyR) {
+            const tbody = document.getElementById('monthlyBody'); tbody.innerHTML = '';
+            const months = Object.keys(monthlyR).sort().reverse();
+            if (months.length === 0) { tbody.innerHTML = '<tr><td colspan="2" class="text-center py-2 text-gray-500 text-[10px]">Kosong</td></tr>'; return; }
+            months.forEach(m => {
+                const data = monthlyR[m]; const [year, month] = m.split('-');
+                const monthName = new Date(year, month - 1).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' });
+                const rColor = data.r >= 0 ? 'text-green-400' : 'text-red-400';
+                const rDisplay = (data.r >= 0 ? '+' : '') + data.r.toFixed(2) + ' R';
+                tbody.innerHTML += `<tr class="hover:bg-white/5 transition"><td class="text-left py-1 px-1 font-semibold text-white">${monthName}</td><td class="text-right py-1 px-1 font-bold font-mono ${rColor}">${rDisplay}</td></tr>`;
+            });
+        }
+
+        function renderDayOfWeek(dayOfWeekR) {
+            const tbody = document.getElementById('dayOfWeekBody'); tbody.innerHTML = '';
+            ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'].forEach(day => {
+                const data = dayOfWeekR[day] || { r: 0, count: 0 };
+                if (data.count === 0) return;
+                const rColor = data.r >= 0 ? 'text-green-400' : 'text-red-400';
+                const rDisplay = (data.r >= 0 ? '+' : '') + data.r.toFixed(2) + ' R';
+                tbody.innerHTML += `<tr class="hover:bg-white/5 transition"><td class="text-left py-1 px-1 font-semibold text-white">${day}</td><td class="text-right py-1 px-1 font-bold font-mono ${rColor}">${rDisplay}</td></tr>`;
+            });
+            if (tbody.innerHTML === '') tbody.innerHTML = '<tr><td colspan="2" class="text-center py-2 text-gray-500 text-[10px]">Kosong</td></tr>';
+        }
+
+        function downloadTemplate() {
+            const templateData = [{ "Pair": "XAUUSD", "Action": "BUY", "Tanggal Entry": "2026-10-21", "Tanggal Exit": "2026-10-21", "Entry": 2340.50, "TP": 2355.00, "SL": 2335.00, "Lot": 0.1, "Hasil": "TP", "Keterangan": "Breakout" }];
+            const ws = XLSX.utils.json_to_sheet(templateData); const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Template"); XLSX.writeFile(wb, "Template_Backtest_AnalystArea.xlsx");
+        }
+
+        function exportExcel() {
+            if(trades.length === 0) return alert("Belum ada data.");
+            const exportData = trades.map(t => ({ "Pair": t.pair || '', "Action": t.type || '', "Tanggal Entry": t.entryDate || '', "Tanggal Exit": t.exitDate || '', "Entry": t.entry || '', "TP": t.tp || '', "SL": t.sl || '', "Lot": t.lot || '0.1', "Hasil": t.result || '-', "Keterangan": t.notes || '' }));
+            const ws = XLSX.utils.json_to_sheet(exportData); const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Data Backtest"); XLSX.writeFile(wb, "Data_Backtest_AnalystArea.xlsx");
+        }
+
+        function handleExcelUpload(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result); const workbook = XLSX.read(data, { type: 'array' });
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]]; const json = XLSX.utils.sheet_to_json(worksheet);
+                if (json.length === 0) return alert("File kosong.");
+                trades = json.map(row => {
+                    let res = (row['Hasil'] || row['Result'] || '').toUpperCase();
+                    if (res !== 'TP' && res !== 'SL' && res !== 'BE') res = '';
+                    return { id: Date.now().toString() + Math.random().toString(36).substr(2, 5), pair: (row['Pair'] || '').toUpperCase(), type: (row['Action'] || row['Arah'] || 'BUY').toUpperCase(), entryDate: row['Tanggal Entry'] || '', exitDate: row['Tanggal Exit'] || '', entry: row['Entry'] || '', tp: row['TP'] || row['Take Profit'] || '', sl: row['SL'] || row['Stop Loss'] || '', lot: row['Lot'] || '0.10', result: res, notes: row['Keterangan'] || row['Notes'] || '' };
+                });
+                renderTable(); updatePairFilter(); calculateMetrics(); saveData(); alert("Berhasil diimport!"); event.target.value = '';
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function clearAll() {
+            if(confirm("Hapus semua data backtest?")) {
+                trades = []; localStorage.removeItem(storageKey);
+                renderTable(); updatePairFilter(); calculateMetrics(); 
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+        });
+    </script>
+</body>
+</html>
