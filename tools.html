@@ -11,13 +11,9 @@
     <meta property="og:image" content="Foto 2.webp">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -42,11 +38,12 @@
         html { scroll-behavior: smooth; scroll-padding-top: 81px; }
         body { padding-top: 73px; overflow-x: hidden; }
 
-        /* Nav Link Hover Animation */
+        /* Nav Link Hover Animation (gradient) */
         .nav-link { position: relative; }
         .nav-link::after {
             content: ''; position: absolute; width: 0; height: 2px;
-            bottom: -4px; left: 0; background-color: #00e5ff;
+            bottom: -4px; left: 0;
+            background: linear-gradient(to right, #00e5ff, #2563eb);
             transition: width 0.3s ease;
         }
         .nav-link:hover::after,
@@ -57,11 +54,18 @@
             background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+');
         }
 
-        /* Scrollbars Mockup Discord */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+
+        /* Reusable: text gradient brand → blue-600 */
+        .text-brand-gradient {
+            background-image: linear-gradient(to right, #00e5ff, #2563eb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
     </style>
 </head>
 <body class="antialiased font-sans flex flex-col min-h-screen text-gray-900 bg-white overflow-x-hidden">
@@ -70,7 +74,6 @@
     <nav class="fixed top-0 w-full z-50 px-5 md:px-8 py-4 bg-[#060b13]/90 backdrop-blur-md border-b border-gray-800 transition-all">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 group" aria-label="Analyst Area - Beranda">
-                <!-- LOGO ANALYST AREA -->
                 <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.7)] group-hover:scale-110 transition-transform duration-500">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full">
                         <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
@@ -79,21 +82,21 @@
                         <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </div>
-                <span class="font-extrabold text-xl md:text-2xl tracking-tight uppercase text-white">ANALYST <span class="text-brand">AREA</span></span>
+                <span class="font-extrabold text-xl md:text-2xl tracking-tight uppercase text-white">ANALYST <span class="text-brand-gradient">AREA</span></span>
             </a>
 
+            <!-- DESKTOP NAV: Academy & Roadmap dihapus, Backtest Labs ditambah -->
             <div class="hidden md:flex space-x-8 text-sm font-medium">
                 <a href="index.html#home" class="nav-link text-gray-300 hover:text-brand transition duration-300">Home</a>
-                <a href="index.html#academy" class="nav-link text-gray-300 hover:text-brand transition duration-300">Academy</a>
                 <a href="tools.html" class="nav-link text-brand active-nav transition duration-300">Tools</a>
                 <a href="jurnal.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">Journal</a>
                 <a href="terminal.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">Terminal</a>
-                <a href="index.html#roadmap" class="nav-link text-gray-300 hover:text-brand transition duration-300">Roadmap</a>
+                <a href="backtest.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">Backtest Labs</a>
                 <a href="about.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">About</a>
             </div>
 
             <div class="flex items-center gap-4">
-                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="hidden md:inline-block bg-brand hover:bg-[#00c2d6] hover:-translate-y-1 text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg hover:shadow-brand/50">
+                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="hidden md:inline-block bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 hover:-translate-y-1 text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg hover:shadow-brand/50">
                     Join Discord
                 </a>
                 <button id="mobile-menu-btn" class="md:hidden text-white rounded p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand" aria-expanded="false" aria-controls="mobile-menu" aria-label="Buka menu navigasi">
@@ -103,16 +106,15 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu Panel -->
+    <!-- MOBILE MENU: Academy & Roadmap dihapus, Backtest Labs ditambah -->
     <div id="mobile-menu" class="fixed top-[73px] left-0 w-full bg-[#060b13]/95 backdrop-blur-xl border-b border-gray-800 z-40 transform -translate-y-full transition-transform duration-300 ease-in-out flex flex-col text-center shadow-2xl md:hidden">
         <a href="index.html#home" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Home</a>
-        <a href="index.html#academy" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Academy</a>
-        <a href="tools.html" class="py-4 border-b border-gray-800 text-brand font-medium mobile-nav-link">Tools</a>
+        <a href="tools.html" class="py-4 border-b border-gray-800 font-medium mobile-nav-link"><span class="text-brand-gradient">Tools</span></a>
         <a href="jurnal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Journal</a>
         <a href="terminal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Terminal</a>
-        <a href="index.html#roadmap" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Roadmap</a>
+        <a href="backtest.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Backtest Labs</a>
         <a href="about.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">About</a>
-        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="py-4 bg-brand text-darkbg font-bold mobile-nav-link">Join Discord</a>
+        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="py-4 bg-gradient-to-r from-brand to-blue-500 text-darkbg font-bold mobile-nav-link">Join Discord</a>
     </div>
 
     <main>
@@ -126,9 +128,10 @@
                     <span class="w-2 h-2 rounded-full bg-branddark animate-pulse"></span> FREE TOOLS · ANALYST AREA
                 </div>
 
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-5 md:mb-8 text-gray-900 leading-[0.95] tracking-tighter" data-aos="fade-up" data-aos-delay="100">
-                    Market is unpredictable.<br>
-                    <span class="text-branddark">Your risk isn't.</span>
+                <!-- HERO HEADLINE: solid + gradient -->
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-5 md:mb-8 leading-[0.95] tracking-tighter" data-aos="fade-up" data-aos-delay="100">
+                    <span class="text-gray-900">Market is unpredictable.</span><br>
+                    <span class="text-brand-gradient">Your risk isn't.</span>
                 </h1>
 
                 <p class="text-gray-500 text-base md:text-lg max-w-2xl leading-relaxed mb-12 md:mb-16" data-aos="fade-up" data-aos-delay="200">
@@ -153,19 +156,22 @@
             <div class="max-w-6xl mx-auto relative z-10">
                 <div class="mb-12 md:mb-16 text-center md:text-left" data-aos="fade-up">
                     <p class="text-brand font-bold text-[10px] uppercase tracking-widest mb-2">01 / TERSEDIA SEKARANG</p>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4 tracking-tight">Pilih tool yang <span class="text-branddark">kamu butuhkan.</span></h2>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4 tracking-tight">
+                        <span class="text-white">Pilih tool yang</span>
+                        <span class="text-brand-gradient">kamu butuhkan.</span>
+                    </h2>
                     <p class="text-gray-400 max-w-xl text-base md:text-lg mx-auto md:mx-0">Klik kartu di bawah ini untuk membuka halaman kalkulasi Anda secara terpisah.</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-16 md:mb-20">
                     <!-- Card 1 - Session Clock -->
-                    <a href="jam-sesi.html" class="bg-[#0f172a] border-2 border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 hover:shadow-[0_10px_30px_rgba(0,229,255,0.15)] hover:-translate-y-2 transition-all duration-300 group block relative flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
+                    <a href="jam-sesi.html" class="bg-[#0f172a] border-2 border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 hover:shadow-[0_10px_30px_rgba(37,99,235,0.25)] hover:-translate-y-2 transition-all duration-300 group block relative flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
                         <div>
                             <div class="flex justify-between items-start mb-8 md:mb-10">
                                 <span class="text-gray-500 font-bold text-[10px] md:text-xs tracking-wider group-hover:text-gray-300 transition-colors">/ TOOL 01</span>
                                 <span class="bg-brand/10 text-brand font-bold text-[9px] md:text-[10px] px-2 md:px-3 py-1 rounded-md tracking-widest border border-brand/20">LIVE</span>
                             </div>
-                            <div class="w-12 h-12 md:w-14 md:h-14 bg-darkbg border border-gray-600 rounded-2xl flex items-center justify-center text-brand text-xl md:text-2xl mb-6 md:mb-8 group-hover:scale-110 group-hover:bg-brand group-hover:text-darkbg group-hover:border-transparent transition-all shadow-lg">
+                            <div class="w-12 h-12 md:w-14 md:h-14 bg-darkbg border border-gray-600 rounded-2xl flex items-center justify-center text-brand text-xl md:text-2xl mb-6 md:mb-8 group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-brand group-hover:to-blue-600 group-hover:text-darkbg group-hover:border-transparent transition-all shadow-lg">
                                 <i class="fa-solid fa-clock"></i>
                             </div>
                             <h3 class="font-bold text-lg md:text-xl text-white mb-3 md:mb-4">Jam Sesi Forex</h3>
@@ -177,13 +183,13 @@
                     </a>
 
                     <!-- Card 2 - Position Size -->
-                    <a href="position-size.html" class="bg-[#0f172a] border-2 border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 hover:shadow-[0_10px_30px_rgba(0,229,255,0.15)] hover:-translate-y-2 transition-all duration-300 group block relative flex flex-col justify-between" data-aos="fade-up" data-aos-delay="200">
+                    <a href="position-size.html" class="bg-[#0f172a] border-2 border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 hover:shadow-[0_10px_30px_rgba(37,99,235,0.25)] hover:-translate-y-2 transition-all duration-300 group block relative flex flex-col justify-between" data-aos="fade-up" data-aos-delay="200">
                         <div>
                             <div class="flex justify-between items-start mb-8 md:mb-10">
                                 <span class="text-gray-500 font-bold text-[10px] md:text-xs tracking-wider group-hover:text-gray-300 transition-colors">/ TOOL 02</span>
                                 <span class="bg-brand/10 text-brand font-bold text-[9px] md:text-[10px] px-2 md:px-3 py-1 rounded-md tracking-widest border border-brand/20">LIVE</span>
                             </div>
-                            <div class="w-12 h-12 md:w-14 md:h-14 bg-darkbg border border-gray-600 rounded-2xl flex items-center justify-center text-brand text-xl md:text-2xl mb-6 md:mb-8 group-hover:scale-110 group-hover:bg-brand group-hover:text-darkbg group-hover:border-transparent transition-all shadow-lg">
+                            <div class="w-12 h-12 md:w-14 md:h-14 bg-darkbg border border-gray-600 rounded-2xl flex items-center justify-center text-brand text-xl md:text-2xl mb-6 md:mb-8 group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-brand group-hover:to-blue-600 group-hover:text-darkbg group-hover:border-transparent transition-all shadow-lg">
                                 <i class="fa-solid fa-calculator"></i>
                             </div>
                             <h3 class="font-bold text-lg md:text-xl text-white mb-3 md:mb-4">Position Size Calc</h3>
@@ -195,13 +201,13 @@
                     </a>
 
                     <!-- Card 3 - Compounding -->
-                    <a href="compounding.html" class="bg-[#0f172a] border-2 border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 hover:shadow-[0_10px_30px_rgba(0,229,255,0.15)] hover:-translate-y-2 transition-all duration-300 group block relative flex flex-col justify-between" data-aos="fade-up" data-aos-delay="300">
+                    <a href="compounding.html" class="bg-[#0f172a] border-2 border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 hover:shadow-[0_10px_30px_rgba(37,99,235,0.25)] hover:-translate-y-2 transition-all duration-300 group block relative flex flex-col justify-between" data-aos="fade-up" data-aos-delay="300">
                         <div>
                             <div class="flex justify-between items-start mb-8 md:mb-10">
                                 <span class="text-gray-500 font-bold text-[10px] md:text-xs tracking-wider group-hover:text-gray-300 transition-colors">/ TOOL 03</span>
                                 <span class="bg-brand/10 text-brand font-bold text-[9px] md:text-[10px] px-2 md:px-3 py-1 rounded-md tracking-widest border border-brand/20">LIVE</span>
                             </div>
-                            <div class="w-12 h-12 md:w-14 md:h-14 bg-darkbg border border-gray-600 rounded-2xl flex items-center justify-center text-brand text-xl md:text-2xl mb-6 md:mb-8 group-hover:scale-110 group-hover:bg-brand group-hover:text-darkbg group-hover:border-transparent transition-all shadow-lg">
+                            <div class="w-12 h-12 md:w-14 md:h-14 bg-darkbg border border-gray-600 rounded-2xl flex items-center justify-center text-brand text-xl md:text-2xl mb-6 md:mb-8 group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-brand group-hover:to-blue-600 group-hover:text-darkbg group-hover:border-transparent transition-all shadow-lg">
                                 <i class="fa-solid fa-arrow-trend-up"></i>
                             </div>
                             <h3 class="font-bold text-lg md:text-xl text-white mb-3 md:mb-4">Compounding Calc</h3>
@@ -213,13 +219,13 @@
                     </a>
 
                     <!-- Card 4 - Drawdown -->
-                    <a href="drawdown.html" class="bg-[#0f172a] border-2 border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 hover:shadow-[0_10px_30px_rgba(0,229,255,0.15)] hover:-translate-y-2 transition-all duration-300 group block relative flex flex-col justify-between" data-aos="fade-up" data-aos-delay="400">
+                    <a href="drawdown.html" class="bg-[#0f172a] border-2 border-gray-700 hover:border-brand rounded-3xl p-6 md:p-8 hover:shadow-[0_10px_30px_rgba(37,99,235,0.25)] hover:-translate-y-2 transition-all duration-300 group block relative flex flex-col justify-between" data-aos="fade-up" data-aos-delay="400">
                         <div>
                             <div class="flex justify-between items-start mb-8 md:mb-10">
                                 <span class="text-gray-500 font-bold text-[10px] md:text-xs tracking-wider group-hover:text-gray-300 transition-colors">/ TOOL 04</span>
                                 <span class="bg-brand/10 text-brand font-bold text-[9px] md:text-[10px] px-2 md:px-3 py-1 rounded-md tracking-widest border border-brand/20">LIVE</span>
                             </div>
-                            <div class="w-12 h-12 md:w-14 md:h-14 bg-darkbg border border-gray-600 rounded-2xl flex items-center justify-center text-brand text-xl md:text-2xl mb-6 md:mb-8 group-hover:scale-110 group-hover:bg-brand group-hover:text-darkbg group-hover:border-transparent transition-all shadow-lg">
+                            <div class="w-12 h-12 md:w-14 md:h-14 bg-darkbg border border-gray-600 rounded-2xl flex items-center justify-center text-brand text-xl md:text-2xl mb-6 md:mb-8 group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-brand group-hover:to-blue-600 group-hover:text-darkbg group-hover:border-transparent transition-all shadow-lg">
                                 <i class="fa-solid fa-arrow-trend-down"></i>
                             </div>
                             <h3 class="font-bold text-lg md:text-xl text-white mb-3 md:mb-4">Drawdown Calc</h3>
@@ -246,20 +252,23 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
                     <div class="text-center lg:text-left" data-aos="fade-right">
                         <p class="text-branddark font-bold text-[10px] md:text-xs tracking-widest uppercase mb-4">MINDSET SHIFT</p>
-                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">Berhenti Berjudi, <br><span class="text-branddark">Mulai Berbisnis.</span></h2>
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+                            <span class="text-gray-900">Berhenti Berjudi,</span> <br>
+                            <span class="text-brand-gradient">Mulai Berbisnis.</span>
+                        </h2>
                         <p class="text-gray-500 text-base md:text-lg leading-relaxed mb-8">
                             Trading adalah permainan probabilitas dan manajemen risiko. Mengandalkan insting dan "feeling" sama saja dengan menyumbangkan uang Anda ke market. Dengan alat kalkulasi yang tepat, Anda mengubah ketidakpastian menjadi statistik yang terukur.
                         </p>
 
                         <ul class="space-y-4 mb-10 text-left mx-auto lg:mx-0 max-w-md">
                             <li class="flex items-center gap-4 text-gray-700 font-medium text-sm md:text-base">
-                                <i class="fa-solid fa-check text-branddark bg-branddark/10 p-2 rounded-full flex-shrink-0"></i> Lindungi modal (Capital Preservation).
+                                <i class="fa-solid fa-check text-white bg-gradient-to-br from-brand to-blue-600 p-2 rounded-full flex-shrink-0"></i> Lindungi modal (Capital Preservation).
                             </li>
                             <li class="flex items-center gap-4 text-gray-700 font-medium text-sm md:text-base">
-                                <i class="fa-solid fa-check text-branddark bg-branddark/10 p-2 rounded-full flex-shrink-0"></i> Ukur asimetri Risk/Reward yang ideal.
+                                <i class="fa-solid fa-check text-white bg-gradient-to-br from-brand to-blue-600 p-2 rounded-full flex-shrink-0"></i> Ukur asimetri Risk/Reward yang ideal.
                             </li>
                             <li class="flex items-center gap-4 text-gray-700 font-medium text-sm md:text-base">
-                                <i class="fa-solid fa-check text-branddark bg-branddark/10 p-2 rounded-full flex-shrink-0"></i> Hilangkan bias emosional.
+                                <i class="fa-solid fa-check text-white bg-gradient-to-br from-brand to-blue-600 p-2 rounded-full flex-shrink-0"></i> Hilangkan bias emosional.
                             </li>
                         </ul>
                     </div>
@@ -272,7 +281,7 @@
                         <p class="text-gray-800 text-xl md:text-2xl font-bold leading-relaxed mb-6 md:mb-8 relative z-10">
                             "Sistem yang baik akan menyelamatkan Anda dari emosi Anda sendiri pada hari-hari terburuk di market."
                         </p>
-                        <div class="w-12 md:w-16 h-1 bg-branddark rounded-full"></div>
+                        <div class="w-12 md:w-16 h-1 bg-gradient-to-r from-brand to-blue-600 rounded-full"></div>
                     </div>
                 </div>
             </div>
@@ -285,13 +294,16 @@
             <div class="max-w-6xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
 
                 <div class="text-center lg:text-left" data-aos="fade-right">
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 text-white leading-tight">Kurang <span class="text-brand">Satu Tool?</span></h2>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
+                        <span class="text-white">Kurang</span>
+                        <span class="text-brand-gradient">Satu Tool?</span>
+                    </h2>
                     <p class="text-gray-400 mb-8 md:mb-10 text-base md:text-lg leading-relaxed">
                         Jika ada kalkulator, instrumen jurnal khusus, atau alat analitik spesifik yang Anda butuhkan namun belum tersedia, beritahu kami di Discord. Kami akan mendesainnya secara khusus untuk mempermudah gaya trading Anda.
                     </p>
 
                     <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 md:gap-6 mb-8 md:mb-10">
-                        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="bg-brand hover:bg-[#00c2d6] text-darkbg font-bold py-3.5 md:py-4 px-8 rounded-xl transition-all duration-300 hover:-translate-y-1 md:hover:scale-105 text-base md:text-lg flex items-center justify-center gap-3 w-full sm:w-auto group">
+                        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 text-darkbg font-bold py-3.5 md:py-4 px-8 rounded-xl transition-all duration-300 hover:-translate-y-1 md:hover:scale-105 text-base md:text-lg flex items-center justify-center gap-3 w-full sm:w-auto group">
                             <i class="fa-brands fa-discord text-xl md:text-2xl group-hover:rotate-12 transition-transform"></i> Request di Discord
                         </a>
                     </div>
@@ -305,7 +317,7 @@
 
                 <!-- Discord Mockup -->
                 <div class="relative [perspective:1000px] group mt-10 lg:mt-0 max-w-md mx-auto w-full" data-aos="fade-left">
-                    <div class="absolute -inset-2 bg-gradient-to-tr from-brand to-[#5865F2] rounded-xl blur-xl opacity-20 group-hover:opacity-40 transition duration-700"></div>
+                    <div class="absolute -inset-2 bg-gradient-to-tr from-brand to-blue-600 rounded-xl blur-xl opacity-20 group-hover:opacity-40 transition duration-700"></div>
 
                     <div class="bg-discord rounded-xl border border-gray-700 shadow-2xl overflow-hidden flex flex-col h-[400px] transition-transform duration-700 lg:group-hover:-rotate-y-[2deg] lg:group-hover:rotate-x-[2deg] relative z-10 text-left">
                         <div class="bg-discorddark px-4 py-3 border-b border-[#1e1f22] flex items-center justify-between shadow-sm">
@@ -321,7 +333,6 @@
                         </div>
 
                         <div class="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
-                            <!-- Message 1 -->
                             <div class="flex gap-3 md:gap-4 group/msg hover:bg-[#2e3035] -mx-4 px-4 py-1 transition-colors">
                                 <img src="https://ui-avatars.com/api/?name=Budi+T&background=10B981&color=fff" class="w-8 h-8 md:w-10 md:h-10 rounded-full hover:scale-105 transition cursor-pointer flex-shrink-0" alt="Avatar Budi">
                                 <div>
@@ -332,9 +343,8 @@
                                 </div>
                             </div>
 
-                            <!-- Message 2 - Admin -->
                             <div class="flex gap-3 md:gap-4 group/msg hover:bg-[#2e3035] -mx-4 px-4 py-1 transition-colors">
-                                <div class="relative w-8 h-8 md:w-10 md:h-10 rounded-full shadow-[0_0_10px_rgba(0,229,255,0.4)] bg-brand flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition text-darkbg">
+                                <div class="relative w-8 h-8 md:w-10 md:h-10 rounded-full shadow-[0_0_10px_rgba(0,229,255,0.4)] bg-gradient-to-br from-brand to-blue-600 flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-105 transition text-darkbg">
                                     <svg class="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
                                         <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon>
@@ -385,8 +395,8 @@
                 <strong class="text-gray-700">Disclaimer.</strong> Analyst Area adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. Analyst Area tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. Founder Analyst Area Richo G.
                 <br class="block md:hidden mt-2">
                 <a href="about.html" class="text-blue-500 hover:underline inline-block mt-2 md:mt-0">Disclaimer</a> <span class="hidden md:inline">·</span>
-                <a href="about.html" class="text-blue-500 hover:underline inline-block mt-2 md:mt-0 ml-2 md:ml-0">Terms & Conditions</a> <span class="hidden md:inline">·</span>
-                <a href="about.html" class="text-blue-500 hover:underline inline-block mt-2 md:mt-0 ml-2 md:ml-0">Risk Disclosure</a>
+                <a href="about.html" class="text-blue-500 hover:underline inline-block mt-2 md:ml-0">Terms &amp; Conditions</a> <span class="hidden md:inline">·</span>
+                <a href="about.html" class="text-blue-500 hover:underline inline-block mt-2 md:ml-0">Risk Disclosure</a>
             </p>
         </div>
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-center md:text-left" data-aos="fade-up" data-aos-delay="100">
@@ -402,7 +412,6 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Floating -->
     <a href="https://wa.me/6281217618728?text=Assalamualaikum%2C%20Wr.%20Wb.%20Permisi%20Mas%20Richo." target="_blank" rel="noopener" class="fixed bottom-6 right-6 md:bottom-6 md:right-6 bg-white text-gray-800 px-3 py-3 md:px-4 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-gray-100 flex items-center gap-3 z-50 hover:-translate-y-1 transition duration-300 group" aria-label="Hubungi Admin via WhatsApp">
         <div class="bg-[#25D366] text-white rounded-full w-10 h-10 flex items-center justify-center text-xl group-hover:bg-[#20b858] transition">
             <i class="fa-brands fa-whatsapp"></i>
@@ -413,17 +422,14 @@
         </div>
     </a>
 
-    <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // === AOS INIT ===
             if (typeof AOS !== 'undefined') {
                 AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 50 });
             }
 
-            // === MOBILE MENU TOGGLE ===
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
 
