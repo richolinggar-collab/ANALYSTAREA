@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drawdown Calculator - Analyst Area</title>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS Animation CSS (Persis seperti index.html) -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -48,12 +44,12 @@
         html { scroll-behavior: smooth; scroll-padding-top: 64px; }
         body { padding-top: 64px; overflow-x: hidden; }
         
-        /* Nav Link Hover Animation (Persis seperti index.html) */
         .nav-link { position: relative; }
         .nav-link::after {
             content: '';
             position: absolute; width: 0; height: 2px;
-            bottom: -4px; left: 0; background-color: #00e5ff;
+            bottom: -4px; left: 0;
+            background: linear-gradient(to right, #00e5ff, #2563eb);
             transition: width 0.3s ease;
         }
         .nav-link:hover::after { width: 100%; }
@@ -63,7 +59,6 @@
             background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+');
         }
 
-        /* Styling Scrollbar Internal */
         .table-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
         .table-scrollbar::-webkit-scrollbar-track { background: #0a111d; border-radius: 8px; }
         .table-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 8px; border: 2px solid #0a111d; }
@@ -72,16 +67,22 @@
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #2b2d31; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #1a1b1e; border-radius: 4px; }
+
+        .text-brand-gradient {
+            background-image: linear-gradient(to right, #00e5ff, #2563eb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
     </style>
 </head>
 <body class="antialiased font-sans flex flex-col min-h-screen text-gray-900 bg-white">
 
-    <!-- NAVIGATION (PERSIS SEPERTI INDEX.HTML) -->
+    <!-- NAVIGATION -->
     <nav class="fixed top-0 w-full z-50 px-5 md:px-8 py-4 bg-[#060b13]/90 backdrop-blur-md border-b border-gray-800 transition-all">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-3 cursor-pointer">
-                <!-- LOGO ANALYST AREA -->
-                <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.7)]">
+            <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
+                <div class="w-10 h-10 flex items-center justify-center text-brand drop-shadow-[0_0_8px_rgba(0,229,255,0.7)] group-hover:scale-110 transition-transform duration-500">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full">
                         <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
                         <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon>
@@ -89,53 +90,49 @@
                         <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </div>
-                <!-- TEKS LOGO -->
-                <span class="font-extrabold text-2xl tracking-tight uppercase text-white">ANALYST <span class="text-brand">AREA</span></span>
+                <span class="font-extrabold text-2xl tracking-tight uppercase text-white group-hover:text-brand transition duration-300">ANALYST <span class="text-brand-gradient">AREA</span></span>
             </a>
             
             <div class="hidden md:flex space-x-8 text-sm font-medium">
                 <a href="index.html#home" class="nav-link text-gray-300 hover:text-brand transition duration-300">Home</a>
-                <a href="index.html#academy" class="nav-link text-gray-300 hover:text-brand transition duration-300">Academy</a>
                 <a href="tools.html" class="nav-link text-brand active-nav transition duration-300">Tools</a>
                 <a href="jurnal.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">Journal</a>
                 <a href="terminal.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">Terminal</a>
-                <a href="index.html#roadmap" class="nav-link text-gray-300 hover:text-brand transition duration-300">Roadmap</a>
+                <a href="backtest.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">Backtest Labs</a>
                 <a href="about.html" class="nav-link text-gray-300 hover:text-brand transition duration-300">About</a>
             </div>
             
             <div class="flex items-center gap-4">
-                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="hidden md:inline-block bg-brand hover:bg-[#00c2d6] hover:-translate-y-1 transform text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg">
+                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="hidden md:inline-block bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 hover:-translate-y-1 transform text-darkbg font-bold py-2.5 px-6 rounded-full text-sm transition duration-300 shadow-lg hover:shadow-brand/50">
                     Join Discord
                 </a>
-                <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none" aria-label="Buka menu navigasi">
                     <i class="fa-solid fa-bars text-2xl"></i>
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- Mobile Menu Panel -->
     <div id="mobile-menu" class="fixed top-[64px] left-0 w-full bg-[#060b13]/95 backdrop-blur-xl border-b border-gray-800 z-40 transform -translate-y-full transition-transform duration-300 ease-in-out flex flex-col text-center shadow-2xl md:hidden">
-        <a href="index.html#home" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Home</a>
-        <a href="index.html#academy" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Academy</a>
-        <a href="tools.html" class="py-4 border-b border-gray-800 text-brand font-medium mobile-nav-link">Tools</a>
-        <a href="jurnal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Journal</a>
-        <a href="terminal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Terminal</a>
-        <a href="index.html#roadmap" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">Roadmap</a>
-        <a href="about.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link">About</a>
-        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="py-4 bg-brand text-darkbg font-bold mobile-nav-link">Join Discord</a>
+        <a href="index.html#home" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Home</a>
+        <a href="tools.html" class="py-4 border-b border-gray-800 font-medium mobile-nav-link transition-colors"><span class="text-brand-gradient">Tools</span></a>
+        <a href="jurnal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Journal</a>
+        <a href="terminal.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Terminal</a>
+        <a href="backtest.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">Backtest Labs</a>
+        <a href="about.html" class="py-4 border-b border-gray-800 text-gray-300 hover:text-brand font-medium mobile-nav-link transition-colors">About</a>
+        <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="py-4 bg-gradient-to-r from-brand to-blue-500 text-darkbg font-bold mobile-nav-link">Join Discord</a>
     </div>
 
-    <!-- SLIDE 1: HERO SECTION (TERANG) -->
+    <!-- SECTION 1: HERO -->
     <section class="pt-24 md:pt-32 pb-16 px-5 md:px-16 lg:px-24 bg-white relative overflow-hidden text-center border-b border-gray-200">
         <div class="max-w-4xl mx-auto relative z-10">
-            <!-- Badge -->
             <div class="inline-flex items-center gap-2 border border-brand/20 bg-brand/5 px-5 py-2 rounded-full text-[10px] font-bold text-branddark uppercase tracking-widest mb-8 shadow-sm cursor-default" data-aos="fade-up">
                 <span class="w-2 h-2 rounded-full bg-branddark animate-pulse"></span> RISK MANAGEMENT TOOL · DRAWDOWN CALCULATOR
             </div>
 
-            <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-8 text-gray-900" data-aos="fade-up" data-aos-delay="100">
-                Drawdown <span class="text-transparent bg-clip-text bg-gradient-to-r from-branddark to-brand">Calculator.</span>
+            <!-- HERO: solid + gradient -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-8 leading-tight" data-aos="fade-up" data-aos-delay="100">
+                <span class="text-gray-900">Drawdown</span> <span class="text-brand-gradient">Calculator.</span>
             </h1>
             
             <div class="space-y-4" data-aos="fade-up" data-aos-delay="200">
@@ -149,20 +146,18 @@
         </div>
     </section>
 
-    <!-- SLIDE 2: CALCULATOR TOOL SECTION (GELAP) -->
+    <!-- SECTION 2: CALCULATOR (GELAP) -->
     <section class="bg-darkbg py-16 md:py-20 px-5 md:px-16 lg:px-24 relative overflow-hidden border-b border-gray-800">
         <div class="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
         <div class="absolute top-0 right-1/4 w-96 h-96 bg-brand/5 rounded-full blur-[100px] pointer-events-none"></div>
 
         <div class="max-w-6xl mx-auto relative z-10 flex flex-col lg:flex-row gap-8 items-stretch lg:h-[580px]">
             
-            <!-- PANEL INPUT (KIRI) -->
             <div class="w-full lg:w-1/3 bg-darkpanel border-2 border-gray-800 hover:border-brand/30 rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col transition-all duration-300" data-aos="fade-right" data-aos-duration="1000">
                 <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3 shrink-0">
                     <i class="fa-solid fa-sliders text-brand"></i> Parameter Risiko
                 </h3>
 
-                <!-- Konten Input -->
                 <div class="space-y-6 flex-1">
                     <div>
                         <label for="calcBalance" class="block text-gray-400 text-sm font-semibold mb-2">Modal Awal (Balance)</label>
@@ -190,12 +185,12 @@
                     </div>
                 </div>
 
-                <button type="button" onclick="calculateDrawdown(true)" class="w-full bg-brand hover:bg-[#00c2d6] text-darkbg font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(0,229,255,0.3)] hover:shadow-[0_0_25px_rgba(0,229,255,0.5)] hover:-translate-y-0.5 mt-6 lg:mt-auto shrink-0 group">
+                <!-- Button gradient -->
+                <button type="button" onclick="calculateDrawdown(true)" class="w-full bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 text-darkbg font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-[0_10px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_15px_30px_rgba(37,99,235,0.5)] hover:-translate-y-0.5 mt-6 lg:mt-auto shrink-0 group">
                     Hitung Drawdown <i class="fa-solid fa-arrow-rotate-right ml-2 group-hover:rotate-180 transition-transform duration-500"></i>
                 </button>
             </div>
 
-            <!-- PANEL HASIL (KANAN) -->
             <div class="w-full lg:w-2/3 bg-darkpanel border-2 border-gray-800 hover:border-brand/30 rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col min-h-[420px] transition-all duration-300" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
                 <div class="flex justify-between items-end mb-6 shrink-0 gap-4">
                     <div>
@@ -219,7 +214,6 @@
                             </tr>
                         </thead>
                         <tbody id="resultTableBody" class="divide-y divide-gray-800/50">
-                            <!-- JS Injection -->
                         </tbody>
                     </table>
                 </div>
@@ -228,14 +222,17 @@
         </div>
     </section>
 
-    <!-- SLIDE 3: EDUKASI & VALUE (TERANG) -->
+    <!-- SECTION 3: EDUKASI (TERANG) -->
     <section class="bg-[#f8f9fa] py-16 md:py-24 px-5 md:px-16 lg:px-24 border-b border-gray-200 overflow-hidden">
         <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <div data-aos="fade-right">
                 <p class="text-branddark font-bold text-xs tracking-widest uppercase mb-4 text-center md:text-left">Risk Management</p>
-                <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-6 leading-tight text-center md:text-left">Mencegah Margin Call & <br class="hidden md:block">Gagal Prop Firm.</h2>
+                <!-- HERO: solid + gradient, 1 baris -->
+                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-6 leading-tight text-center md:text-left">
+                    <span class="text-gray-900">Mencegah Margin Call &amp;</span> <span class="text-brand-gradient">Gagal Prop Firm.</span>
+                </h2>
                 <p class="text-gray-500 text-base md:text-lg leading-relaxed mb-6 text-center md:text-left">
-                    Salah satu penyebab utama trader gagal adalah karena menggunakan persentase risiko yang tidak realistis. 
+                    Salah satu penyebab utama trader gagal adalah karena menggunakan persentase risiko yang tidak realistis.
                 </p>
                 <p class="text-gray-500 text-base md:text-lg leading-relaxed mb-8 text-center md:text-left">
                     Setiap sistem trading pasti akan mengalami fase kerugian beruntun (<em>losing streak</em>). Jika Anda merisikokan 5% per trade, hanya butuh 3 kali loss beruntun untuk melanggar batas <em>Daily Drawdown</em> (5%) di prop firm.
@@ -264,20 +261,22 @@
         </div>
     </section>
 
-    <!-- SLIDE 4: 3 LANGKAH MENGATASI DRAWDOWN (GELAP) -->
+    <!-- SECTION 4: 3 LANGKAH (GELAP) -->
     <section class="bg-darkpanel py-16 md:py-24 px-5 md:px-16 lg:px-24 relative overflow-hidden border-b border-gray-800">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-20 bg-brand/10 blur-[80px] pointer-events-none"></div>
         
         <div class="max-w-6xl mx-auto relative z-10 text-center mb-12 md:mb-16" data-aos="fade-up">
             <p class="text-brand font-bold text-xs tracking-widest uppercase mb-3">RECOVERY PROTOCOL</p>
-            <h2 class="text-3xl md:text-5xl font-black text-white mb-6">Cara Bangkit Dari <span class="text-brand">Drawdown.</span></h2>
+            <!-- HERO: solid + gradient, 1 baris -->
+            <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-6 leading-tight">
+                <span class="text-white">Cara Bangkit Dari</span> <span class="text-brand-gradient">Drawdown.</span>
+            </h2>
             <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto">Masa penarikan modal bukan akhir dari segalanya. Ini adalah tiga langkah logis dan objektif untuk merespons <em>losing streak</em> tanpa merusak sistem Anda.</p>
         </div>
 
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <!-- Langkah 1 -->
             <div class="bg-[#0f172a] border-2 border-gray-800 p-6 md:p-8 rounded-3xl hover:border-brand/50 hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(0,229,255,0.12)] transition-all duration-300 group text-center md:text-left" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-14 h-14 mx-auto md:mx-0 rounded-2xl bg-gray-800/80 flex items-center justify-center text-brand text-2xl mb-6 border border-gray-700 group-hover:bg-brand group-hover:text-darkbg group-hover:scale-110 transition-all duration-300 shadow-lg">
+                <div class="w-14 h-14 mx-auto md:mx-0 rounded-2xl bg-gray-800/80 flex items-center justify-center text-brand text-2xl mb-6 border border-gray-700 group-hover:bg-gradient-to-br group-hover:from-brand group-hover:to-blue-600 group-hover:text-darkbg group-hover:scale-110 transition-all duration-300 shadow-lg">
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white mb-4 group-hover:text-brand transition-colors">1. Hentikan Perdarahan</h3>
@@ -286,9 +285,8 @@
                 </p>
             </div>
 
-            <!-- Langkah 2 -->
             <div class="bg-[#0f172a] border-2 border-gray-800 p-6 md:p-8 rounded-3xl hover:border-brand/50 hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(0,229,255,0.12)] transition-all duration-300 group text-center md:text-left" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-14 h-14 mx-auto md:mx-0 rounded-2xl bg-gray-800/80 flex items-center justify-center text-brand text-2xl mb-6 border border-gray-700 group-hover:bg-brand group-hover:text-darkbg group-hover:scale-110 transition-all duration-300 shadow-lg">
+                <div class="w-14 h-14 mx-auto md:mx-0 rounded-2xl bg-gray-800/80 flex items-center justify-center text-brand text-2xl mb-6 border border-gray-700 group-hover:bg-gradient-to-br group-hover:from-brand group-hover:to-blue-600 group-hover:text-darkbg group-hover:scale-110 transition-all duration-300 shadow-lg">
                     <i class="fa-solid fa-clipboard-list"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white mb-4 group-hover:text-brand transition-colors">2. Audit Objektif</h3>
@@ -297,9 +295,8 @@
                 </p>
             </div>
 
-            <!-- Langkah 3 -->
             <div class="bg-[#0f172a] border-2 border-gray-800 p-6 md:p-8 rounded-3xl hover:border-brand/50 hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(0,229,255,0.12)] transition-all duration-300 group text-center md:text-left" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-14 h-14 mx-auto md:mx-0 rounded-2xl bg-gray-800/80 flex items-center justify-center text-brand text-2xl mb-6 border border-gray-700 group-hover:bg-brand group-hover:text-darkbg group-hover:scale-110 transition-all duration-300 shadow-lg">
+                <div class="w-14 h-14 mx-auto md:mx-0 rounded-2xl bg-gray-800/80 flex items-center justify-center text-brand text-2xl mb-6 border border-gray-700 group-hover:bg-gradient-to-br group-hover:from-brand group-hover:to-blue-600 group-hover:text-darkbg group-hover:scale-110 transition-all duration-300 shadow-lg">
                     <i class="fa-solid fa-battery-full"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white mb-4 group-hover:text-brand transition-colors">3. Bangun Kepercayaan Diri</h3>
@@ -310,23 +307,24 @@
         </div>
     </section>
 
-    <!-- SLIDE 5: CALL TO ACTION + DISCORD MOCKUP (TERANG) -->
+    <!-- SECTION 5: CTA + DISCORD MOCKUP (TERANG) -->
     <section id="community" class="bg-white py-16 md:py-24 px-5 md:px-16 lg:px-24 border-b border-gray-200 overflow-hidden">
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
-            <!-- Teks & Tombol (Kiri) -->
             <div class="text-center lg:text-left" data-aos="fade-right">
                 <div class="w-16 h-16 mx-auto lg:mx-0 bg-brand/10 text-branddark rounded-full flex items-center justify-center text-2xl mb-6 shadow-sm border border-brand/20">
                     <i class="fa-solid fa-users"></i>
                 </div>
-                <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">Jangan Hadapi <br><span class="text-branddark">Drawdown</span> Sendirian.</h2>
+                <!-- HERO: solid + gradient, 1 baris -->
+                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-6 leading-tight">
+                    <span class="text-gray-900">Jangan Hadapi</span> <span class="text-brand-gradient">Drawdown Sendirian.</span>
+                </h2>
                 <p class="text-gray-500 text-base md:text-lg leading-relaxed mb-10 max-w-xl mx-auto lg:mx-0">
                     Masa-masa kerugian (<em>losing streak</em>) sangat menguji mental psikologis Anda. Bergabunglah bersama ratusan trader rasional lainnya di Discord Analyst Area untuk saling mengevaluasi jurnal dan memulihkan mental trading Anda.
                 </p>
                 
-                <!-- Tombol Tosca & Kembali -->
                 <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
-                    <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="bg-brand hover:bg-[#00c2d6] text-darkbg font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:-translate-y-1 shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] text-lg flex items-center justify-center gap-3 w-full sm:w-auto group">
+                    <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="bg-gradient-to-r from-brand to-blue-500 hover:from-brand hover:to-blue-600 text-darkbg font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:-translate-y-1 shadow-[0_10px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_15px_30px_rgba(37,99,235,0.5)] text-lg flex items-center justify-center gap-3 w-full sm:w-auto group">
                         <i class="fa-brands fa-discord text-2xl group-hover:scale-110 transition-transform"></i> Join Komunitas Discord
                     </a>
                     <a href="tools.html" class="text-gray-500 hover:text-gray-900 font-bold text-lg flex items-center justify-center gap-2 transition-colors group w-full sm:w-auto">
@@ -335,12 +333,10 @@
                 </div>
             </div>
 
-            <!-- Discord Mockup (Kanan) -->
             <div class="relative group mt-10 lg:mt-0" data-aos="fade-left" data-aos-delay="200">
-                <div class="absolute -inset-2 bg-gradient-to-tr from-brand to-[#5865F2] rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition duration-700"></div>
+                <div class="absolute -inset-2 bg-gradient-to-tr from-brand to-blue-600 rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition duration-700"></div>
 
                 <div class="bg-discord rounded-2xl border border-gray-700 shadow-2xl overflow-hidden flex flex-col h-[380px] transform md:-rotate-1 md:hover:rotate-0 hover:-translate-y-2 transition-all duration-500 relative z-10 text-left">
-                    <!-- Discord Header -->
                     <div class="bg-discorddark px-4 py-3 border-b border-[#1e1f22] flex items-center justify-between shadow-sm">
                         <div class="flex items-center gap-3">
                             <i class="fa-solid fa-hashtag text-gray-400 text-lg"></i>
@@ -352,9 +348,7 @@
                         </div>
                     </div>
 
-                    <!-- Discord Chat Area -->
                     <div class="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
-                        <!-- Message 1 -->
                         <div class="flex gap-4 group/msg hover:bg-[#2e3035] -mx-4 px-4 py-1 transition-colors">
                             <img src="https://ui-avatars.com/api/?name=Budi+T&background=10B981&color=fff" class="w-10 h-10 rounded-full hover:scale-105 transition cursor-pointer flex-shrink-0" alt="Avatar">
                             <div>
@@ -365,17 +359,14 @@
                             </div>
                         </div>
 
-                        <!-- Message 2 (Admin) -->
                         <div class="flex gap-4 group/msg hover:bg-[#2e3035] -mx-4 px-4 py-1 transition-colors">
-                            <!-- Icon Admin sebagai Avatar (Logo Analyst Area) -->
-                            <div class="relative w-10 h-10 rounded-full shadow-[0_0_12px_rgba(0,229,255,0.5)] bg-brand flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-110 transition-transform duration-300">
+                            <div class="relative w-10 h-10 rounded-full shadow-[0_0_12px_rgba(37,99,235,0.5)] bg-gradient-to-br from-brand to-blue-600 flex items-center justify-center flex-shrink-0 cursor-pointer hover:scale-110 transition-transform duration-300">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6 text-darkbg">
                                     <circle cx="12" cy="12" r="11" stroke-width="1.2" stroke-opacity="0.9"></circle>
                                     <polygon points="12,2.5 20.2,7.25 20.2,16.75 12,21.5 3.8,16.75 3.8,7.25" stroke-width="1" stroke-opacity="0.4"></polygon>
                                     <path d="M5.5 17.5 L9 8.5 L12 13.5 L15 8.5 L18.5 17.5" stroke-width="1.5" stroke-linejoin="round"></path>
                                     <path d="M3.5 20.5 L22 2 M16 2 L22 2 L22 8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
-                                <!-- Online Badge Hijau -->
                                 <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-[2px] border-[#313338] rounded-full"></div>
                             </div>
 
@@ -397,7 +388,6 @@
                         </div>
                     </div>
                     
-                    <!-- Discord Input Area -->
                     <div class="p-4 bg-discord">
                         <div class="bg-[#383a40] rounded-lg px-4 py-3 flex items-center justify-between text-gray-500 text-sm cursor-text hover:bg-gray-700 transition">
                             <span>Mengirim pesan ke #jurnal-evaluasi...</span>
@@ -413,32 +403,31 @@
         </div>
     </section>
 
-    <!-- FOOTER (GELAP - KONSISTEN DENGAN INDEX.HTML) -->
+    <!-- FOOTER (DARK) -->
     <footer class="bg-darkbg text-gray-500 py-10 px-5 md:px-16 lg:px-24 text-xs font-sans relative z-10">
         <div class="max-w-6xl mx-auto border-b border-gray-800 pb-6 mb-6 text-center md:text-left" data-aos="fade-up">
             <p class="leading-relaxed text-gray-400">
-                <strong class="text-gray-300">Disclaimer.</strong> Analyst Area adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. Analyst Area tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. Founder Analyst Area Richo G. 
+                <strong class="text-gray-300">Disclaimer.</strong> Analyst Area adalah platform edukasi dan program funding berbasis skill. Seluruh konten bersifat edukatif, bukan rekomendasi investasi. Analyst Area tidak berafiliasi dengan broker manapun, tidak menjual sinyal, copy trading, atau layanan investasi, dan tidak menjamin profit. Trading memiliki risiko kerugian. Founder Analyst Area Richo G.
                 <br class="block md:hidden mt-2">
-                <a href="#" class="text-brand hover:underline inline-block mt-2 md:mt-0 md:ml-1">Disclaimer</a> <span class="hidden md:inline">·</span> 
-                <a href="#" class="text-brand hover:underline inline-block mt-2 md:mt-0 ml-2 md:ml-1">Terms & Conditions</a> <span class="hidden md:inline">·</span> 
-                <a href="#" class="text-brand hover:underline inline-block mt-2 md:mt-0 ml-2 md:ml-1">Risk Disclosure</a>
+                <a href="about.html" class="text-brand hover:underline inline-block mt-2 md:mt-0 md:ml-1">Disclaimer</a> <span class="hidden md:inline text-gray-600">·</span>
+                <a href="about.html" class="text-brand hover:underline inline-block mt-2 md:mt-0 ml-2 md:ml-1">Terms &amp; Conditions</a> <span class="hidden md:inline text-gray-600">·</span>
+                <a href="about.html" class="text-brand hover:underline inline-block mt-2 md:mt-0 ml-2 md:ml-1">Risk Disclosure</a>
             </p>
         </div>
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4" data-aos="fade-up" data-aos-delay="100">
             <p class="font-medium text-gray-500 text-center md:text-left w-full md:w-auto">Copyright &copy; 2026 Analyst Area. Semua hak dilindungi.</p>
             <div class="flex flex-wrap justify-center items-center gap-6 w-full md:w-auto">
-                <a href="https://www.instagram.com/richolinggar_?igsh=b28zZmxsdjV6ejM5" target="_blank" class="text-[#E1306C] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
+                <a href="https://www.instagram.com/richolinggar_?igsh=b28zZmxsdjV6ejM5" target="_blank" rel="noopener" class="text-[#E1306C] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
                     <i class="fa-brands fa-instagram text-xl"></i> <span class="hidden md:inline">Instagram</span>
                 </a>
-                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" class="text-[#5865F2] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
+                <a href="https://discord.gg/hDJQ7ubvFA" target="_blank" rel="noopener" class="text-[#5865F2] font-semibold hover:underline flex items-center gap-2 transition hover:-translate-y-1">
                     <i class="fa-brands fa-discord text-xl"></i> <span class="hidden md:inline">Komunitas Discord</span>
                 </a>
             </div>
         </div>
     </footer>
 
-    <!-- TOMBOL WHATSAPP MELAYANG (PERSIS SEPERTI INDEX.HTML) -->
-    <a href="https://wa.me/6281217618728?text=Assalamualaikum%2C%20Wr.%20Wb.%20Permisi%20Mas%20Richo." target="_blank" class="fixed bottom-6 right-6 md:bottom-6 md:right-6 bg-white text-gray-800 px-3 py-3 md:px-4 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-gray-100 flex items-center gap-3 z-50 hover:-translate-y-1 transition duration-300 group">
+    <a href="https://wa.me/6281217618728?text=Assalamualaikum%2C%20Wr.%20Wb.%20Permisi%20Mas%20Richo." target="_blank" rel="noopener" class="fixed bottom-6 right-6 md:bottom-6 md:right-6 bg-white text-gray-800 px-3 py-3 md:px-4 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-gray-100 flex items-center gap-3 z-50 hover:-translate-y-1 transition duration-300 group" aria-label="Hubungi Admin via WhatsApp">
         <div class="bg-[#25D366] text-white rounded-full w-10 h-10 flex items-center justify-center text-xl group-hover:bg-[#20b858] transition">
             <i class="fa-brands fa-whatsapp"></i>
         </div>
@@ -448,10 +437,8 @@
         </div>
     </a>
 
-    <!-- AOS Animation JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- JAVASCRIPT UNTUK LOGIKA KALKULATOR DRAWDOWN, AOS & MOBILE MENU -->
     <script>
         function formatCurrency(num) {
             return new Intl.NumberFormat('en-US', {
@@ -472,10 +459,8 @@
             let risk = parseFloat(riskInput.value);
             let lossesLimit = parseInt(lossesInput.value, 10);
 
-            // Update label risiko secara dinamis
             document.getElementById('riskLabelValue').innerText = (!isNaN(risk) && risk >= 0 ? risk : 0) + '%';
 
-            // Validasi input
             if (isNaN(balance) || isNaN(risk) || isNaN(lossesLimit) || balance <= 0 || risk <= 0 || lossesLimit <= 0) {
                 if (isManualClick) {
                     alert("Harap masukkan angka yang valid dan lebih dari 0.");
@@ -483,7 +468,6 @@
                 return;
             }
 
-            // Batasi maksimal agar browser tetap ringan dan responsif
             if (risk > 100) {
                 risk = 100;
                 if (isManualClick) riskInput.value = 100;
@@ -509,7 +493,6 @@
 
                 let totalDrawdownPercent = ((initialBalance - currentBalance) / initialBalance) * 100;
 
-                // Indikator warna berdasarkan level Drawdown Prop Firm (5% Daily DD & 10% Max DD)
                 let ddColorClass = "text-brand font-semibold";
                 if (totalDrawdownPercent >= 10) {
                     ddColorClass = "text-[#ef4444] font-bold";
@@ -535,7 +518,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // 1. Inisialisasi AOS Animation (Persis seperti index.html)
             AOS.init({
                 duration: 800,
                 easing: 'ease-out-cubic',
@@ -543,7 +525,6 @@
                 offset: 50
             });
 
-            // 2. Jalankan Kalkulator saat halaman dimuat & aktifkan real-time input
             calculateDrawdown(false);
 
             ['calcBalance', 'calcRisk', 'calcLosses'].forEach(id => {
@@ -553,7 +534,6 @@
                 }
             });
 
-            // 3. Setup Mobile Menu Toggle (Persis seperti index.html)
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             
